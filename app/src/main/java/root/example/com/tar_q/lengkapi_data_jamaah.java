@@ -131,10 +131,14 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
 
         int currentApiVersion = Build.VERSION.SDK_INT;
         if (currentApiVersion >= Build.VERSION_CODES.M) {
-            if (checkPermission()) {
-                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+            if (checkPermissionCamera()) {
             } else {
-                requestPermission();
+                requestPermissionCamera();
+            }
+            if(checkPermissionLocation()){
+            }
+            else{
+                requestPermissionLocation();
             }
         }
 
@@ -158,9 +162,6 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
         myRef = mFirebaseDatabase.getReference();
 
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA_IDENTITAS);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS_FINE);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_GPS_COARSE);
         /*requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS_FINE);*/
 
 
@@ -606,13 +607,35 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
 
 
 
-    private boolean checkPermission() {
+    private boolean checkPermissionLocation() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
-    private void requestPermission() {
+    private void requestPermissionLocation() {
         ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS_FINE);
     }
+    private boolean checkPermissionCamera() {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
 
+    private void requestPermissionCamera() {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CODE_CAMERA_FOTO);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        if (currentApiVersion >= Build.VERSION_CODES.M) {
+            if (checkPermissionCamera()) {
+            } else {
+                requestPermissionCamera();
+            }
+            if(checkPermissionLocation()){
+            }
+            else{
+                requestPermissionLocation();
+            }
+        }
+    }
 }
