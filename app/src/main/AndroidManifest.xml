@@ -3,6 +3,8 @@
     package="root.example.com.tar_q">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +25,11 @@
         <activity android:name=".lengkapi_data_jamaah" />
         <activity android:name=".Main_Guru" />
         <activity android:name=".Main_Jamaah" />
+
         <activity android:name=".Berhasil" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>
