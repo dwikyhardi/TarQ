@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5333ed</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorButton">#2c1b8b</color>
+    <color name="colorPrimary">#3a9ea7</color>
+    <color name="colorPrimaryDark">#3a9fca</color>
+    <color name="colorButton">#294d05</color>
     <color name="colorAccent">#FF4081</color>
     <color name="editTextBG">#DADADA</color>
     <color name="white">#FFFFFF</color>
@@ -10,4 +10,5 @@
     <color name="textColor">#6e6e6e</color>
     <color name="green">#00ac09</color>
     <color name="red">#a90101</color>
+    <color name="coklat">#69311a</color>
 </resources>

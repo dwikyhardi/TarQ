@@ -23,9 +23,8 @@
     <string name="kurir_ada">Anda Memiliki Sebuah Order, Silahkan Klik Buka Maps</string>
 
     <string-array name="PemilihanUser">
-        <item>Donatur</item>
-        <item>Kurir</item>
-        <item>Penerima</item>
+        <item>Jamaah</item>
+        <item>Guru</item>
     </string-array>
     <string name="title_activity_navigation__drawer">Navigation_Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

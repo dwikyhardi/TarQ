@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void register(View view) {
-        Intent register = new Intent(MainActivity.this, MainActivity.class);
+        Intent register = new Intent(MainActivity.this, register.class);
         MainActivity.this.startActivity(register);
     }
 
