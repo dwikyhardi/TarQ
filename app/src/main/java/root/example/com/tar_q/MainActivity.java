@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
-            private View view;
 
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -80,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Intent i = new Intent(MainActivity.this, MainActivity.class);
-                    MainActivity.this.startActivity(i);
+                    startActivity(new Intent(MainActivity.this, Berhasil.class));
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -203,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
     private void startNewActivity(int resultCode, Intent data) {
         if (resultCode == RESULT_OK)
         {
-            Intent intent = new Intent(MainActivity.this,MainActivity.class);
+            Intent intent = new Intent(MainActivity.this,Berhasil.class);
             startActivity(intent);
             finish();
         }

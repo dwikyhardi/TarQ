@@ -301,7 +301,7 @@
 
                 <!-- Button Upload -->
                 <Button
-                    android:id="@+id/tambahJamaah"
+                    android:id="@+id/btnTambahJamaah"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/chkBox1"

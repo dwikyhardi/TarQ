@@ -115,7 +115,7 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
             editTextNama = (EditText) findViewById(R.id.EditTextnama);
             editTextNohp = (EditText) findViewById(R.id.EditTextnohp);
             editTextAlamat = (TextView) findViewById(R.id.EditTextalamat);
-            btnTambah = (Button) findViewById(R.id.tambahJamaah);
+            btnTambah = (Button) findViewById(R.id.btnTambahJamaah);
             editTextIdentitas = (EditText) findViewById(R.id.EditTextidentitas);
             mDisplayDate = (TextView) findViewById(R.id.EditTexttanggallahir);
 
@@ -214,9 +214,9 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
                         }
                         FirebaseUser user = mAuth.getCurrentUser();
                         String userID = user.getUid();
-                        UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude, 2);
-                        myRef.child("SHAFOOD").child("USER").child("DONATUR").child(userID).setValue(newUser);
-                        Intent i = new Intent(lengkapi_data_jamaah.this, berhasil.class);
+                        UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
+                        myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).setValue(newUser);
+                        Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
                         startActivity(i);
                     }else {
                         showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);

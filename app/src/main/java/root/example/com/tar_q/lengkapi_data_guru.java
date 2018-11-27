@@ -100,6 +100,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
         btnChooseSIM = (Button) findViewById(R.id.btnChooseSIM);
         imageViewSIM = (ImageView) findViewById(R.id.imgViewSIM);
         BtnFotoProfile = (ImageView) findViewById(R.id.BtnFotoProfile);
+        btnTambahGuru = (Button) findViewById(R.id.btnTambahGuru);
 
         //declare the database reference object. This is what we use to access the database.
         //NOTE: Unless you are signed in, this will not be useable.
@@ -143,12 +144,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
             }
         });
 
-        btnChooseIdentitas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImageIdentitas();
-            }
-        });
+
 
         btnChooseSTNK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,9 +196,9 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 }else{
                     FirebaseUser user = mAuth.getCurrentUser();
                     String userID = user.getUid();
-                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, 2, tanggallahir, "0.0" ,"0.0");
-                    myRef.child("SHAFOOD").child("USER").child("KURIR").child(userID).setValue(newUser);
-                    Intent i = new Intent(lengkapi_data_guru.this, berhasil.class);
+                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, "0.0" ,"0.0");
+                    myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
+                    Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                     startActivity(i);
                 }
 

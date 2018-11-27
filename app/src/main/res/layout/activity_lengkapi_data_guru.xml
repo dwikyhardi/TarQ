@@ -307,7 +307,7 @@
 
                 <!-- Button Upload -->
                 <Button
-                    android:id="@+id/tambahKurir"
+                    android:id="@+id/btnTambahGuru"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/chkBox1"

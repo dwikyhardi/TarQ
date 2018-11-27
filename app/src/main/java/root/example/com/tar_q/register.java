@@ -17,6 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class register extends AppCompatActivity {
 
@@ -29,12 +32,24 @@ public class register extends AppCompatActivity {
     private Spinner spPilih;
 
     //defining firebaseauth object
+    private String userID;
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference myRef;
     private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -43,7 +58,6 @@ public class register extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         editReTextPassword = (EditText) findViewById(R.id.editTextRePassword);
-        buttonSignup = (Button) findViewById(R.id.buttonSignup);
 
         progressDialog = new ProgressDialog(this);
         TextView textViewSignIn = (TextView) findViewById(R.id.textViewSignin);
@@ -94,13 +108,17 @@ public class register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //checking if success
                         if(task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            userID = user.getUid();
                             //display some message here
                             Toast.makeText(register.this, "Successfully registered "+spPilih.getSelectedItem(), Toast.LENGTH_LONG).show();
                             if (spPilih.getSelectedItem().toString().equals("Jamaah")) {
+                                myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).child("level").setValue(2);
                                 Intent register = new Intent(register.this, lengkapi_data_jamaah.class);
                                 startActivity(register);
                             }
                             else if(spPilih.getSelectedItem().toString().equals("Guru")){
+                                myRef.child("TARQ").child("USER").child("GURU").child(userID).child("level").setValue(3);
                                 Intent register = new Intent(register.this, lengkapi_data_guru.class);
                                 startActivity(register);
                             }
