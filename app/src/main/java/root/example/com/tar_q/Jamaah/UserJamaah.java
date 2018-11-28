@@ -1,4 +1,4 @@
-package root.example.com.tar_q;
+package root.example.com.tar_q.Jamaah;
 
 public class UserJamaah {
     public String id_user;

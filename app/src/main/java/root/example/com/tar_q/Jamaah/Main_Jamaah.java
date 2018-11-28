@@ -1,13 +1,15 @@
-package root.example.com.tar_q;
+package root.example.com.tar_q.Jamaah;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Main_Guru extends AppCompatActivity {
+import root.example.com.tar_q.R;
+
+public class Main_Jamaah extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main__guru);
+        setContentView(R.layout.activity_main__jamaah);
     }
 }

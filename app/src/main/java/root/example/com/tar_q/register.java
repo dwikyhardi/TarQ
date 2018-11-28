@@ -21,6 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import root.example.com.tar_q.Guru.lengkapi_data_guru;
+import root.example.com.tar_q.Jamaah.lengkapi_data_jamaah;
+
 public class register extends AppCompatActivity {
 
     //defining view objects

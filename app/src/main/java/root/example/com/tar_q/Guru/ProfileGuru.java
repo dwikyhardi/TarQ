@@ -1,4 +1,4 @@
-package root.example.com.tar_q;
+package root.example.com.tar_q.Guru;
 
 public class ProfileGuru {
     private String id_user;

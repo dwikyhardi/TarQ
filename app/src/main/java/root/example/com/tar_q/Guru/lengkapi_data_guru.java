@@ -1,4 +1,4 @@
-package root.example.com.tar_q;
+package root.example.com.tar_q.Guru;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -39,6 +39,8 @@ import java.io.File;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import root.example.com.tar_q.Berhasil;
+import root.example.com.tar_q.R;
 
 public class lengkapi_data_guru extends AppCompatActivity {
 
