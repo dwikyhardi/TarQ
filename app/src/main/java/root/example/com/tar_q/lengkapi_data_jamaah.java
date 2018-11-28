@@ -129,19 +129,6 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
 
-        int currentApiVersion = Build.VERSION.SDK_INT;
-        if (currentApiVersion >= Build.VERSION_CODES.M) {
-            if (checkPermissionCamera()) {
-            } else {
-                requestPermissionCamera();
-            }
-            if(checkPermissionLocation()){
-            }
-            else{
-                requestPermissionLocation();
-            }
-        }
-
         editTextNama = (EditText) findViewById(R.id.EditTextnama);
         editTextNohp = (EditText) findViewById(R.id.EditTextnohp);
         editTextAlamat = (TextView) findViewById(R.id.EditTextalamat);
@@ -536,28 +523,46 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
         }
     }
 
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //minta permission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
-            return;
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        if (currentApiVersion >= Build.VERSION_CODES.M) {
+            if (checkPermissionLocation()) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setAllGesturesEnabled(true);
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                String[] indo = "-6.175 , 106.828333".split(",");
+                Double lat = Double.parseDouble(indo[0]);
+                Double lng = Double.parseDouble(indo[1]);
+                indonesia = new LatLng(lat, lng);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesia, 16));
+                mMap.setOnMapLongClickListener(this);
+            } else {
+                requestPermissionLocation();
+                return;
+            }
+        } else {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mMap.getUiSettings().setAllGesturesEnabled(true);
+            mMap.getUiSettings().setCompassEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            String[] indo = "-6.175 , 106.828333".split(",");
+            Double lat = Double.parseDouble(indo[0]);
+            Double lng = Double.parseDouble(indo[1]);
+            indonesia = new LatLng(lat, lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesia, 16));
+            mMap.setOnMapLongClickListener(this);
         }
-        //deklarasi widget
-        //setting UI MAPS
-        mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.getUiSettings().setAllGesturesEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        String[] indo = "-6.175 , 106.828333".split(",");
-        Double lat = Double.parseDouble(indo[0]);
-        Double lng = Double.parseDouble(indo[1]);
-        indonesia = new LatLng(lat, lng);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesia, 16));
-        mMap.setOnMapLongClickListener(this);
+
     }
 
     @Override
@@ -605,8 +610,6 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
     }
 
 
-
-
     private boolean checkPermissionLocation() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
@@ -614,6 +617,7 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
     private void requestPermissionLocation() {
         ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS_FINE);
     }
+
     private boolean checkPermissionCamera() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
     }
@@ -631,9 +635,8 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
             } else {
                 requestPermissionCamera();
             }
-            if(checkPermissionLocation()){
-            }
-            else{
+            if (checkPermissionLocation()) {
+            } else {
                 requestPermissionLocation();
             }
         }
