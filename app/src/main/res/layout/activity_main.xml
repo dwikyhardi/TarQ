@@ -88,7 +88,6 @@
                         android:textSize="15dp"
                         android:textColor="@color/white"
                         android:backgroundTint="@color/white"
-                        android:maxLength="16"
                         android:layout_alignParentTop="true"
                         android:layout_toRightOf="@id/icon_email_login"
                         />
@@ -127,16 +126,18 @@
                         android:id="@+id/icon_password_login"/>
 
                     <EditText
+                        android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/password"
                         android:layout_alignParentTop="true"
+                        android:layout_marginLeft="-35dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@id/icon_password_login"
                         android:backgroundTint="@color/white"
-                        android:textColor="@color/white"
                         android:inputType="textPassword"
-                        android:maxLines="16"
-                        android:textSize="15dp"
-                        android:layout_toRightOf="@id/icon_password_login"/>
+                        android:minLines="8"
+                        android:textColor="@color/white"
+                        android:textSize="15dp" />
 
                 </RelativeLayout>
 

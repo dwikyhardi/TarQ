@@ -146,6 +146,8 @@
                         android:inputType="textPassword"
                         android:shadowColor="@color/white"
                         android:textColor="@color/white"
+                        android:hint="Masukan Password"
+                        android:paddingLeft="20dp"
                         android:textColorHint="@color/white"
                         android:textSize="15sp" />
 
@@ -171,13 +173,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="0dp"
                         android:layout_toRightOf="@id/icon_password2"
                         android:backgroundTint="@color/white"
-                        android:shadowColor="@color/white"
-                        android:textColor="@color/white"
                         android:hint="Masukan Ulang Password"
                         android:inputType="textPassword"
                         android:paddingLeft="20dp"
+                        android:shadowColor="@color/white"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:textSize="15sp" />
 
@@ -245,7 +249,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:onClick="registerUser"
                         android:text="REGISTER"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/white"
                         android:textSize="15sp" />
 
                 <TextView
