@@ -89,6 +89,7 @@
                         android:textColor="@color/white"
                         android:backgroundTint="@color/white"
                         android:layout_alignParentTop="true"
+                        android:inputType="textEmailAddress"
                         android:layout_toRightOf="@id/icon_email_login"
                         />
 
@@ -130,12 +131,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_marginLeft="-35dp"
                         android:layout_marginTop="0dp"
                         android:layout_toRightOf="@id/icon_password_login"
                         android:backgroundTint="@color/white"
                         android:inputType="textPassword"
-                        android:minLines="8"
                         android:textColor="@color/white"
                         android:textSize="15dp" />
 
