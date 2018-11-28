@@ -19,7 +19,6 @@
             tools:layout_editor_absoluteX="55dp"
             tools:layout_editor_absoluteY="0dp">
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,15 +26,6 @@
                 android:layout_marginTop="1dp"
                 >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp"
-                    android:layout_marginTop="40dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="LOGIN"
-                    android:textColor="@color/white"
-                    android:textSize="22sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -43,11 +33,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="100dp"
+                    android:layout_width="200dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/logo"
+                    android:src="@drawable/logo2"
                     android:background="@color/transparent"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
                     />
 
             </RelativeLayout>
@@ -72,7 +63,8 @@
                         android:layout_height="wrap_content"
                         android:text="Username"
                         android:textColor="@color/white"
-                        android:textSize="15dp"/>
+                        android:textSize="20dp"
+                        android:layout_centerHorizontal="true"/>
 
                 </RelativeLayout>
 
@@ -83,14 +75,21 @@
                     android:layout_marginRight="30dp"
                     >
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_account_email"
+                        android:id="@+id/icon_email_login"/>
+
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/email"
                         android:textSize="15dp"
                         android:textColor="@color/white"
-                        android:maxLength="1"
+                        android:backgroundTint="@color/white"
                         android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@id/icon_email_login"
                         />
 
                 </RelativeLayout>
@@ -107,7 +106,8 @@
                             android:layout_height="wrap_content"
                             android:text="Password"
                             android:textColor="@color/white"
-                            android:textSize="15dp"/>
+                            android:textSize="20dp"
+                            android:layout_centerHorizontal="true"/>
 
                 </RelativeLayout>
 
@@ -119,19 +119,27 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_password"
+                        android:id="@+id/icon_password_login"/>
 
                     <EditText
+                        android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/password"
                         android:layout_alignParentTop="true"
+                        android:layout_marginLeft="-35dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_toRightOf="@id/icon_password_login"
+                        android:backgroundTint="@color/white"
                         android:inputType="textPassword"
-                        android:maxLines="1"
+                        android:minLines="8"
+                        android:textColor="@color/white"
                         android:textSize="15dp" />
 
-
                 </RelativeLayout>
-
 
                 <Button
                     android:id="@+id/email_sign_in_button"
@@ -141,11 +149,10 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginTop="15dp"
-                    android:background="@color/colorButton"
+                    android:background="@drawable/button_register"
                     android:fontFamily="sans-serif-medium"
                     android:text="LOGIN"
                     android:textColor="@color/white"/>
-
 
                 <Button
                     android:id="@+id/btnGoogle"
@@ -153,37 +160,25 @@
                     android:layout_height="wrap_content"
                     android:text="Sign with Google"
                     android:layout_below="@+id/chkBox1"
+                    android:textColor="@color/colorPrimary"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="30dp"
+                    android:background="@drawable/common_google_signin_btn_text_light_normal"
+                    android:backgroundTintMode="src_over"
                     />
 
-                <!--<com.google.android.gms.common.SignInButton
-                    android:id="@+id/btnGoogle"
+                <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/chkBox1"
-                    android:layout_marginLeft="30dp"
                     android:layout_marginTop="15dp"
+                    android:background="@drawable/button_signup"
+                    android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
-                    android:background="@color/transparent" >
-                </com.google.android.gms.common.SignInButton>-->
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_below="@+id/btn_signUp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@color/transparent"
-                    android:fontFamily="sans-serif"
                     android:onClick="register"
-                    android:text="Not A Member? Register Here"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:text="SIGN UP"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
