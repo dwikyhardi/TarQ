@@ -30,15 +30,21 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <!--<TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="40dp"
                         android:layout_marginTop="40dp"
+                        android:layout_marginBottom="40dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="REGISTER"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="22sp" />-->
+
+                    <ImageView
+                        android:layout_width="87dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/logo"
+                        android:layout_marginTop="50dp"/>
 
                 </LinearLayout>
             </RelativeLayout>
@@ -55,16 +61,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageView1"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="50dp">
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp">
+
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="0dp"
                         android:text="Email"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:layout_centerHorizontal="true"/>
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
 
@@ -74,28 +83,27 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageView1"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="0dp">
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="30dp">
 
                     <ImageView
                         android:id="@+id/icon_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_account_email"
-                        />
+                        android:src="@drawable/ic_account_email" />
 
                     <EditText
                         android:id="@+id/editTextEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:inputType="textEmailAddress"
                         android:layout_toRightOf="@+id/icon_email"
-                        android:paddingLeft="20dp"
-                        android:textColor="@color/white"
-                        android:shadowColor="@color/white"
-                        android:textColorHint="@color/white"
                         android:backgroundTint="@color/white"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="20dp"
+                        android:shadowColor="@color/white"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
                         android:textSize="15sp" />
 
                 </RelativeLayout>
@@ -107,10 +115,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
                         android:text="Password"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:layout_centerHorizontal="true"/>
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
 
@@ -120,25 +128,25 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageView1"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="30dp">
 
                     <ImageView
+                        android:id="@+id/icon_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_password"
-                        android:id="@+id/icon_password" />
+                        android:src="@drawable/ic_password" />
 
                     <EditText
                         android:id="@+id/editTextPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/icon_password"
-                        android:inputType="textPassword"
-                        android:textColor="@color/white"
-                        android:shadowColor="@color/white"
-                        android:textColorHint="@color/white"
                         android:backgroundTint="@color/white"
+                        android:inputType="textPassword"
+                        android:shadowColor="@color/white"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
                         android:textSize="15sp" />
 
                 </RelativeLayout>
@@ -149,14 +157,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageView1"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="30dp">
 
                     <ImageView
+                        android:id="@+id/icon_password2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_password"
-                        android:id="@+id/icon_password2" />
+                        android:src="@drawable/ic_password" />
 
                     <EditText
                         android:id="@+id/editTextRePassword"
@@ -164,11 +172,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_toRightOf="@id/icon_password2"
-                        android:inputType="textPassword"
-                        android:hint="Masukan Ulang Password"
-                        android:textColorHint="@color/white"
                         android:backgroundTint="@color/white"
+                        android:shadowColor="@color/white"
+                        android:textColor="@color/white"
+                        android:hint="Masukan Ulang Password"
+                        android:inputType="textPassword"
                         android:paddingLeft="20dp"
+                        android:textColorHint="@color/white"
                         android:textSize="15sp" />
 
 
@@ -177,34 +187,35 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="30dp">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
                         android:text="Daftar Sebagai : "
-                        android:textSize="20sp"/>
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/editTextBG"
-                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@color/editTextBG">
 
                     <Spinner
-                        android:padding="10dp"
                         android:id="@+id/sp_Pilih"
-                        android:entries="@array/PemilihanUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:entries="@array/PemilihanUser"
+                        android:outlineAmbientShadowColor="@color/colorPrimary"
                         android:outlineSpotShadowColor="@color/colorPrimary"
-                        android:outlineAmbientShadowColor="@color/colorPrimary"></Spinner>
+                        android:padding="10dp"></Spinner>
 
                 </RelativeLayout>
 
@@ -223,30 +234,29 @@
                     android:text="REGISTER"
                     android:textColor="@color/white" />-->
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_below="@+id/chkBox1"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/button_register"
-                    android:text="REGISTER"
-                    android:fontFamily="sans-serif-medium"
-                    android:onClick="registerUser"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="15sp"
-                    />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/chkBox1"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="50dp"
+                        android:background="@drawable/button_register"
+                        android:fontFamily="sans-serif-medium"
+                        android:onClick="registerUser"
+                        android:text="REGISTER"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/textViewSignin"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/btn_signUp"
                     android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="15dp"
-                    android:layout_marginTop="100dp"
                     android:background="@color/transparent"
                     android:fontFamily="sans-serif"
                     android:text="Already a member? Login Here"
