@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/bg_gradient1"
     >
     <ScrollView
         android:id="@+id/login_form"
@@ -151,20 +151,18 @@
                     android:background="@drawable/button_register"
                     android:fontFamily="sans-serif-medium"
                     android:text="LOGIN"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/hijau"/>
 
                 <Button
                     android:id="@+id/btnGoogle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sign with Google"
-                    android:layout_below="@+id/chkBox1"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/hijau"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="30dp"
                     android:background="@drawable/common_google_signin_btn_text_light_normal"
-                    android:backgroundTintMode="src_over"
                     />
 
                 <Button
@@ -176,7 +174,7 @@
                     android:layout_marginRight="30dp"
                     android:onClick="register"
                     android:text="SIGN UP"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/hijau"
                     android:textSize="15sp" />
 
             </LinearLayout>

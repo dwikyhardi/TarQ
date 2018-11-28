@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_alamat"
                         android:id="@+id/icon_alamat_guru"
-                        android:tint="@color/white"/>
+                        android:tint="@color/white" />
 
                     <!-- Edit Text Alamat -->
                     <EditText
