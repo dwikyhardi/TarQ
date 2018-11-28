@@ -219,7 +219,8 @@
                         android:entries="@array/PemilihanUser"
                         android:outlineAmbientShadowColor="@color/colorPrimary"
                         android:outlineSpotShadowColor="@color/colorPrimary"
-                        android:padding="10dp"></Spinner>
+                        android:background="@color/white"
+                        android:padding="10dp" />
 
                 </RelativeLayout>
 
