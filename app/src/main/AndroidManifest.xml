@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.location.gps" />
 
     <application
@@ -25,11 +26,14 @@
         <activity android:name=".Jamaah.lengkapi_data_jamaah" />
         <activity android:name=".Guru.Main_Guru" />
         <activity android:name=".Jamaah.Main_Jamaah" />
-
         <activity android:name=".Berhasil" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <activity android:name=".Guru.Biodata_Guru" />
+        <activity android:name=".Jamaah.Biodata_Jamaah"></activity>
     </application>
 
 </manifest>

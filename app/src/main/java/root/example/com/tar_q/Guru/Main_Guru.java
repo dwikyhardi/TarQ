@@ -19,12 +19,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,48 +42,26 @@ import root.example.com.tar_q.R;
 public class Main_Guru extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+
+    //Add Firebase Function
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1, myRef2;
+    private DatabaseReference myRef;
+    //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
-    StorageReference storageReference;
+
+
+
     private long backPressedTime;
     private Toast backToast;
     private String userID;
-    private TextView cari, kiriman;
-    private GoogleMap mMap;
-    private static int REQUEST_CODE = 0;
-    public static final int PICK_UP = 1;
-    private ListView listViewBelumTerkirim;
 
-    private static final String TAG = "AddToDatabase";
+    //resource Layout
+    private ImageView imageProfileGuru;
+    private TextView NamaGuru, EmailGuru;
 
-    TextView namaDonatur;
-    TextView emailDonatur;
-    TextView etBarang;
-    TextView etKuantitas;
-    private ImageView fotoHistory;
-    private TextView etNamaPenerima, etNamaPengirim, etAlamatPenerima, etNamaDonatur, etPesan;
-    private Dialog more, myNotif;
-    private ImageView imageProfile;
-    private Button btnCari;
-    public LatLng indonesia;
-    private String NamaPenerima, NamaPengirim, IdPenerima, NamaDonaturPopup, Status;
-    private static final int LOCATION_REQUEST = 500;
-    private String NamaDonatur, LatDonatur, LngDonatur, Ngaran, Waktos;
-    private NavigationView nav_view;
-    ArrayList<LatLng> lispoints;
-    public LatLng alamatLatLng = null;
-    public Double alamatLatitude, alamatLongitude;
-
-    //Gambar
-    private Button BtnFotoBarang;
-    private ImageView ImgViewBarang;
-    private Uri filePath1;
-    public static final int REQUEST_CODE_CAMERA_BARANG = 0022;
-    private String[] items = {"Camera"};
 
 
     @Override
@@ -86,22 +70,13 @@ public class Main_Guru extends AppCompatActivity
         setContentView(R.layout.activity_main__guru);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        more = new Dialog(this);
-        myNotif = new Dialog(this);
-
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Main_Guru.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view_guru);
         navigationView.setNavigationItemSelectedListener(this);
-
         View header = navigationView.getHeaderView(0);
-
-
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -112,13 +87,53 @@ public class Main_Guru extends AppCompatActivity
 
 
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        //Resource Layout
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
+        imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
+        NamaGuru = (TextView) header.findViewById(R.id.textViewNamaGuru);
+        EmailGuru = (TextView) header.findViewById(R.id.textViewEmailGuru);
+        final String userID = user.getUid();
+        storageRef.child("Guru/IdentitasGuru/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                }
-        };
+            public void onSuccess(Uri uri) {
+                System.out.println(uri);
+                Glide.with(getApplicationContext()).load(uri).into(imageProfileGuru);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+        EmailGuru.setText(user.getEmail());
 
+
+
+
+
+
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+    private void showData(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            ProfileGuru uInfo = new ProfileGuru();
+            uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
+            NamaGuru.setText(uInfo.getNama());
+        }
     }
 
     @Override
@@ -171,9 +186,8 @@ public class Main_Guru extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_account) {
-            toastMessage("AKUN");
-            /*Intent mIntent = new Intent(Main_Guru.this, Donatur_Account.class);
-            startActivity(mIntent);*/
+            Intent mIntent = new Intent(Main_Guru.this, Biodata_Guru.class);
+            startActivity(mIntent);
         } else if (id == R.id.nav_kirim_barang) {
             toastMessage("Kirim");
             /*Intent mIntent = new Intent(Main_Guru.this, Donatur_Main.class);

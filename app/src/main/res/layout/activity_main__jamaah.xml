@@ -10,17 +10,17 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_guru_main"
+        layout="@layout/app_bar_jamaah_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nav_view_jamaah"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_guru_main"
-        app:menu="@menu/activity_guru_main_drawer" />
+        app:headerLayout="@layout/nav_header_jamaah_main"
+        app:menu="@menu/activity_jamaah_main_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
