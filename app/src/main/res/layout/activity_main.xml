@@ -149,9 +149,10 @@
                     android:layout_marginRight="30dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/button_register"
+                    android:backgroundTint="@color/coklat"
                     android:fontFamily="sans-serif-medium"
                     android:text="LOGIN"
-                    android:textColor="@color/hijau"/>
+                    android:textColor="@color/white"/>
 
                 <Button
                     android:id="@+id/btnGoogle"

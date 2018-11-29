@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient_main_guru"
     tools:context=".Jamaah.lengkapi_data_jamaah">
 
     <ScrollView
@@ -20,29 +21,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/linearLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="0dp"
-                    android:background="@color/colorPrimary"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:background="@color/transparent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_book"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:tint="@color/white"/>
 
                     <!-- Text View LENGKAPI DATA -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginBottom="40dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="LENGKAPI DATA"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="monospace"
+                        android:text="Lengkapi Data"
                         android:textColor="@color/white"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
 
-                </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jamaah"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:paddingTop="20dp"
+                        android:paddingRight="20dp"/>
+
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -83,11 +103,9 @@
                     <!-- Icon Nama -->
                     <ImageView
                         android:id="@+id/imgView_namaIcon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/colorPrimary"
-                        android:padding="8dp"
-                        android:src="@drawable/baseline_mail_outline_black_18"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_account"
                         android:tint="@color/white" />
 
                     <!-- Edit Text Nama -->
@@ -98,10 +116,11 @@
                         android:layout_alignBottom="@+id/imgView_namaIcon"
                         android:layout_alignParentTop="true"
                         android:layout_toRightOf="@+id/imgView_namaIcon"
-                        android:background="@color/editTextBG"
                         android:hint="Nama Pribadi/Perusahaan"
-                        android:paddingLeft="20dp"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:backgroundTint="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"/>
 
                 </RelativeLayout>
 
@@ -117,11 +136,9 @@
                     <!-- Icon Alamat -->
                     <ImageView
                         android:id="@+id/imgView_identitasIcon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/colorPrimary"
-                        android:padding="8dp"
-                        android:src="@drawable/baseline_mail_outline_black_18"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_account"
                         android:tint="@color/white" />
 
                     <!-- Edit Text Alamat -->
@@ -129,15 +146,15 @@
                         android:id="@+id/EditTextidentitas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imgView_identitasIcon"
-                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/imgView_identitasIcon"
                         android:layout_toRightOf="@+id/imgView_identitasIcon"
-                        android:background="@color/editTextBG"
                         android:hint="No KTP"
                         android:inputType="number"
                         android:maxLength="16"
-                        android:paddingLeft="20dp"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:backgroundTint="@color/white"/>
 
                 </RelativeLayout>
 
@@ -154,28 +171,22 @@
                     <!-- Icon Alamat -->
                     <ImageView
                         android:id="@+id/imgView_alamatIcon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/colorPrimary"
-                        android:padding="8dp"
-                        android:src="@drawable/baseline_mail_outline_black_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_alamat"
                         android:tint="@color/white" />
 
                     <!-- Edit Text Alamat -->
-                    <TextView
+                    <EditText
                         android:id="@+id/EditTextalamat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imgView_alamatIcon"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="0dp"
                         android:layout_toRightOf="@+id/imgView_alamatIcon"
-                        android:background="@color/editTextBG"
                         android:hint="Alamat Lengkap"
-                        android:paddingLeft="20dp"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:backgroundTint="@color/white"/>
 
                 </RelativeLayout>
                 <ScrollView
@@ -197,6 +208,7 @@
 
                     </RelativeLayout>
                 </ScrollView>
+
                 <RelativeLayout
                     android:id="@+id/relativeLayout3"
                     android:layout_width="match_parent"
@@ -209,11 +221,9 @@
                     <!-- Icon No Telepon -->
                     <ImageView
                         android:id="@+id/imgView_nohpIcon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/colorPrimary"
-                        android:padding="8dp"
-                        android:src="@drawable/baseline_mail_outline_black_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_nohp"
                         android:tint="@color/white" />
 
                     <!-- Edit Text No Telepon -->
@@ -222,14 +232,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/imgView_nohpIcon"
-                        android:layout_alignParentTop="true"
                         android:layout_toRightOf="@+id/imgView_nohpIcon"
-                        android:background="@color/editTextBG"
                         android:hint="No.HandPhone"
                         android:inputType="phone"
                         android:maxLength="13"
-                        android:paddingLeft="20dp"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColorHint="@color/white"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/white"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -244,58 +254,62 @@
                     <!-- Icon Tanggallahir -->
                     <ImageView
                         android:id="@+id/imgView_dateIcon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@color/colorPrimary"
-                        android:padding="8dp"
-                        android:src="@drawable/baseline_mail_outline_black_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_tanggal"
                         android:tint="@color/white" />
 
                     <!-- Edit Text Tanggal Lahir -->
-                    <TextView
+                    <EditText
                         android:id="@+id/EditTexttanggallahir"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/imgView_dateIcon"
-                        android:layout_alignParentTop="true"
                         android:layout_toRightOf="@+id/imgView_dateIcon"
-                        android:background="@color/editTextBG"
                         android:hint="13/7/2001"
                         android:inputType="date"
-                        android:paddingLeft="20dp"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/white"
+                        android:textColorHint="@color/white"/>
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Foto KTP"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:textAlignment="center"/>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/btnChooseIdentitasJamaah"
-                        android:text="Ambil Foto KTP"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp">
+                        android:background="@drawable/ic_camera"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp" />
 
                     <ImageView
                         android:id="@+id/imgViewIdentitasJamaah"
-                        android:layout_width="wrap_content"
-                        android:layout_height="200dp" />
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="20dp"
+                        />
 
                 </LinearLayout>
 
@@ -308,11 +322,12 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="30dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/button_register"
+                    android:backgroundTint="@color/white"
                     android:fontFamily="sans-serif-medium"
                     android:text="UPLOAD"
                     android:layout_marginBottom="10dp"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/ungu" />
 
             </LinearLayout>
         </LinearLayout>
