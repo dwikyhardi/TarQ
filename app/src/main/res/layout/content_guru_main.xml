@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Guru.Main_Guru"
+    android:background="@color/biru1"
     tools:showIn="@layout/app_bar_guru_main">
 
 
