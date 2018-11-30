@@ -13,9 +13,12 @@
     <color name="green">#00ac09</color>
     <color name="red">#a90101</color>
     <color name="coklat">#69311a</color>
+    <color name="coklatmuda">#af6d52</color>
     <color name="hitam">#000000</color>
     <color name="kuning">#b1a416</color>
+    <color name="kuningtua">#735d07</color>
     <color name="hijau">#008f0e</color>
+    <color name="hijautua">#012505</color>
     <color name="biru">#009dff</color>
     <color name="biru1">#0d63ae</color>
     <color name="ungu">#7106ab</color>

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
-    android:backgroundTint="@color/biru1"
+    android:backgroundTint="@color/coklat"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -18,6 +18,7 @@
         android:layout_height="80dp"
         android:background="@drawable/circle"
         android:contentDescription="@string/nav_header_desc"
+        android:backgroundTint="@color/coklat"
         android:paddingTop="@dimen/nav_header_vertical_spacing" />
 
     <TextView
