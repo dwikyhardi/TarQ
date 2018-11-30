@@ -34,10 +34,10 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_book"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:tint="@color/white"/>
+                        android:src="@drawable/ic_book"
+                        android:tint="@color/white" />
 
                     <!-- Text View LENGKAPI DATA -->
                     <TextView
@@ -54,13 +54,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Jamaah"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:paddingTop="20dp"
-                        android:paddingRight="20dp"/>
+                        android:paddingRight="20dp"
+                        android:text="Jamaah"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -83,11 +83,11 @@
                     android:layout_marginRight="30dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/BtnFotoProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_account__"
                         android:layout_centerHorizontal="true"
-                        android:id="@+id/BtnFotoProfile"/>
+                        android:src="@drawable/ic_account__" />
 
                 </RelativeLayout>
 
@@ -116,11 +116,11 @@
                         android:layout_alignBottom="@+id/imgView_namaIcon"
                         android:layout_alignParentTop="true"
                         android:layout_toRightOf="@+id/imgView_namaIcon"
-                        android:hint="Nama Pribadi/Perusahaan"
-                        android:textSize="15sp"
                         android:backgroundTint="@color/white"
+                        android:hint="Nama Pribadi/Perusahaan"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:textColor="@color/white"/>
+                        android:textSize="15sp" />
 
                 </RelativeLayout>
 
@@ -148,13 +148,13 @@
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@+id/imgView_identitasIcon"
                         android:layout_toRightOf="@+id/imgView_identitasIcon"
+                        android:backgroundTint="@color/white"
                         android:hint="No KTP"
                         android:inputType="number"
                         android:maxLength="16"
-                        android:textSize="15sp"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:backgroundTint="@color/white"/>
+                        android:textSize="15sp" />
 
                 </RelativeLayout>
 
@@ -182,23 +182,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/imgView_alamatIcon"
+                        android:backgroundTint="@color/white"
                         android:hint="Alamat Lengkap"
-                        android:textSize="15sp"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:backgroundTint="@color/white"/>
+                        android:textSize="15sp" />
 
                 </RelativeLayout>
+
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbars="none">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingRight="30dp"
+                        android:layout_marginTop="10dp"
                         android:paddingLeft="30dp"
-                        android:layout_marginTop="10dp">
+                        android:paddingRight="30dp">
 
                         <fragment
                             android:id="@+id/map"
@@ -233,13 +235,13 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/imgView_nohpIcon"
                         android:layout_toRightOf="@+id/imgView_nohpIcon"
+                        android:backgroundTint="@color/white"
                         android:hint="No.HandPhone"
                         android:inputType="phone"
                         android:maxLength="13"
-                        android:textSize="15sp"
-                        android:textColorHint="@color/white"
                         android:textColor="@color/white"
-                        android:backgroundTint="@color/white"/>
+                        android:textColorHint="@color/white"
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -266,12 +268,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/imgView_dateIcon"
                         android:layout_toRightOf="@+id/imgView_dateIcon"
+                        android:backgroundTint="@color/white"
                         android:hint="13/7/2001"
                         android:inputType="date"
-                        android:textSize="15sp"
                         android:textColor="@color/white"
-                        android:backgroundTint="@color/white"
-                        android:textColorHint="@color/white"/>
+                        android:textColorHint="@color/white"
+                        android:textSize="15sp" />
 
                 </RelativeLayout>
 
@@ -284,32 +286,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Foto KTP"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textAlignment="center"/>
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="30dp"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/btnChooseIdentitasJamaah"
-                        android:background="@drawable/ic_camera"
                         android:layout_width="35dp"
-                        android:layout_height="35dp" />
+                        android:layout_height="35dp"
+                        android:background="@drawable/ic_camera" />
 
                     <ImageView
                         android:id="@+id/imgViewIdentitasJamaah"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_marginLeft="20dp"
-                        />
+                        android:layout_marginLeft="20dp" />
 
                 </LinearLayout>
 
@@ -322,11 +323,11 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/button_register"
                     android:backgroundTint="@color/white"
                     android:fontFamily="sans-serif-medium"
                     android:text="UPLOAD"
-                    android:layout_marginBottom="10dp"
                     android:textColor="@color/ungu" />
 
             </LinearLayout>
