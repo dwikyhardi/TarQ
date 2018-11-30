@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Guru.lengkapi_data_guru"
-    android:background="@drawable/bg_gradient">
+    android:background="@drawable/bg_gradient_biodata_guru">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -219,7 +219,7 @@
                         android:tint="@color/white"/>
 
                     <!-- Edit Text Tanggal Lahir -->
-                    <EditText
+                    <TextView
                         android:id="@+id/EditTexttanggallahir"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -364,7 +364,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="UPLOAD"
                     android:layout_marginBottom="10dp"
-                    android:textColor="@color/biru" />
+                    android:textColor="@color/coklat" />
 
             </LinearLayout>
         </LinearLayout>
