@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -37,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
+import id.zelory.compressor.Compressor;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import root.example.com.tar_q.Berhasil;
@@ -76,6 +78,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
     private TextView tvPath;
     private String[] items = {"Camera", "Gallery"};
     private ImageView BtnFotoProfile;
+    Compressor mCompressor;
 
     //add Firebase Database stuff
     private FirebaseDatabase mFirebaseDatabase;
@@ -311,6 +314,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(BtnFotoProfile);
+
                         filePath1 = Uri.fromFile(imageFile);
                         System.out.println("PATH ============== "+filePath1);
                         System.out.println("PATH ============== "+DiskCacheStrategy.ALL.toString());

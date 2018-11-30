@@ -75,6 +75,7 @@ dependencies {
     }
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.github.mukeshsolanki:social-login-helper:1.0.2'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.4'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+    implementation 'id.zelory:compressor:2.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

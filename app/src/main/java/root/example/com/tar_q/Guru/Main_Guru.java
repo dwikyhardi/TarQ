@@ -1,15 +1,21 @@
 package root.example.com.tar_q.Guru;
+import android.Manifest;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,10 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,25 +48,29 @@ import java.util.ArrayList;
 
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
+import root.example.com.tar_q.services.LocationUpdate;
 
 public class Main_Guru extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-
+    private static final String TAG = "Main_Guru";
     //Add Firebase Function
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef,myRef2;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
 
 
+    //Lokasi Update
+    private FusedLocationProviderClient mLastLocation;
 
     private long backPressedTime;
     private Toast backToast;
     private String userID;
+    private String lat,lng;
 
     //resource Layout
     private ImageView imageProfileGuru;
@@ -82,6 +96,8 @@ public class Main_Guru extends AppCompatActivity
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        myRef2 = mFirebaseDatabase.getReference().child("TARQ").child("USER");
+        mLastLocation = LocationServices.getFusedLocationProviderClient(this);
         userID = user.getUid();
 
 
@@ -128,6 +144,70 @@ public class Main_Guru extends AppCompatActivity
 
 
     }
+
+    private void updateLokasi() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mLastLocation.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()) {
+                        try {
+                            //Update to firebase
+                            Location location = task.getResult();
+                            lat = String.valueOf(location.getLatitude());
+                            lng = String.valueOf(location.getLongitude());
+                        }catch (NullPointerException e){
+                            e.printStackTrace();
+                        }
+                        myRef2.child("GURU").child(userID)
+                                .child("latitude").setValue(lat);
+                        myRef2.child("GURU").child(userID)
+                                .child("longitude").setValue(lng);
+                        startLocationService();
+                    } else {
+                        //Toast.makeText(this, "Couldn't get the location",Toast.LENGTH_SHORT).show();
+                        Log.d("TEST", "Couldn't load location");
+                    }
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLokasi();
+    }
+
+    private void startLocationService(){
+        if(!isLocationServiceRunning()){
+            Intent serviceIntent = new Intent(this, LocationUpdate.class);
+//        this.startService(serviceIntent);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+
+                Main_Guru.this.startForegroundService(serviceIntent);
+            }else{
+                startService(serviceIntent);
+            }
+        }
+    }
+
+    private boolean isLocationServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if("root.example.com.tar_q.services.LocationUpdate".equals(service.service.getClassName())) {
+                Log.d(TAG, "isLocationServiceRunning: location service is already running.");
+                return true;
+            }
+        }
+        Log.d(TAG, "isLocationServiceRunning: location service is not running.");
+        return false;
+    }
+
     private void showData(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
