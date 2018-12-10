@@ -152,7 +152,7 @@
                     android:backgroundTint="@color/coklat"
                     android:fontFamily="sans-serif-medium"
                     android:text="LOGIN"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/hijau"/>
 
                 <Button
                     android:id="@+id/btnGoogle"
