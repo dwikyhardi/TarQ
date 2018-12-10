@@ -1,12 +1,16 @@
 package root.example.com.tar_q.Guru;
+
 import android.Manifest;
 import android.app.ActivityManager;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,20 +50,21 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.services.LocationUpdate;
 
 public class Main_Guru extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, CalendarView.OnDateChangeListener {
 
     private static final String TAG = "Main_Guru";
     //Add Firebase Function
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef,myRef2;
+    private DatabaseReference myRef, myRef2;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -70,12 +76,12 @@ public class Main_Guru extends AppCompatActivity
     private long backPressedTime;
     private Toast backToast;
     private String userID;
-    private String lat,lng;
+    private String lat, lng;
+    private CalendarView kalenderGuru;
 
     //resource Layout
     private ImageView imageProfileGuru;
     private TextView NamaGuru, EmailGuru;
-
 
 
     @Override
@@ -100,9 +106,7 @@ public class Main_Guru extends AppCompatActivity
         mLastLocation = LocationServices.getFusedLocationProviderClient(this);
         userID = user.getUid();
 
-
-
-
+        addCalendarEvent();
         //Resource Layout
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
@@ -123,11 +127,8 @@ public class Main_Guru extends AppCompatActivity
             }
         });
         EmailGuru.setText(user.getEmail());
-
-
-
-
-
+        kalenderGuru = (CalendarView) findViewById(R.id.calenderGuru);
+        kalenderGuru.setOnDateChangeListener(this);
 
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -153,24 +154,24 @@ public class Main_Guru extends AppCompatActivity
         mLastLocation.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                    if (task.isSuccessful()) {
-                        try {
-                            //Update to firebase
-                            Location location = task.getResult();
-                            lat = String.valueOf(location.getLatitude());
-                            lng = String.valueOf(location.getLongitude());
-                        }catch (NullPointerException e){
-                            e.printStackTrace();
-                        }
-                        myRef2.child("GURU").child(userID)
-                                .child("latitude").setValue(lat);
-                        myRef2.child("GURU").child(userID)
-                                .child("longitude").setValue(lng);
-                        startLocationService();
-                    } else {
-                        //Toast.makeText(this, "Couldn't get the location",Toast.LENGTH_SHORT).show();
-                        Log.d("TEST", "Couldn't load location");
+                if (task.isSuccessful()) {
+                    try {
+                        //Update to firebase
+                        Location location = task.getResult();
+                        lat = String.valueOf(location.getLatitude());
+                        lng = String.valueOf(location.getLongitude());
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
                     }
+                    myRef2.child("GURU").child(userID)
+                            .child("latitude").setValue(lat);
+                    myRef2.child("GURU").child(userID)
+                            .child("longitude").setValue(lng);
+                    startLocationService();
+                } else {
+                    //Toast.makeText(this, "Couldn't get the location",Toast.LENGTH_SHORT).show();
+                    Log.d("TEST", "Couldn't load location");
+                }
             }
         });
 
@@ -182,15 +183,15 @@ public class Main_Guru extends AppCompatActivity
         updateLokasi();
     }
 
-    private void startLocationService(){
-        if(!isLocationServiceRunning()){
+    private void startLocationService() {
+        if (!isLocationServiceRunning()) {
             Intent serviceIntent = new Intent(this, LocationUpdate.class);
 //        this.startService(serviceIntent);
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
                 Main_Guru.this.startForegroundService(serviceIntent);
-            }else{
+            } else {
                 startService(serviceIntent);
             }
         }
@@ -198,8 +199,8 @@ public class Main_Guru extends AppCompatActivity
 
     private boolean isLocationServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if("root.example.com.tar_q.services.LocationUpdate".equals(service.service.getClassName())) {
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("root.example.com.tar_q.services.LocationUpdate".equals(service.service.getClassName())) {
                 Log.d(TAG, "isLocationServiceRunning: location service is already running.");
                 return true;
             }
@@ -276,7 +277,7 @@ public class Main_Guru extends AppCompatActivity
             toastMessage("history");
             /*Intent mIntent = new Intent(Main_Guru.this, Donatur_History.class);
             startActivity(mIntent);*/
-        }else if (id == R.id.nav_Tentang) {
+        } else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);
             startActivity(mIntent);*/
@@ -290,8 +291,38 @@ public class Main_Guru extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void toastMessage(String message){
-        Toast.makeText(this, message,Toast.LENGTH_SHORT).show();
+
+    public void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+        toastMessage(year + " - " + (month + 1) + " - " + dayOfMonth);
+    }
+
+    public void addCalendarEvent() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        long calID = 1;
+        long startMillis = 0;
+        long endMillis = 0;
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2018, 11, 10, 15, 0);
+        startMillis = beginTime.getTimeInMillis();
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(2018, 11, 10, 16, 0);
+        endMillis = endTime.getTimeInMillis();
+
+        ContentResolver cr = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.DTSTART, startMillis);
+        values.put(CalendarContract.Events.DTEND, endMillis);
+        values.put(CalendarContract.Events.TITLE, "Bangun");
+        values.put(CalendarContract.Events.DESCRIPTION, "Kerja");
+        values.put(CalendarContract.Events.CALENDAR_ID, calID);
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, "Indonesia/Jakarta");
+        Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
     }
 }
-

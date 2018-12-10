@@ -14,16 +14,10 @@
 
         <pl.droidsonroids.gif.GifImageView
             android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:id="@+id/gif"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_loading_screen"/>
-        <!--<pl.droidsonroids.gif.GifImageView
-            android:layout_width="150dp"
             android:layout_centerHorizontal="true"
             android:layout_height="150dp"
             android:id="@+id/gif"
-            android:src="@drawable/ic_loading_screen" />-->
+            android:src="@drawable/ic_loading_screen" />
 
         <TextView
             android:layout_width="wrap_content"

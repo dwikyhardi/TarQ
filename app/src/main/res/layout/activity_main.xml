@@ -76,10 +76,10 @@
                     >
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_account_email"
-                        android:id="@+id/icon_email_login"/>
+                        android:id="@+id/icon_email_login"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        app:srcCompat="@drawable/ic_account_emai_2" />
 
                     <EditText
                         android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_password"
+                        app:srcCompat="@drawable/ic_password"
                         android:id="@+id/icon_password_login"/>
 
                     <EditText

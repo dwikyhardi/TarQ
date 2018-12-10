@@ -57,8 +57,12 @@ public class MainActivity extends AppCompatActivity {
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9002;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9003;
     public static final int PERMISSIONS_REQUEST_ACCESS_CAMERA = 9004;
+    public static final int PERMISSIONS_REQUEST_WRITE_CALENDAR = 9005;
+    public static final int PERMISSIONS_REQUEST_READ_CALENDAR = 9006;
     private boolean mLocationPermissionGranted = false;
     private boolean mCameraPermissionGranted = false;
+    private boolean mCalendarReadPermissionGranted = false;
+    private boolean mCalendarWritePermissionGranted = false;
     public static final int ERROR_DIALOG_REQUEST = 9001;
 
     // UI references.
@@ -98,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
-
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -221,6 +224,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void getCalendarPermission() {
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                Manifest.permission.WRITE_CALENDAR)
+                == PackageManager.PERMISSION_GRANTED) {
+            mCalendarWritePermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_CALENDAR},
+                    PERMISSIONS_REQUEST_WRITE_CALENDAR);
+        }
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                Manifest.permission.READ_CALENDAR)
+                == PackageManager.PERMISSION_GRANTED) {
+            mCalendarReadPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CALENDAR},
+                    PERMISSIONS_REQUEST_READ_CALENDAR);
+        }
+    }
+
     private void getLocationPermission() {
         /*
          * Request location permission, so that we can get the location of the
@@ -274,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         mCameraPermissionGranted = false;
-        switch (requestCode){
+        switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_CAMERA: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -295,12 +319,28 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        switch (requestCode){
-            case PERMISSIONS_REQUEST_ACCESS_CAMERA:{
-                if (mCameraPermissionGranted){
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_CAMERA: {
+                if (mCameraPermissionGranted) {
 
-                }else {
+                } else {
                     getCameraPermission();
+                }
+            }
+        }
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_READ_CALENDAR: {
+                if (mCalendarReadPermissionGranted) {
+                } else {
+                    getCalendarPermission();
+                }
+            }
+        }
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_WRITE_CALENDAR: {
+                if (mCalendarWritePermissionGranted) {
+                } else {
+                    getCalendarPermission();
                 }
             }
         }
@@ -312,18 +352,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(checkMapServices()){
-            if(mLocationPermissionGranted){
+        if (checkMapServices()) {
+            if (mLocationPermissionGranted) {
                 Log.d(TAG, "onResume: permission true");
-            }
-            else{
+            } else {
                 Log.d(TAG, "onResume: permission false");
                 getLocationPermission();
             }
-            if (mCameraPermissionGranted){
+            if (mCameraPermissionGranted) {
 
-            }else {
+            } else {
                 getCameraPermission();
+            }
+            if (mCalendarReadPermissionGranted) {
+            } else {
+                getCalendarPermission();
+            }
+
+            if (mCalendarWritePermissionGranted) {
+            } else {
+                getCalendarPermission();
             }
         }
     }
