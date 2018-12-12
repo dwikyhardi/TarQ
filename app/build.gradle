@@ -19,7 +19,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "root.example.com.tar_q"
-        minSdkVersion 19
+        minSdkVersion 21
         multiDexEnabled true
         targetSdkVersion 28
         versionCode 1
@@ -78,5 +78,7 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
     implementation 'id.zelory:compressor:2.1.0'
     implementation 'me.everything:providers-android:1.0.1'
+    implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

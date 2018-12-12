@@ -64,7 +64,6 @@ public class Main_Jamaah extends AppCompatActivity
     //resource Layout
     private ImageView imageProfileJamaah;
     private TextView NamaJamaah, EmailJamaah;
-    private CalendarView kalenderJamaah;
 
 
 
@@ -110,8 +109,7 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
         EmailJamaah.setText(user.getEmail());
-        kalenderJamaah = (CalendarView) findViewById(R.id.calendarJamaah);
-        kalenderJamaah.setOnDateChangeListener(this);
+
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
