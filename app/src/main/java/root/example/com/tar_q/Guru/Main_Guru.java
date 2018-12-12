@@ -49,6 +49,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,7 +64,7 @@ import root.example.com.tar_q.R;
 import root.example.com.tar_q.services.LocationUpdate;
 
 public class Main_Guru extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CalendarView.OnDateChangeListener {
+        implements NavigationView.OnNavigationItemSelectedListener,OnDateSelectedListener {
 
     private static final String TAG = "Main_Guru";
     //Add Firebase Function
@@ -81,7 +84,7 @@ public class Main_Guru extends AppCompatActivity
     private Toast backToast;
     private String userID;
     private String lat, lng;
-    private CalendarView kalenderGuru;
+    private MaterialCalendarView kalenderGuru;
 
     //resource Layout
     private ImageView imageProfileGuru;
@@ -152,8 +155,8 @@ public class Main_Guru extends AppCompatActivity
             }
         });
         EmailGuru.setText(user.getEmail());
-        kalenderGuru = (CalendarView) findViewById(R.id.calenderGuru);
-        kalenderGuru.setOnDateChangeListener(this);
+        kalenderGuru = (MaterialCalendarView) findViewById(R.id.calenderGuru);
+        kalenderGuru.setOnDateChangedListener(this);
 
 
 
@@ -295,15 +298,7 @@ public class Main_Guru extends AppCompatActivity
         if (id == R.id.nav_account) {
             Intent mIntent = new Intent(Main_Guru.this, Biodata_Guru.class);
             startActivity(mIntent);
-        } else if (id == R.id.nav_kirim_barang) {
-            toastMessage("Kirim");
-            /*Intent mIntent = new Intent(Main_Guru.this, Donatur_Main.class);
-            startActivity(mIntent);*/
-        } else if (id == R.id.nav_history) {
-            toastMessage("history");
-            /*Intent mIntent = new Intent(Main_Guru.this, Donatur_History.class);
-            startActivity(mIntent);*/
-        } else if (id == R.id.nav_Tentang) {
+        }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);
             startActivity(mIntent);*/
@@ -322,10 +317,6 @@ public class Main_Guru extends AppCompatActivity
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-        toastMessage(year + " - " + (month + 1) + " - " + dayOfMonth);
-    }
 
     public void addCalendarEvent() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -350,5 +341,11 @@ public class Main_Guru extends AppCompatActivity
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "Indonesia/Jakarta");
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
         System.out.println("URI" + uri);
+    }
+
+    @Override
+    public void onDateSelected(MaterialCalendarView materialCalendarView, CalendarDay calendarDay, boolean b) {
+        Toast.makeText(this, calendarDay.getDay()+"/"+calendarDay.getMonth()+"/"+calendarDay.getYear(), Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onDateSelected() called with: materialCalendarView = [" + materialCalendarView + "], calendarDay = [" + calendarDay + "], b = [" + b + "]");
     }
 }

@@ -43,6 +43,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 
+import root.example.com.tar_q.Find_Guru;
 import root.example.com.tar_q.Guru.ProfileGuru;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
@@ -72,6 +73,7 @@ public class Main_Jamaah extends AppCompatActivity
     //resource Layout
     private ImageView imageProfileJamaah;
     private TextView NamaJamaah, EmailJamaah;
+    private Button btnBelajar;
 
 
 
@@ -118,6 +120,14 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
         EmailJamaah.setText(user.getEmail());
+        btnBelajar = (Button) findViewById(R.id.btnBelajar);
+        btnBelajar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mIntent = new Intent(Main_Jamaah.this, Find_Guru.class);
+                startActivity(mIntent);
+            }
+        });
 
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -193,14 +203,6 @@ public class Main_Jamaah extends AppCompatActivity
         if (id == R.id.nav_account) {
             Intent mIntent = new Intent(Main_Jamaah.this, Biodata_Jamaah.class);
             startActivity(mIntent);
-        } else if (id == R.id.nav_kirim_barang) {
-            toastMessage("Kirim");
-            /*Intent mIntent = new Intent(Main_Guru.this, Donatur_Main.class);
-            startActivity(mIntent);*/
-        } else if (id == R.id.nav_history) {
-            toastMessage("history");
-            /*Intent mIntent = new Intent(Main_Guru.this, Donatur_History.class);
-            startActivity(mIntent);*/
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);

@@ -9,11 +9,11 @@
     android:background="@color/white"
     tools:showIn="@layout/app_bar_guru_main">
 
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/calenderGuru">
-    </CalendarView>
+    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
     <Button
         android:layout_width="match_parent"
