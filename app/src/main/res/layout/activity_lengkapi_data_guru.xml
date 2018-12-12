@@ -146,11 +146,12 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="30dp">
 
+                    <!-- Icon Alamat -->
                     <ImageView
+                        android:id="@+id/imgView_alamatIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_alamat"
-                        android:id="@+id/icon_alamat_guru"
                         android:tint="@color/white" />
 
                     <!-- Edit Text Alamat -->
@@ -158,16 +159,35 @@
                         android:id="@+id/EditTextalamat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:hint="Alamat Lengkap"
-                        android:paddingLeft="20dp"
-                        android:textSize="15sp"
-                        android:layout_toRightOf="@id/icon_alamat_guru"
+                        android:layout_toRightOf="@+id/imgView_alamatIcon"
                         android:backgroundTint="@color/white"
+                        android:hint="Alamat Lengkap"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"/>
+                        android:textColorHint="@color/white"
+                        android:textSize="15sp" />
 
                 </RelativeLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="30dp">
+
+                        <fragment
+                            android:id="@+id/map"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp" />
+
+                    </RelativeLayout>
+                </ScrollView>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout3"
@@ -264,6 +284,86 @@
                         android:backgroundTint="@color/white"
                         android:textColorHint="@color/white"
                         android:textColor="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="30dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pilih Keahlian"
+                        android:textSize="20dp"
+                        android:textColor="@color/white"
+                        android:id="@+id/text_pilih"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Pratahsin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pra Tahsin"
+                        android:layout_below="@+id/text_pilih"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Tahsin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tahsin"
+                        android:layout_below="@+id/cb_Pratahsin"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Bahasa_arab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bahasa Arab"
+                        android:layout_below="@+id/cb_Tahsin"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_SKI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SKI"
+                        android:layout_below="@+id/cb_Bahasa_arab"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Tahfizh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tahfizh"
+                        android:layout_below="@+id/cb_SKI"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Lanjutan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/cb_Tahfizh"
+                        android:text="Lanjutan"
+                        android:layout_below="@+id/cb_Tahfizh"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <Button
+                        android:id="@+id/check"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CheckBOX"
+                        android:layout_below="@+id/cb_Lanjutan"/>
+
+
                 </RelativeLayout>
 
                 <RelativeLayout
