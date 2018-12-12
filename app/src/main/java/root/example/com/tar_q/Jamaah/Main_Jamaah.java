@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +36,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 
 import root.example.com.tar_q.Guru.ProfileGuru;
@@ -43,8 +48,8 @@ import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
 public class Main_Jamaah extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CalendarView.OnDateChangeListener{
-
+        implements NavigationView.OnNavigationItemSelectedListener,OnDateSelectedListener{
+    private final String TAG = "Main_Jamaah";
 
     //Add Firebase Function
     private FirebaseDatabase mFirebaseDatabase;
@@ -61,10 +66,12 @@ public class Main_Jamaah extends AppCompatActivity
     private Toast backToast;
     private String userID;
 
+    //calendar
+    private MaterialCalendarView materialCalendarView;
+
     //resource Layout
     private ImageView imageProfileJamaah;
     private TextView NamaJamaah, EmailJamaah;
-    private CalendarView kalenderJamaah;
 
 
 
@@ -86,7 +93,8 @@ public class Main_Jamaah extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
         userID = user.getUid();
-
+        materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarJamaah);
+        materialCalendarView.setOnDateChangedListener(this);
 
 
         //Add Resource
@@ -110,8 +118,7 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
         EmailJamaah.setText(user.getEmail());
-        kalenderJamaah = (CalendarView) findViewById(R.id.calendarJamaah);
-        kalenderJamaah.setOnDateChangeListener(this);
+
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -124,9 +131,6 @@ public class Main_Jamaah extends AppCompatActivity
 
             }
         });
-
-
-
 
     }
     private void showData(DataSnapshot dataSnapshot) {
@@ -216,8 +220,9 @@ public class Main_Jamaah extends AppCompatActivity
     }
 
     @Override
-    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-        toastMessage(year + " - " + (month + 1) + " - " + dayOfMonth);
+    public void onDateSelected( MaterialCalendarView materialCalendarView, CalendarDay calendarDay, boolean b) {
+        Toast.makeText(this, calendarDay.getDay()+"/"+calendarDay.getMonth()+"/"+calendarDay.getYear(), Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onDateSelected() called with: materialCalendarView = [" + materialCalendarView + "], calendarDay = [" + calendarDay + "], b = [" + b + "]");
     }
 }
 
