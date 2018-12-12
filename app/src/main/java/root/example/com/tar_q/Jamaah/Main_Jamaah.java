@@ -193,14 +193,6 @@ public class Main_Jamaah extends AppCompatActivity
         if (id == R.id.nav_account) {
             Intent mIntent = new Intent(Main_Jamaah.this, Biodata_Jamaah.class);
             startActivity(mIntent);
-        } else if (id == R.id.nav_kirim_barang) {
-            toastMessage("Kirim");
-            /*Intent mIntent = new Intent(Main_Guru.this, Donatur_Main.class);
-            startActivity(mIntent);*/
-        } else if (id == R.id.nav_history) {
-            toastMessage("history");
-            /*Intent mIntent = new Intent(Main_Guru.this, Donatur_History.class);
-            startActivity(mIntent);*/
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);
