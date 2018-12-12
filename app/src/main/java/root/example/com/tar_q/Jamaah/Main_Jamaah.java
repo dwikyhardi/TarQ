@@ -1,6 +1,5 @@
 package root.example.com.tar_q.Jamaah;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,16 +14,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,16 +36,17 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 
-import root.example.com.tar_q.Find_Guru;
-import root.example.com.tar_q.Guru.ProfileGuru;
+import butterknife.OnItemSelected;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
 public class Main_Jamaah extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,OnDateSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, OnDateSelectedListener {
     private final String TAG = "Main_Jamaah";
 
     //Add Firebase Function
@@ -62,19 +59,19 @@ public class Main_Jamaah extends AppCompatActivity
     private StorageReference storageRef;
 
 
-
     private long backPressedTime;
     private Toast backToast;
     private String userID;
+    //radio
+    private RadioButton mantap1, mantap2;
+    private RadioGroup RadGroup;
 
     //calendar
     private MaterialCalendarView materialCalendarView;
 
     //resource Layout
     private ImageView imageProfileJamaah;
-    private TextView NamaJamaah, EmailJamaah;
-    private Button btnBelajar;
-
+    private TextView NamaJamaah, EmailJamaah, TV;
 
 
     @Override
@@ -97,6 +94,10 @@ public class Main_Jamaah extends AppCompatActivity
         userID = user.getUid();
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarJamaah);
         materialCalendarView.setOnDateChangedListener(this);
+        mantap1 = (RadioButton) findViewById(R.id.mantap1);
+        mantap2 = (RadioButton) findViewById(R.id.mantap2);
+        RadGroup = (RadioGroup) findViewById(R.id.RadGroup);
+        TV = (TextView) findViewById(R.id.TV);
 
 
         //Add Resource
@@ -105,7 +106,7 @@ public class Main_Jamaah extends AppCompatActivity
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
         imageProfileJamaah = (ImageView) header.findViewById(R.id.imageProfileJamaah);
         NamaJamaah = (TextView) header.findViewById(R.id.textViewNamaJamaah);
-        EmailJamaah= (TextView) header.findViewById(R.id.textViewEmailJamaah);
+        EmailJamaah = (TextView) header.findViewById(R.id.textViewEmailJamaah);
         final String userID = user.getUid();
         storageRef.child("Jamaah/FotoProfil/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -120,14 +121,6 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
         EmailJamaah.setText(user.getEmail());
-        btnBelajar = (Button) findViewById(R.id.btnBelajar);
-        btnBelajar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mIntent = new Intent(Main_Jamaah.this, Find_Guru.class);
-                startActivity(mIntent);
-            }
-        });
 
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -143,6 +136,30 @@ public class Main_Jamaah extends AppCompatActivity
         });
 
     }
+
+    public void onRadioButtonClicked(View view) {
+        Log.d(TAG, "onRadioButtonClicked() called with: view = [" + view + "]");
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch (view.getId()) {
+            case R.id.mantap1: {
+                if (checked) {
+                    TV.setText("Mantap 1");
+                }
+                break;
+            }
+            case R.id.mantap2: {
+                if (checked) {
+                    TV.setText("Mantap 2");
+                }
+                break;
+            }
+        }
+        Log.d(TAG, "onRadioButtonClicked() returned: " + TV.getText());
+    }
+
     private void showData(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileJamaah uInfo = new ProfileJamaah();
@@ -200,31 +217,21 @@ public class Main_Jamaah extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_account) {
-            Intent mIntent = new Intent(Main_Jamaah.this, Biodata_Jamaah.class);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Tentang) {
-            toastMessage("tentang");
-            /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);
-            startActivity(mIntent);*/
-        } else if (id == R.id.nav_logout) {
-            mAuth.signOut();
-            Intent mIntent = new Intent(root.example.com.tar_q.Jamaah.Main_Jamaah.this, MainActivity.class);
-            startActivity(mIntent);
-        }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void toastMessage(String message){
-        Toast.makeText(this, message,Toast.LENGTH_SHORT).show();
+
+    public void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onDateSelected( MaterialCalendarView materialCalendarView, CalendarDay calendarDay, boolean b) {
-        Toast.makeText(this, calendarDay.getDay()+"/"+calendarDay.getMonth()+"/"+calendarDay.getYear(), Toast.LENGTH_SHORT).show();
+    public void onDateSelected(MaterialCalendarView materialCalendarView, CalendarDay calendarDay, boolean b) {
+        Toast.makeText(this, calendarDay.getDay() + "/" + calendarDay.getMonth() + "/" + calendarDay.getYear(), Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onDateSelected() called with: materialCalendarView = [" + materialCalendarView + "], calendarDay = [" + calendarDay + "], b = [" + b + "]");
     }
+
+
 }
 

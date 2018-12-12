@@ -1,26 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Jamaah.Main_Jamaah"
-    android:background="@color/white"
     tools:showIn="@layout/app_bar_jamaah_main">
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/calendarJamaah">
-    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Belajar!"
-        android:id="@+id/btnBelajar"
-        android:layout_below="@+id/calendarJamaah"/>
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarJamaah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
+        <RelativeLayout
+            android:id="@+id/RlRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/calendarJamaah">
 
-</RelativeLayout>
+            <RadioGroup
+                android:id="@+id/RadGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onRadioButtonClicked"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RadioButton
+                    android:id="@+id/mantap1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Mantap" />
+
+                <RadioButton
+                    android:id="@+id/mantap2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Mantap 2" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/TV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/RlRadio"
+            android:text="Text View"
+            android:textSize="34dp" />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
