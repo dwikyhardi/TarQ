@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,12 +9,18 @@
     android:background="@color/white"
     tools:showIn="@layout/app_bar_jamaah_main">
 
-
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/calendarJamaah">
     </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Belajar!"
+        android:id="@+id/btnBelajar"
+        android:layout_below="@+id/calendarJamaah"/>
 
-</android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>
