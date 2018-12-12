@@ -9,13 +9,33 @@
             android:icon="@drawable/ic_account"
             android:title="Akun" />
         <item
-            android:id="@+id/nav_kirim_barang"
-            android:icon="@drawable/ic_home"
-            android:title="Kirim Barang" />
+            android:id="@+id/nav_Prosensi"
+            android:icon="@drawable/ic_assignment"
+            android:title="Absen" />
         <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/ic_history"
-            android:title="History" />
+            android:id="@+id/nav_data_jamaah"
+            android:icon="@drawable/ic_people"
+            android:title="Data Jamaah" />
+        <item
+            android:id="@+id/nav_jadwal_mengajar"
+            android:icon="@drawable/ic_schedule"
+            android:title="Jadwal Mengajar" />
+        <item
+            android:id="@+id/nav_Materi_pengajaran"
+            android:icon="@drawable/ic_materi"
+            android:title="Materi Pengajaran" />
+        <item
+            android:id="@+id/nav_Potential_pendapatan"
+            android:icon="@drawable/ic_trending_up"
+            android:title="Potensi Pendapatan" />
+        <item
+            android:id="@+id/nav_Progres_report"
+            android:icon="@drawable/ic_assignment_turned"
+            android:title="Progres report/KBM" />
+        <item
+            android:id="@+id/nav_Pendapatan"
+            android:icon="@drawable/ic_payment"
+            android:title="Pendapatan" />
         <item
             android:id="@+id/nav_Tentang"
             android:icon="@drawable/ic_info"
