@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-import id.zelory.compressor.Compressor;
+/*import id.zelory.compressor.Compressor;*/
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import root.example.com.tar_q.Berhasil;
@@ -64,6 +65,10 @@ public class lengkapi_data_guru extends AppCompatActivity {
     Button btnTambahGuru;
     Button btnChooseSIM;
 
+    //Checkbox
+    private CheckBox cb_Pratahsin, cb_Tahsin, cb_Bahasa_arab, cb_SKI, cb_Tahfizh, cb_Lanjutan;
+    private Button Check;
+
     //Gambar
     private Button btnChooseSTNK, btnChooseIdentitas;
     private ImageView imageViewIdentitas, imageViewSTNK, imageViewSIM;
@@ -78,7 +83,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
     private TextView tvPath;
     private String[] items = {"Camera", "Gallery"};
     private ImageView BtnFotoProfile;
-    Compressor mCompressor;
+    /*Compressor mCompressor;*/
 
     //add Firebase Database stuff
     private FirebaseDatabase mFirebaseDatabase;
@@ -106,6 +111,15 @@ public class lengkapi_data_guru extends AppCompatActivity {
         imageViewSIM = (ImageView) findViewById(R.id.imgViewSIM);
         BtnFotoProfile = (ImageView) findViewById(R.id.BtnFotoProfile);
         btnTambahGuru = (Button) findViewById(R.id.btnTambahGuru);
+
+        //Checkbox
+        cb_Pratahsin = (CheckBox) findViewById(R.id.cb_Pratahsin);
+        cb_Tahsin = (CheckBox) findViewById(R.id.cb_Tahsin);
+        cb_Bahasa_arab = (CheckBox) findViewById(R.id.cb_Bahasa_arab);
+        cb_SKI = (CheckBox) findViewById(R.id.cb_SKI);
+        cb_Tahfizh = (CheckBox) findViewById(R.id.cb_Tahfizh);
+        cb_Lanjutan = (CheckBox) findViewById(R.id.cb_Lanjutan);
+        Check = (Button) findViewById(R.id.check);
 
         //declare the database reference object. This is what we use to access the database.
         //NOTE: Unless you are signed in, this will not be useable.
@@ -214,6 +228,20 @@ public class lengkapi_data_guru extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 chooseImageIdentitas();
+            }
+        });
+
+        Check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String status = "Pratahsin check " + cb_Pratahsin.isChecked()
+                        + "\n Tahsin check " + cb_Tahsin.isChecked()
+                        + "\n Bahasa Arab check " + cb_Bahasa_arab.isChecked()
+                        + "\n SKI check " + cb_SKI.isChecked()
+                        + "\n Tahfizh check " + cb_Tahfizh.isChecked()
+                        + "\n Lanjutan check " + cb_Lanjutan.isChecked();
+
+                Toast.makeText(lengkapi_data_guru.this,status, Toast.LENGTH_LONG).show();
             }
         });
 
