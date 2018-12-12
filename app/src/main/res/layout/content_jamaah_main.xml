@@ -10,5 +10,11 @@
     tools:showIn="@layout/app_bar_jamaah_main">
 
 
+    <CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calendarJamaah">
+    </CalendarView>
+
 
 </android.support.constraint.ConstraintLayout>

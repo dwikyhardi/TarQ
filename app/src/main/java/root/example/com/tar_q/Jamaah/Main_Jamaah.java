@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
 public class Main_Jamaah extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, CalendarView.OnDateChangeListener{
 
 
     //Add Firebase Function
@@ -63,6 +64,7 @@ public class Main_Jamaah extends AppCompatActivity
     //resource Layout
     private ImageView imageProfileJamaah;
     private TextView NamaJamaah, EmailJamaah;
+    private CalendarView kalenderJamaah;
 
 
 
@@ -108,6 +110,9 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
         EmailJamaah.setText(user.getEmail());
+        kalenderJamaah = (CalendarView) findViewById(R.id.calendarJamaah);
+        kalenderJamaah.setOnDateChangeListener(this);
+
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -208,6 +213,11 @@ public class Main_Jamaah extends AppCompatActivity
     }
     public void toastMessage(String message){
         Toast.makeText(this, message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+        toastMessage(year + " - " + (month + 1) + " - " + dayOfMonth);
     }
 }
 

@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,7 +52,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import me.everything.providers.android.calendar.CalendarProvider;
+import me.everything.providers.android.calendar.Event;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.services.LocationUpdate;
@@ -82,6 +86,11 @@ public class Main_Guru extends AppCompatActivity
     //resource Layout
     private ImageView imageProfileGuru;
     private TextView NamaGuru, EmailGuru;
+    private Button test;
+
+
+    public static final int PERMISSIONS_REQUEST_WRITE_CALENDAR = 9005;
+    public static final int PERMISSIONS_REQUEST_READ_CALENDAR = 9006;
 
 
     @Override
@@ -106,7 +115,23 @@ public class Main_Guru extends AppCompatActivity
         mLastLocation = LocationServices.getFusedLocationProviderClient(this);
         userID = user.getUid();
 
+
+
+
+
+
         addCalendarEvent();
+        test = (Button) findViewById(R.id.testcal);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toastMessage("Nothing to Do Here!");
+            }
+        });
+
+
+
+
         //Resource Layout
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
@@ -129,6 +154,7 @@ public class Main_Guru extends AppCompatActivity
         EmailGuru.setText(user.getEmail());
         kalenderGuru = (CalendarView) findViewById(R.id.calenderGuru);
         kalenderGuru.setOnDateChangeListener(this);
+
 
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -309,10 +335,10 @@ public class Main_Guru extends AppCompatActivity
         long startMillis = 0;
         long endMillis = 0;
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2018, 11, 10, 15, 0);
+        beginTime.set(2018, 11, 10, 16, 35);
         startMillis = beginTime.getTimeInMillis();
         Calendar endTime = Calendar.getInstance();
-        endTime.set(2018, 11, 10, 16, 0);
+        endTime.set(2018, 11, 10, 16, 40);
         endMillis = endTime.getTimeInMillis();
 
         ContentResolver cr = getContentResolver();
@@ -324,5 +350,6 @@ public class Main_Guru extends AppCompatActivity
         values.put(CalendarContract.Events.CALENDAR_ID, calID);
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "Indonesia/Jakarta");
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+        System.out.println("URI" + uri);
     }
 }
