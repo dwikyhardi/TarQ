@@ -340,7 +340,6 @@ public class Main_Guru extends AppCompatActivity
         Calendar endTime = Calendar.getInstance();
         endTime.set(2018, 11, 10, 16, 40);
         endMillis = endTime.getTimeInMillis();
-
         ContentResolver cr = getContentResolver();
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.DTSTART, startMillis);
