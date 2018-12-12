@@ -55,15 +55,13 @@ public class lengkapi_data_guru extends AppCompatActivity {
     public static final int REQUEST_CODE_GALLERY_SIM = 0017;
 
     private static final String TAG = "Guru";
-    EditText editTextNama;
-    EditText editTextEmail;
-    EditText editTextNohp;
-    EditText editTextAlamat;
-    EditText editTextTanggalLahir;
-    EditText editTextNoSim;
-    EditText editTextNoPlat;
-    Button btnTambahGuru;
-    Button btnChooseSIM;
+    private EditText editTextNama;
+    private EditText editTextNohp;
+    private EditText editTextAlamat;
+    private TextView editTextTanggalLahir;
+    private EditText editTextNoPlat;
+    private Button btnTambahGuru;
+    private Button btnChooseSIM;
 
     //Checkbox
     private CheckBox cb_Pratahsin, cb_Tahsin, cb_Bahasa_arab, cb_SKI, cb_Tahfizh, cb_Lanjutan;
@@ -101,7 +99,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
         editTextNama = (EditText) findViewById(R.id.EditTextnama);
         editTextAlamat = (EditText) findViewById(R.id.EditTextalamat);
         editTextNohp = (EditText) findViewById(R.id.EditTextnohp);
-        editTextTanggalLahir = (EditText) findViewById(R.id.EditTexttanggallahir);
+        editTextTanggalLahir = (TextView) findViewById(R.id.EditTexttanggallahir);
         editTextNoPlat = (EditText) findViewById(R.id.EditTextNoPlat);
 
         //Initialize Views
