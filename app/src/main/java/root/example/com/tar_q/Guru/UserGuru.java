@@ -8,17 +8,20 @@ public class UserGuru {
     public String tanggallahir;
     public String lembaga;
     public int level;
-    public String pratahsin;
-    public String tahsin;
+    public String pratahsin1;
+    public String pratahsin2;
+    public String pratahsin3;
+    public String tahsin1;
+    public String tahsin2;
+    public String tahsin3;
+    public String tahsin4;
     public String bahasaarab;
-    public String ski;
     public String tahfizh;
-    public String lanjutan;
     public String latitude;
     public String longitude;
     public String verifikasi;
 
-    public UserGuru(String id_user, String nama, String nohp, String alamat ,String tanggallahir, String pratahsin, String tahsin, String bahasaarab, String ski, String tahfizh, String lanjutan, String latitude, String longitude) {
+    public UserGuru(String id_user, String nama, String nohp, String alamat ,String tanggallahir, String pratahsin1,  String pratahsin2,  String pratahsin3, String tahsin1,  String tahsin2,  String tahsin3,  String tahsin4, String bahasaarab, String tahfizh, String latitude, String longitude) {
         this.id_user = id_user;
         this.nama = nama;
         this.nohp = nohp;
@@ -27,12 +30,15 @@ public class UserGuru {
         this.level = 3;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.pratahsin = pratahsin;
-        this.tahsin = tahsin;
+        this.pratahsin1 = pratahsin1;
+        this.pratahsin2 = pratahsin2;
+        this.pratahsin3 = pratahsin3;
+        this.tahsin1 = tahsin1;
+        this.tahsin2 = tahsin2;
+        this.tahsin3 = tahsin3;
+        this.tahsin4 = tahsin4;
         this.bahasaarab = bahasaarab;
-        this.ski = ski;
         this.tahfizh = tahfizh;
-        this.lanjutan = lanjutan;
         this.verifikasi = "false";
     }
 }
