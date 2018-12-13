@@ -2,10 +2,12 @@ package root.example.com.tar_q;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,13 +22,14 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Find_Guru extends AppCompatActivity {
-
+   private final String TAG = "Find_guru";
 
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
     private String userID;
+    private Spinner PilihKelas;
 
 
     private ListView mListViewGuru;
@@ -37,7 +40,7 @@ public class Find_Guru extends AppCompatActivity {
         setContentView(R.layout.activity_find__guru);
 
         mListViewGuru = (ListView) findViewById(R.id.listViewGuru);
-
+        PilihKelas = (Spinner) findViewById(R.id.PilihKelas);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -69,6 +72,7 @@ public class Find_Guru extends AppCompatActivity {
             Map nama = (Map) entry.getValue();
             Nama.add((String) nama.get("nama"));
         }
+
         final ArrayList<String> Id_penerima = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
             Map id_penerima = (Map) entry.getValue();

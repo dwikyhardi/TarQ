@@ -10,10 +10,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--<RadioGroup
+            android:id="@+id/RadGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:weightSum="3"
+                android:orientation="vertical">
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:weightSum="3"
+                android:orientation="vertical">
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RadioGroup>
+        </RadioGroup>-->
+        <TextView
+            android:id="@+id/TV_ATAS"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Pilih Kelas"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:paddingTop="5dp"/>
+        <Spinner
+            android:id="@+id/PilihKelas"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/TV_ATAS"
+            android:entries="@array/PemilihanGuru" />
+
         <ListView
+            android:id="@+id/listViewGuru"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/listViewGuru"/>
+            android:layout_below="@+id/PilihKelas" />
 
 
     </RelativeLayout>

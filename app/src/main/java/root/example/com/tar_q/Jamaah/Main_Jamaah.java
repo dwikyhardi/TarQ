@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -42,6 +43,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 import butterknife.OnItemSelected;
+import root.example.com.tar_q.Find_Guru;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
@@ -72,6 +74,7 @@ public class Main_Jamaah extends AppCompatActivity
     //resource Layout
     private ImageView imageProfileJamaah;
     private TextView NamaJamaah, EmailJamaah, TV;
+    private Button btnBelajar;
 
 
     @Override
@@ -94,10 +97,7 @@ public class Main_Jamaah extends AppCompatActivity
         userID = user.getUid();
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarJamaah);
         materialCalendarView.setOnDateChangedListener(this);
-        mantap1 = (RadioButton) findViewById(R.id.mantap1);
-        mantap2 = (RadioButton) findViewById(R.id.mantap2);
-        RadGroup = (RadioGroup) findViewById(R.id.RadGroup);
-        TV = (TextView) findViewById(R.id.TV);
+        btnBelajar = (Button) findViewById(R.id.btnBelajar);
 
 
         //Add Resource
@@ -135,29 +135,12 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
 
-    }
-
-    public void onRadioButtonClicked(View view) {
-        Log.d(TAG, "onRadioButtonClicked() called with: view = [" + view + "]");
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch (view.getId()) {
-            case R.id.mantap1: {
-                if (checked) {
-                    TV.setText("Mantap 1");
-                }
-                break;
+        btnBelajar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Main_Jamaah.this,Find_Guru.class));
             }
-            case R.id.mantap2: {
-                if (checked) {
-                    TV.setText("Mantap 2");
-                }
-                break;
-            }
-        }
-        Log.d(TAG, "onRadioButtonClicked() returned: " + TV.getText());
+        });
     }
 
     private void showData(DataSnapshot dataSnapshot) {
