@@ -300,20 +300,65 @@
                         android:id="@+id/text_pilih"/>
 
                     <CheckBox
-                        android:id="@+id/cb_Pratahsin"
+                        android:id="@+id/cb_Pratahsin1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pra Tahsin"
+                        android:text="Pra Tahsin 1"
                         android:layout_below="@+id/text_pilih"
                         android:textColor="@color/white"
                         android:buttonTint="@color/white"/>
 
                     <CheckBox
-                        android:id="@+id/cb_Tahsin"
+                        android:id="@+id/cb_Pratahsin2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tahsin"
-                        android:layout_below="@+id/cb_Pratahsin"
+                        android:text="Pra Tahsin 2"
+                        android:layout_below="@+id/cb_Pratahsin1"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Pratahsin3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pra Tahsin 3"
+                        android:layout_below="@+id/cb_Pratahsin2"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Tahsin1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tahsin 1"
+                        android:layout_below="@+id/cb_Pratahsin3"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Tahsin2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tahsin 2"
+                        android:layout_below="@+id/cb_Tahsin1"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Tahsin3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tahsin 3"
+                        android:layout_below="@+id/cb_Tahsin2"
+                        android:textColor="@color/white"
+                        android:buttonTint="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_Tahsin4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tahsin 4"
+                        android:layout_below="@+id/cb_Tahsin3"
                         android:textColor="@color/white"
                         android:buttonTint="@color/white"/>
 
@@ -322,43 +367,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Bahasa Arab"
-                        android:layout_below="@+id/cb_Tahsin"
+                        android:layout_below="@+id/cb_Tahsin4"
                         android:textColor="@color/white"
                         android:buttonTint="@color/white"/>
 
-                    <CheckBox
-                        android:id="@+id/cb_SKI"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SKI"
-                        android:layout_below="@+id/cb_Bahasa_arab"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+
 
                     <CheckBox
                         android:id="@+id/cb_Tahfizh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tahfizh"
-                        android:layout_below="@+id/cb_SKI"
+                        android:layout_below="@+id/cb_Bahasa_arab"
                         android:textColor="@color/white"
                         android:buttonTint="@color/white"/>
 
-                    <CheckBox
-                        android:id="@+id/cb_Lanjutan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/cb_Tahfizh"
-                        android:buttonTint="@color/white"
-                        android:text="Lanjutan"
-                        android:textColor="@color/white" />
-
-                    <Button
-                        android:id="@+id/check"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="CheckBOX"
-                        android:layout_below="@+id/cb_Lanjutan"/>
 
 
                 </RelativeLayout>
