@@ -348,13 +348,12 @@
 
                     <CheckBox
                         android:id="@+id/cb_Lanjutan"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignEnd="@+id/cb_Tahfizh"
-                        android:text="Lanjutan"
                         android:layout_below="@+id/cb_Tahfizh"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Lanjutan"
+                        android:textColor="@color/white" />
 
                     <Button
                         android:id="@+id/check"
