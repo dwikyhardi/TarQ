@@ -71,12 +71,14 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
 
     private static final String TAG = "Jamaah";
 
-    EditText editTextNama;
-    EditText editTextEmail;
-    EditText editTextNohp;
-    TextView editTextAlamat;
-    EditText editTextIdentitas;
-    Button btnTambah;
+    private EditText editTextNama;
+    private EditText editTextNohp;
+    private TextView editTextAlamat;
+    private EditText editTextIdentitas;
+    private Button btnTambah;
+    private TextView EditTexttanggallahir;
+
+    //Lokasi
     private GoogleMap mMap;
     ArrayList<LatLng> lispoints;
     public LatLng alamatLatLng = null;
@@ -112,7 +114,6 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
     private static int REQUEST_CODE = 0;
     FirebaseStorage storage;
     StorageReference storageReference;
-
 
     LocationManager locationManager;
     String provider;
@@ -268,7 +269,7 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
                         lengkapi_data_jamaah.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
-                        year, month, day);
+                        year,month,day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -521,8 +522,6 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

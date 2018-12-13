@@ -74,6 +74,23 @@
                 tools:layout_editor_absoluteY="655dp">
 
                 <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp"
+                        android:text="Foto Profil"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:id="@+id/relativeLayout0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageView1"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginRight="30dp">
 
                     <!-- Icon Nama -->
@@ -262,7 +279,7 @@
                         android:tint="@color/white" />
 
                     <!-- Edit Text Tanggal Lahir -->
-                    <EditText
+                    <TextView
                         android:id="@+id/EditTexttanggallahir"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

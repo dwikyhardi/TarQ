@@ -1,14 +1,23 @@
 package root.example.com.tar_q.Guru;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Criteria;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +33,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,14 +58,24 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /*import id.zelory.compressor.Compressor;*/
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import root.example.com.tar_q.Berhasil;
+import root.example.com.tar_q.Jamaah.lengkapi_data_jamaah;
 import root.example.com.tar_q.R;
 
-public class lengkapi_data_guru extends AppCompatActivity {
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
+import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
+import static root.example.com.tar_q.Jamaah.lengkapi_data_jamaah.ALAMAT;
+import static root.example.com.tar_q.Jamaah.lengkapi_data_jamaah.REQUEST_CODE_CAMERA_FOTO;
+import static root.example.com.tar_q.Jamaah.lengkapi_data_jamaah.REQUEST_CODE_GPS_FINE;
+
+public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener{
 
     public static final int REQUEST_CODE_CAMERA_IDENTITAS = 0012;
     public static final int REQUEST_CODE_GALLERY_IDENTITAS = 0013;
@@ -58,14 +88,26 @@ public class lengkapi_data_guru extends AppCompatActivity {
     private EditText editTextNama;
     private EditText editTextNohp;
     private EditText editTextAlamat;
-    private TextView editTextTanggalLahir;
     private EditText editTextNoPlat;
     private Button btnTambahGuru;
     private Button btnChooseSIM;
+    private TextView EditTexttanggallahir;
 
     //Checkbox
     private CheckBox cb_Pratahsin, cb_Tahsin, cb_Bahasa_arab, cb_SKI, cb_Tahfizh, cb_Lanjutan;
     private Button Check;
+
+    //Lokasi
+    private GoogleMap mMap;
+    ArrayList<LatLng> lispoints;
+    public LatLng alamatLatLng = null;
+    public Double alamatLatitude, alamatLongitude;
+    public LatLng indonesia;
+    private static final int LOCATION_REQUEST = 500;
+
+    //Date
+    private TextView mDisplayDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     //Gambar
     private Button btnChooseSTNK, btnChooseIdentitas;
@@ -90,17 +132,25 @@ public class lengkapi_data_guru extends AppCompatActivity {
     private DatabaseReference myRef;
     FirebaseStorage storage;
     StorageReference storageReference;
+    public static final int ALAMAT = 1;
+    private static int REQUEST_CODE = 0;
+
+    LocationManager locationManager;
+    String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lengkapi_data_guru);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        provider = locationManager.getBestProvider(new Criteria(), false);
+
         editTextNama = (EditText) findViewById(R.id.EditTextnama);
         editTextAlamat = (EditText) findViewById(R.id.EditTextalamat);
         editTextNohp = (EditText) findViewById(R.id.EditTextnohp);
-        editTextTanggalLahir = (TextView) findViewById(R.id.EditTexttanggallahir);
         editTextNoPlat = (EditText) findViewById(R.id.EditTextNoPlat);
+        mDisplayDate = (TextView) findViewById(R.id.TextViewtanggallahir);
 
         //Initialize Views
         btnChooseSTNK = (Button) findViewById(R.id.btnChooseSTNK);
@@ -126,6 +176,8 @@ public class lengkapi_data_guru extends AppCompatActivity {
         myRef = mFirebaseDatabase.getReference();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        //Maps
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA_IDENTITAS);
 
@@ -184,8 +236,14 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 String nama = editTextNama.getText().toString().toUpperCase().trim();
                 String nohp = editTextNohp.getText().toString().trim();
                 String alamat = editTextAlamat.getText().toString().toUpperCase().trim();
-                String tanggallahir = editTextTanggalLahir.getText().toString().trim();
+                String tanggallahir = mDisplayDate.getText().toString().trim();
                 String noPlat = editTextNoPlat.getText().toString().trim();
+                String latitude = "";
+                String longitude = "";
+                if (alamatLatitude != null) {
+                    latitude = alamatLatitude.toString().trim();
+                    longitude = alamatLongitude.toString().trim();
+                }
                 Log.d("ISI ====", nama + " , " + nohp + " , " + alamat + " , " + tanggallahir + " , " + " , " + noPlat);
 
                 if (filePath1 == null && filePath2 == null && filePath3 == null){
@@ -213,7 +271,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 }else{
                     FirebaseUser user = mAuth.getCurrentUser();
                     String userID = user.getUid();
-                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, "0.0" ,"0.0");
+                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, latitude, longitude);
                     myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
                     Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                     startActivity(i);
@@ -221,6 +279,18 @@ public class lengkapi_data_guru extends AppCompatActivity {
 
             }
         });
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        editTextAlamat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPlaceAutoComplete(ALAMAT);
+            }
+        });
+        lispoints = new ArrayList<>();
 
         BtnFotoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,6 +312,35 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 Toast.makeText(lengkapi_data_guru.this,status, Toast.LENGTH_LONG).show();
             }
         });
+
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        lengkapi_data_guru.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                Log.d(TAG, "onDateSet: dd/mm/yyy: " + day + "/" + month + "/" + year);
+
+                String date = day + "/" + month + "/" + year;
+                mDisplayDate.setText(date);
+            }
+        };
 
     }
 
@@ -495,6 +594,79 @@ public class lengkapi_data_guru extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        //minta permission
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        if (currentApiVersion >= Build.VERSION_CODES.M) {
+            if (checkPermissionLocation()) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setAllGesturesEnabled(true);
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                String[] indo = "-6.175 , 106.828333".split(",");
+                Double lat = Double.parseDouble(indo[0]);
+                Double lng = Double.parseDouble(indo[1]);
+                indonesia = new LatLng(lat, lng);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesia, 16));
+                mMap.setOnMapLongClickListener(this);
+            } else {
+                requestPermissionLocation();
+                return;
+            }
+        } else {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mMap.getUiSettings().setAllGesturesEnabled(true);
+            mMap.getUiSettings().setCompassEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            String[] indo = "-6.175 , 106.828333".split(",");
+            Double lat = Double.parseDouble(indo[0]);
+            Double lng = Double.parseDouble(indo[1]);
+            indonesia = new LatLng(lat, lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesia, 16));
+            mMap.setOnMapLongClickListener(this);
+        }
+
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        if (lispoints.size() >= 1) {
+            mMap.clear();
+            lispoints.clear();
+        } else {
+            lispoints.add(latLng);
+            MarkerOptions mMarkerOptions = new MarkerOptions();
+            mMarkerOptions.position(latLng);
+            mMap.addMarker(new MarkerOptions().position(latLng).title(latLng.toString()));
+            alamatLatitude = latLng.latitude;
+            alamatLongitude = latLng.longitude;
+        }
+
+        Log.d("Latitude = ", alamatLatitude.toString());
+        Log.d("Longitude = ", alamatLongitude.toString());
+    }
+
+    public void showPlaceAutoComplete(int typeLocation) {
+        REQUEST_CODE = typeLocation;
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setCountry("ID").build();
+        try {
+            Intent mIntent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                    .setFilter(typeFilter)
+                    .build(this);
+            startActivityForResult(mIntent, REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Layanan Tidak Tersedia", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void onStart() {
@@ -517,5 +689,35 @@ public class lengkapi_data_guru extends AppCompatActivity {
      */
     public void showSnackbar(View v, String message, int duration) {
         Snackbar.make(v, message, duration).show();
+    }
+    private boolean checkPermissionLocation() {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermissionLocation() {
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS_FINE);
+    }
+    private boolean checkPermissionCamera() {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermissionCamera() {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CODE_CAMERA_FOTO);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        if (currentApiVersion >= Build.VERSION_CODES.M) {
+            if (checkPermissionCamera()) {
+            } else {
+                requestPermissionCamera();
+            }
+            if (checkPermissionLocation()) {
+            } else {
+                requestPermissionLocation();
+            }
+        }
     }
 }

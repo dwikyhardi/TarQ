@@ -80,10 +80,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="0dp"
                         android:text="Foto Profil"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textAlignment="center"/>
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
 
@@ -128,7 +130,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:hint="Nama Lengkap"
-                        android:paddingLeft="20dp"
                         android:layout_toRightOf="@+id/icon_nama_guru"
                         android:backgroundTint="@color/white"
                         android:textColor="@color/white"
@@ -214,7 +215,6 @@
                         android:hint="No.HandPhone"
                         android:inputType="phone"
                         android:maxLength="13"
-                        android:paddingLeft="20dp"
                         android:textSize="15sp"
                         android:layout_toRightOf="@id/icon_hp_guru"
                         android:backgroundTint="@color/white"
@@ -240,13 +240,12 @@
 
                     <!-- Edit Text Tanggal Lahir -->
                     <TextView
-                        android:id="@+id/EditTexttanggallahir"
+                        android:id="@+id/TextViewtanggallahir"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:hint="30-12-1999"
                         android:inputType="date"
-                        android:paddingLeft="20dp"
                         android:textSize="15sp"
                         android:layout_toRightOf="@id/icon_tanggal_guru"
                         android:backgroundTint="@color/white"
@@ -278,7 +277,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:hint="Nama Lembaga"
-                        android:paddingLeft="20dp"
                         android:textSize="15sp"
                         android:layout_toRightOf="@id/icon_lembaga"
                         android:backgroundTint="@color/white"
