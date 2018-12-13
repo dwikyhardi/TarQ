@@ -64,7 +64,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
     private Button btnChooseSIM;
 
     //Checkbox
-    private CheckBox cb_Pratahsin, cb_Tahsin, cb_Bahasa_arab, cb_SKI, cb_Tahfizh, cb_Lanjutan;
+    private CheckBox cb_Pratahsin1,  cb_Pratahsin2,  cb_Pratahsin3, cb_Tahsin1,  cb_Tahsin2,  cb_Tahsin3,   cb_Tahsin4, cb_Bahasa_arab, cb_Tahfizh;
     private Button Check;
 
     //Gambar
@@ -111,13 +111,15 @@ public class lengkapi_data_guru extends AppCompatActivity {
         btnTambahGuru = (Button) findViewById(R.id.btnTambahGuru);
 
         //Checkbox
-        cb_Pratahsin = (CheckBox) findViewById(R.id.cb_Pratahsin);
-        cb_Tahsin = (CheckBox) findViewById(R.id.cb_Tahsin);
+        cb_Pratahsin1 = (CheckBox) findViewById(R.id.cb_Pratahsin1);
+        cb_Pratahsin2 = (CheckBox) findViewById(R.id.cb_Pratahsin2);
+        cb_Pratahsin3 = (CheckBox) findViewById(R.id.cb_Pratahsin3);
+        cb_Tahsin1 = (CheckBox) findViewById(R.id.cb_Tahsin1);
+        cb_Tahsin2 = (CheckBox) findViewById(R.id.cb_Tahsin2);
+        cb_Tahsin3 = (CheckBox) findViewById(R.id.cb_Tahsin3);
+        cb_Tahsin4 = (CheckBox) findViewById(R.id.cb_Tahsin4);
         cb_Bahasa_arab = (CheckBox) findViewById(R.id.cb_Bahasa_arab);
-        cb_SKI = (CheckBox) findViewById(R.id.cb_SKI);
         cb_Tahfizh = (CheckBox) findViewById(R.id.cb_Tahfizh);
-        cb_Lanjutan = (CheckBox) findViewById(R.id.cb_Lanjutan);
-        Check = (Button) findViewById(R.id.check);
 
         //declare the database reference object. This is what we use to access the database.
         //NOTE: Unless you are signed in, this will not be useable.
@@ -213,13 +215,16 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 }else{
                     FirebaseUser user = mAuth.getCurrentUser();
                     String userID = user.getUid();
-                    String praTahsin = "" + cb_Pratahsin.isChecked();
-                    String tahsin = "" + cb_Tahsin.isChecked();
+                    String praTahsin1 = "" + cb_Pratahsin1.isChecked();
+                    String praTahsin2 = "" + cb_Pratahsin2.isChecked();
+                    String praTahsin3 = "" + cb_Pratahsin3.isChecked();
+                    String tahsin1 = "" + cb_Tahsin1.isChecked();
+                    String tahsin2 = "" + cb_Tahsin2.isChecked();
+                    String tahsin3 = "" + cb_Tahsin3.isChecked();
+                    String tahsin4 = "" + cb_Tahsin4.isChecked();
                     String bahasaArab = "" + cb_Bahasa_arab.isChecked();
-                    String ski = "" + cb_SKI.isChecked();
                     String tahfizh = "" + cb_Tahfizh.isChecked();
-                    String lanjutan = "" + cb_Lanjutan.isChecked();
-                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, praTahsin, tahsin, bahasaArab, ski, tahfizh, lanjutan, "0.0" ,"0.0");
+                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0" ,"0.0");
                     myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
                     Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                     startActivity(i);
@@ -234,21 +239,6 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 chooseImageIdentitas();
             }
         });
-
-        Check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String status = "Pratahsin check " + cb_Pratahsin.isChecked()
-                        + "\n Tahsin check " + cb_Tahsin.isChecked()
-                        + "\n Bahasa Arab check " + cb_Bahasa_arab.isChecked()
-                        + "\n SKI check " + cb_SKI.isChecked()
-                        + "\n Tahfizh check " + cb_Tahfizh.isChecked()
-                        + "\n Lanjutan check " + cb_Lanjutan.isChecked();
-
-                Toast.makeText(lengkapi_data_guru.this,status, Toast.LENGTH_LONG).show();
-            }
-        });
-
     }
 
     private void chooseImageIdentitas() {
