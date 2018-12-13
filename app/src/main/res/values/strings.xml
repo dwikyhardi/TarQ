@@ -30,12 +30,15 @@
         <item>Guru</item>
     </string-array>
     <string-array name="PemilihanGuru">
-        <item>Pra-Tahsin</item>
-        <item>Tahsin</item>
-        <item>Bahasa Arab</item>
+        <item>Pra Tahsin 3</item>
+        <item>Pra Tahsin 2</item>
+        <item>Pra Tahsin 1</item>
+        <item>Tahsin 1</item>
+        <item>Tahsin 2</item>
+        <item>Tahsin 3</item>
+        <item>Tahsin 4</item>
         <item>Tahfizh</item>
-        <item>Lanjutan</item>
-        <item>SKI (Sejarah Kebudayaan Islam)</item>
+        <item>Bahasa Arab</item>
     </string-array>
     <string name="title_activity_navigation__drawer">Navigation_Drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
