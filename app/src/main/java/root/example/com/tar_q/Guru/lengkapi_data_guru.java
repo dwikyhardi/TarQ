@@ -213,7 +213,13 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 }else{
                     FirebaseUser user = mAuth.getCurrentUser();
                     String userID = user.getUid();
-                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, "0.0" ,"0.0");
+                    String praTahsin = "" + cb_Pratahsin.isChecked();
+                    String tahsin = "" + cb_Tahsin.isChecked();
+                    String bahasaArab = "" + cb_Bahasa_arab.isChecked();
+                    String ski = "" + cb_SKI.isChecked();
+                    String tahfizh = "" + cb_Tahfizh.isChecked();
+                    String lanjutan = "" + cb_Lanjutan.isChecked();
+                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, praTahsin, tahsin, bahasaArab, ski, tahfizh, lanjutan, "0.0" ,"0.0");
                     myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
                     Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                     startActivity(i);
