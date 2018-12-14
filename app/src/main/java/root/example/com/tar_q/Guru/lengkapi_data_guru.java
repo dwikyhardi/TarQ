@@ -1,10 +1,13 @@
 package root.example.com.tar_q.Guru;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -20,6 +23,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -31,6 +35,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,6 +59,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /*import id.zelory.compressor.Compressor;*/
 import pl.aprilapps.easyphotopicker.DefaultCallback;
@@ -81,7 +87,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private static final String TAG = "Guru";
     private EditText editTextNama;
     private EditText editTextNohp;
-    private EditText editTextAlamat;
+    private TextView editTextAlamat;
     private TextView editTextTanggalLahir;
     private Button btnTambahGuru;
     private Button btnChooseSIM;
@@ -126,15 +132,20 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     public static final int ALAMAT = 1;
     private static int REQUEST_CODE = 0;
 
+    //Date
+    private TextView mDisplayDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lengkapi_data_guru);
 
         editTextNama = (EditText) findViewById(R.id.EditTextnama);
-        editTextAlamat = (EditText) findViewById(R.id.EditTextalamat);
+        editTextAlamat = (TextView) findViewById(R.id.EditTextalamat);
         editTextNohp = (EditText) findViewById(R.id.EditTextnohp);
-        editTextTanggalLahir = (TextView) findViewById(R.id.EditTexttanggallahir);
+        mDisplayDate = (TextView) findViewById(R.id.TextViewtanggallahir);
         Et_Lembaga = (EditText) findViewById(R.id.Et_Lembaga);
 
         //Initialize Views
@@ -245,7 +256,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 String nama = editTextNama.getText().toString().toUpperCase().trim();
                 String nohp = editTextNohp.getText().toString().trim();
                 String alamat = editTextAlamat.getText().toString().toUpperCase().trim();
-                String tanggallahir = editTextTanggalLahir.getText().toString().trim();
+                String tanggallahir = mDisplayDate.getText().toString().trim();
                 String lembaga = PilihLembagaGuru.getSelectedItem().toString().trim();
                 String lembagatxt = Et_Lembaga.getText().toString().trim();
 
@@ -313,6 +324,36 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             }
         });
 
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        lengkapi_data_guru.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year,month,day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                Log.d(TAG, "onDateSet: dd/mm/yyy: " + day + "/" + month + "/" + year);
+
+                String date = day + "/" + month + "/" + year;
+                mDisplayDate.setText(date);
+            }
+        };
+
+
         BtnFotoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -324,12 +365,12 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private void showdata(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             getLembaga uInfo = new getLembaga();
-            uInfo.setLembaga(ds.child("Lembaga").getValue(getLembaga.class).getLembaga());
+            uInfo.setLembaga(ds.child("Lembaga").child("lembaga").getValue(getLembaga.class).getLembaga());
             Lembaga = uInfo.getLembaga().split(",");
             LembagaString = uInfo.getLembaga();
 
         }
-        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Lembaga);
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Lembaga);
         mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         PilihLembagaGuru.setAdapter(mArrayAdapter);
     }
@@ -389,37 +430,6 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            if (requestCode == PICK_IMAGE_REQUEST_1) {
-                filePath1 = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath1);
-                    imageViewIdentitas.setImageBitmap(bitmap);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if (requestCode == PICK_IMAGE_REQUEST_2){
-                filePath2 = data.getData();
-                Bitmap bitmip = null;
-                try {
-                    bitmip = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath2);
-                    imageViewSTNK.setImageBitmap(bitmip);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else {
-                filePath3 = data.getData();
-                Bitmap bitmup = null;
-                try{
-                    bitmup = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath3);
-                    imageViewSIM.setImageBitmap(bitmup);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-        }*/
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
             @Override
             public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
@@ -478,6 +488,46 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 }
             }
         });
+        if (resultCode == RESULT_OK) {
+            //Toast.makeText(this, "Sini Gaes2", Toast.LENGTH_SHORT).show();
+            // Tampung Data tempat ke variable
+            try {
+                Place placeData = PlaceAutocomplete.getPlace(this, data);
+                if (placeData.isDataValid()) {
+                    // Show in Log Cat
+                    Log.d("autoCompletePlace Data", placeData.toString());
+
+                    // Dapatkan Detail
+                    String placeAddress = placeData.getAddress().toString();
+                    LatLng placeLatLng = placeData.getLatLng();
+                    String placeName = placeData.getName().toString();
+
+                    // Cek user milih titik jemput atau titik tujuan
+                    switch (REQUEST_CODE) {
+                        case ALAMAT:
+                            // Set ke widget lokasi asal
+                            editTextAlamat.setText(placeAddress);
+                            alamatLatLng = placeData.getLatLng();
+                            break;
+                    }
+                    if (alamatLatLng != null) {
+                        onMapLongClick(alamatLatLng);
+                        lispoints.add(alamatLatLng);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(alamatLatLng));
+                        CameraUpdateFactory.newLatLng(alamatLatLng);
+                        CameraUpdateFactory.newLatLngZoom(alamatLatLng, 16);
+                        mMap.addMarker(new MarkerOptions().position(alamatLatLng).title(placeAddress));
+                    }
+
+                } else {
+                    // Data tempat tidak valid
+                    Toast.makeText(this, "Invalid Place !", Toast.LENGTH_SHORT).show();
+                }
+            }catch (RuntimeException e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private void uploadImageIdentitas() {

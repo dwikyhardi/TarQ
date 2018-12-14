@@ -45,6 +45,10 @@ public class Find_Guru extends AppCompatActivity {
         mListViewGuru = (ListView) findViewById(R.id.listViewGuru);
         PilihKelas = (Spinner) findViewById(R.id.PilihKelas);
         TV_ATAS = (TextView) findViewById(R.id.TV_ATAS);
+        String[] Kelas = getResources().getStringArray(R.array.PemilihanGuru);
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Kelas);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        PilihKelas.setAdapter(mArrayAdapter);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -189,7 +193,7 @@ public class Find_Guru extends AppCompatActivity {
                 toastMessage(Nama.get(position));
             }
         });
-        ArrayAdapter namaGuru = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listNama);
+        ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style, listNama);
         mListViewGuru.setAdapter(namaGuru);
     }
 

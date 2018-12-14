@@ -9,7 +9,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <!--<RadioGroup
             android:id="@+id/RadGroup"
@@ -63,26 +65,25 @@
             android:id="@+id/TV_ATAS"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:paddingTop="5dp"
             android:text="Pilih Kelas"
             android:textAlignment="center"
-            android:textStyle="bold"
+            android:textColor="@color/white"
             android:textSize="30dp"
-            android:paddingTop="5dp"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/PilihKelas"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/TV_ATAS"
-            android:entries="@array/PemilihanGuru"
-            />
+            android:entries="@array/PemilihanGuru" />
 
         <ListView
             android:id="@+id/listViewGuru"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/PilihKelas"
-            />
+            android:layout_below="@+id/PilihKelas" />
 
 
     </RelativeLayout>

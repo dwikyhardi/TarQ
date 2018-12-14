@@ -11,6 +11,15 @@ public class ProfileGuru {
     private String latitude;
     private String longitude;
     private String verifikasi;
+    private String pratahsin1;
+    private String pratahsin2;
+    private String pratahsin3;
+    private String tahsin1;
+    private String tahsin2;
+    private String tahsin3;
+    private String tahsin14;
+    private String tahfizh;
+    private String bahasaarab;
 
     public String getId_user() {
         return id_user;
@@ -90,5 +99,77 @@ public class ProfileGuru {
 
     public void setVerifikasi(String verifikasi) {
         this.verifikasi = verifikasi;
+    }
+
+    public String getPratahsin1() {
+        return pratahsin1;
+    }
+
+    public void setPratahsin1(String pratahsin1) {
+        this.pratahsin1 = pratahsin1;
+    }
+
+    public String getPratahsin2() {
+        return pratahsin2;
+    }
+
+    public void setPratahsin2(String pratahsin2) {
+        this.pratahsin2 = pratahsin2;
+    }
+
+    public String getPratahsin3() {
+        return pratahsin3;
+    }
+
+    public void setPratahsin3(String pratahsin3) {
+        this.pratahsin3 = pratahsin3;
+    }
+
+    public String getTahsin1() {
+        return tahsin1;
+    }
+
+    public void setTahsin1(String tahsin1) {
+        this.tahsin1 = tahsin1;
+    }
+
+    public String getTahsin2() {
+        return tahsin2;
+    }
+
+    public void setTahsin2(String tahsin2) {
+        this.tahsin2 = tahsin2;
+    }
+
+    public String getTahsin3() {
+        return tahsin3;
+    }
+
+    public void setTahsin3(String tahsin3) {
+        this.tahsin3 = tahsin3;
+    }
+
+    public String getTahsin14() {
+        return tahsin14;
+    }
+
+    public void setTahsin14(String tahsin14) {
+        this.tahsin14 = tahsin14;
+    }
+
+    public String getTahfizh() {
+        return tahfizh;
+    }
+
+    public void setTahfizh(String tahfizh) {
+        this.tahfizh = tahfizh;
+    }
+
+    public String getBahasaarab() {
+        return bahasaarab;
+    }
+
+    public void setBahasaarab(String bahasaarab) {
+        this.bahasaarab = bahasaarab;
     }
 }
