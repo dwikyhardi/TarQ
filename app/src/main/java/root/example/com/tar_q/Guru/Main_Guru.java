@@ -1,6 +1,7 @@
 package root.example.com.tar_q.Guru;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -8,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,12 +53,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import me.everything.providers.android.calendar.CalendarProvider;
 import me.everything.providers.android.calendar.Event;
@@ -64,7 +75,7 @@ import root.example.com.tar_q.R;
 import root.example.com.tar_q.services.LocationUpdate;
 
 public class Main_Guru extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,OnDateSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Main_Guru";
     //Add Firebase Function
@@ -84,7 +95,10 @@ public class Main_Guru extends AppCompatActivity
     private Toast backToast;
     private String userID;
     private String lat, lng;
-    private MaterialCalendarView kalenderGuru;
+
+
+    private CompactCalendarView kalenderGuru;
+    private SimpleDateFormat dateFormatMonth;
 
     //resource Layout
     private ImageView imageProfileGuru;
@@ -119,10 +133,6 @@ public class Main_Guru extends AppCompatActivity
         userID = user.getUid();
 
 
-
-
-
-
         addCalendarEvent();
         test = (Button) findViewById(R.id.testcal);
         test.setOnClickListener(new View.OnClickListener() {
@@ -131,8 +141,6 @@ public class Main_Guru extends AppCompatActivity
                 toastMessage("Nothing to Do Here!");
             }
         });
-
-
 
 
         //Resource Layout
@@ -155,9 +163,36 @@ public class Main_Guru extends AppCompatActivity
             }
         });
         EmailGuru.setText(user.getEmail());
-        kalenderGuru = (MaterialCalendarView) findViewById(R.id.calenderGuru);
-        kalenderGuru.setOnDateChangedListener(this);
+        kalenderGuru = (CompactCalendarView) findViewById(R.id.calenderGuru);
 
+        dateFormatMonth = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(null);
+
+        final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, 1544605200000L, "~Coba~");
+        kalenderGuru.addEvent(ev1);
+        kalenderGuru.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                String[] a = String.valueOf(kalenderGuru.getEvents(dateClicked)).split("~");
+                String b = a[1];
+                toastMessage(b);
+                Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderGuru.getEvents(dateClicked)));
+
+                kalenderGuru.getEvents(dateClicked);
+                /*if(dateClicked == null){
+                    toastMessage("Tidak Ada Rencana");
+                } else{
+                    toastMessage("Anda Harus Mengajar");
+                }*/
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                actionBar.setTitle(dateFormatMonth.format(firstDayOfNewMonth));
+            }
+        });
 
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -298,7 +333,7 @@ public class Main_Guru extends AppCompatActivity
         if (id == R.id.nav_account) {
             Intent mIntent = new Intent(Main_Guru.this, Biodata_Guru.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Tentang) {
+        } else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);
             startActivity(mIntent);*/
@@ -341,11 +376,5 @@ public class Main_Guru extends AppCompatActivity
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "Indonesia/Jakarta");
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
         System.out.println("URI" + uri);
-    }
-
-    @Override
-    public void onDateSelected(MaterialCalendarView materialCalendarView, CalendarDay calendarDay, boolean b) {
-        Toast.makeText(this, calendarDay.getDay()+"/"+calendarDay.getMonth()+"/"+calendarDay.getYear(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onDateSelected() called with: materialCalendarView = [" + materialCalendarView + "], calendarDay = [" + calendarDay + "], b = [" + b + "]");
     }
 }
