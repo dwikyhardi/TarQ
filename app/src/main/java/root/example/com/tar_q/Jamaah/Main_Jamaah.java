@@ -43,7 +43,6 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 import butterknife.OnItemSelected;
-import root.example.com.tar_q.Find_Guru;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 

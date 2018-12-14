@@ -46,7 +46,7 @@
             android:name=".services.LocationUpdate"
             android:stopWithTask="false"></service>
 
-        <activity android:name=".Find_Guru"></activity>
+        <activity android:name=".Jamaah.Find_Guru"></activity>
     </application>
 
 </manifest>

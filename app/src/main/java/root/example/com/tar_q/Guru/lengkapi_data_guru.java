@@ -259,7 +259,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                     String tahsin4 = "" + cb_Tahsin4.isChecked();
                     String bahasaArab = "" + cb_Bahasa_arab.isChecked();
                     String tahfizh = "" + cb_Tahfizh.isChecked();
-                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0" ,"0.0");
+                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir,"", praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0" ,"0.0");
                     myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
                     Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                     startActivity(i);
