@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".data_jamaah">
+    tools:context=".Guru.data_jamaah">
 
     <RelativeLayout
         android:layout_width="match_parent"
