@@ -271,17 +271,29 @@
                         android:tint="@color/white"/>
 
                     <!-- Edit Text No Plat -->
-                    <EditText
-                        android:id="@+id/EditTextNoPlat"
+                    <Spinner
+                        android:id="@+id/PilihLembagaGuru"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:hint="Nama Lembaga"
-                        android:textSize="15sp"
                         android:layout_toRightOf="@id/icon_lembaga"
                         android:backgroundTint="@color/white"
+                        android:paddingLeft="20dp"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:textColor="@color/white"/>
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/Et_Lembaga"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/PilihLembagaGuru"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="30dp"
+                        android:backgroundTint="@color/white"
+                        android:hint="Masukan Nama Lembaga Jika Tidak Ada"
+                        android:textColorHint="@color/white"
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
