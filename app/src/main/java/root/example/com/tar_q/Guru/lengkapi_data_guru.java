@@ -4,11 +4,14 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +26,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /*import id.zelory.compressor.Compressor;*/
 import pl.aprilapps.easyphotopicker.DefaultCallback;
@@ -45,7 +58,13 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 import root.example.com.tar_q.Berhasil;
 import root.example.com.tar_q.R;
 
-public class lengkapi_data_guru extends AppCompatActivity {
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CAMERA;
+import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE;
+import static root.example.com.tar_q.Jamaah.lengkapi_data_jamaah.REQUEST_CODE_CAMERA_FOTO;
+import static root.example.com.tar_q.Jamaah.lengkapi_data_jamaah.REQUEST_CODE_GPS_FINE;
+
+public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener{
 
     public static final int REQUEST_CODE_CAMERA_IDENTITAS = 0012;
     public static final int REQUEST_CODE_GALLERY_IDENTITAS = 0013;
@@ -64,7 +83,7 @@ public class lengkapi_data_guru extends AppCompatActivity {
     private Button btnChooseSIM;
 
     //Checkbox
-    private CheckBox cb_Pratahsin, cb_Tahsin, cb_Bahasa_arab, cb_SKI, cb_Tahfizh, cb_Lanjutan;
+    private CheckBox cb_Pratahsin1,  cb_Pratahsin2,  cb_Pratahsin3, cb_Tahsin1,  cb_Tahsin2,  cb_Tahsin3,   cb_Tahsin4, cb_Bahasa_arab, cb_Tahfizh;
     private Button Check;
 
     //Gambar
@@ -91,6 +110,16 @@ public class lengkapi_data_guru extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageReference;
 
+    //Lokasi
+    private GoogleMap mMap;
+    ArrayList<LatLng> lispoints;
+    public LatLng alamatLatLng = null;
+    public Double alamatLatitude, alamatLongitude;
+    public LatLng indonesia;
+    private static final int LOCATION_REQUEST = 500;
+    public static final int ALAMAT = 1;
+    private static int REQUEST_CODE = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,13 +140,15 @@ public class lengkapi_data_guru extends AppCompatActivity {
         btnTambahGuru = (Button) findViewById(R.id.btnTambahGuru);
 
         //Checkbox
-        cb_Pratahsin = (CheckBox) findViewById(R.id.cb_Pratahsin);
-        cb_Tahsin = (CheckBox) findViewById(R.id.cb_Tahsin);
+        cb_Pratahsin1 = (CheckBox) findViewById(R.id.cb_Pratahsin1);
+        cb_Pratahsin2 = (CheckBox) findViewById(R.id.cb_Pratahsin2);
+        cb_Pratahsin3 = (CheckBox) findViewById(R.id.cb_Pratahsin3);
+        cb_Tahsin1 = (CheckBox) findViewById(R.id.cb_Tahsin1);
+        cb_Tahsin2 = (CheckBox) findViewById(R.id.cb_Tahsin2);
+        cb_Tahsin3 = (CheckBox) findViewById(R.id.cb_Tahsin3);
+        cb_Tahsin4 = (CheckBox) findViewById(R.id.cb_Tahsin4);
         cb_Bahasa_arab = (CheckBox) findViewById(R.id.cb_Bahasa_arab);
-        cb_SKI = (CheckBox) findViewById(R.id.cb_SKI);
         cb_Tahfizh = (CheckBox) findViewById(R.id.cb_Tahfizh);
-        cb_Lanjutan = (CheckBox) findViewById(R.id.cb_Lanjutan);
-        Check = (Button) findViewById(R.id.check);
 
         //declare the database reference object. This is what we use to access the database.
         //NOTE: Unless you are signed in, this will not be useable.
@@ -161,7 +192,13 @@ public class lengkapi_data_guru extends AppCompatActivity {
             }
         });
 
-
+        editTextAlamat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPlaceAutoComplete(ALAMAT);
+            }
+        });
+        lispoints = new ArrayList<>();
 
         btnChooseSTNK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,7 +250,16 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 }else{
                     FirebaseUser user = mAuth.getCurrentUser();
                     String userID = user.getUid();
-                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, "0.0" ,"0.0");
+                    String praTahsin1 = "" + cb_Pratahsin1.isChecked();
+                    String praTahsin2 = "" + cb_Pratahsin2.isChecked();
+                    String praTahsin3 = "" + cb_Pratahsin3.isChecked();
+                    String tahsin1 = "" + cb_Tahsin1.isChecked();
+                    String tahsin2 = "" + cb_Tahsin2.isChecked();
+                    String tahsin3 = "" + cb_Tahsin3.isChecked();
+                    String tahsin4 = "" + cb_Tahsin4.isChecked();
+                    String bahasaArab = "" + cb_Bahasa_arab.isChecked();
+                    String tahfizh = "" + cb_Tahfizh.isChecked();
+                    UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0" ,"0.0");
                     myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
                     Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                     startActivity(i);
@@ -228,21 +274,6 @@ public class lengkapi_data_guru extends AppCompatActivity {
                 chooseImageIdentitas();
             }
         });
-
-        Check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String status = "Pratahsin check " + cb_Pratahsin.isChecked()
-                        + "\n Tahsin check " + cb_Tahsin.isChecked()
-                        + "\n Bahasa Arab check " + cb_Bahasa_arab.isChecked()
-                        + "\n SKI check " + cb_SKI.isChecked()
-                        + "\n Tahfizh check " + cb_Tahfizh.isChecked()
-                        + "\n Lanjutan check " + cb_Lanjutan.isChecked();
-
-                Toast.makeText(lengkapi_data_guru.this,status, Toast.LENGTH_LONG).show();
-            }
-        });
-
     }
 
     private void chooseImageIdentitas() {
@@ -493,6 +524,96 @@ public class lengkapi_data_guru extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        //minta permission
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        if (currentApiVersion >= Build.VERSION_CODES.M) {
+            if (checkPermissionLocation()) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setAllGesturesEnabled(true);
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                String[] indo = "-6.175 , 106.828333".split(",");
+                Double lat = Double.parseDouble(indo[0]);
+                Double lng = Double.parseDouble(indo[1]);
+                indonesia = new LatLng(lat, lng);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesia, 16));
+                mMap.setOnMapLongClickListener(this);
+            } else {
+                requestPermissionLocation();
+                return;
+            }
+        } else {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mMap.getUiSettings().setAllGesturesEnabled(true);
+            mMap.getUiSettings().setCompassEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            String[] indo = "-6.175 , 106.828333".split(",");
+            Double lat = Double.parseDouble(indo[0]);
+            Double lng = Double.parseDouble(indo[1]);
+            indonesia = new LatLng(lat, lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(indonesia));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(indonesia, 16));
+            mMap.setOnMapLongClickListener(this);
+        }
+
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        if (lispoints.size() >= 1) {
+            mMap.clear();
+            lispoints.clear();
+        } else {
+            lispoints.add(latLng);
+            MarkerOptions mMarkerOptions = new MarkerOptions();
+            mMarkerOptions.position(latLng);
+            mMap.addMarker(new MarkerOptions().position(latLng).title(latLng.toString()));
+            alamatLatitude = latLng.latitude;
+            alamatLongitude = latLng.longitude;
+        }
+
+        Log.d("Latitude = ", alamatLatitude.toString());
+        Log.d("Longitude = ", alamatLongitude.toString());
+    }
+
+    public void showPlaceAutoComplete(int typeLocation) {
+        REQUEST_CODE = typeLocation;
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setCountry("ID").build();
+        try {
+            Intent mIntent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                    .setFilter(typeFilter)
+                    .build(this);
+            startActivityForResult(mIntent, REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Layanan Tidak Tersedia", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkPermissionLocation() {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermissionLocation() {
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS_FINE);
+    }
+
+    private boolean checkPermissionCamera() {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermissionCamera() {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CODE_CAMERA_FOTO);
     }
 
 
