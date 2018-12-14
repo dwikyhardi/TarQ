@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Guru.lengkapi_data_guru"
-    android:background="@drawable/bg_gradient_biodata_guru">
+    android:background="@drawable/bg_gradient_biodata_guru"
+    tools:context=".Guru.lengkapi_data_guru">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,10 +33,10 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_book"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
-                        android:tint="@color/white"/>
+                        android:src="@drawable/ic_book"
+                        android:tint="@color/white" />
 
                     <!-- Text View LENGKAPI DATA -->
                     <TextView
@@ -53,13 +53,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Guru"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:paddingTop="20dp"
-                        android:paddingRight="20dp"/>
+                        android:paddingRight="20dp"
+                        android:text="Guru"
+                        android:textColor="@color/white"
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -81,9 +81,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Foto Profil"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textAlignment="center"/>
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
 
@@ -97,11 +97,11 @@
                     android:layout_marginRight="30dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/BtnFotoProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_account__"
                         android:layout_centerHorizontal="true"
-                        android:id="@+id/BtnFotoProfile"/>
+                        android:src="@drawable/ic_account__" />
 
                 </RelativeLayout>
 
@@ -115,11 +115,11 @@
                     android:layout_marginRight="30dp">
 
                     <ImageView
+                        android:id="@+id/icon_nama_guru"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_nama"
-                        android:id="@+id/icon_nama_guru"
-                        android:tint="@color/white"/>
+                        android:tint="@color/white" />
 
                     <!-- Edit Text Nama -->
                     <EditText
@@ -127,10 +127,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:hint="Nama Lengkap"
-                        android:paddingLeft="20dp"
                         android:layout_toRightOf="@+id/icon_nama_guru"
                         android:backgroundTint="@color/white"
+                        android:hint="Nama Lengkap"
+                        android:paddingLeft="20dp"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:textSize="15sp" />
@@ -199,11 +199,11 @@
                     android:layout_marginRight="30dp">
 
                     <ImageView
+                        android:id="@+id/icon_hp_guru"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_nohp"
-                        android:id="@+id/icon_hp_guru"
-                        android:tint="@color/white"/>
+                        android:tint="@color/white" />
 
                     <!-- Edit Text No Telepon -->
                     <EditText
@@ -211,15 +211,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@id/icon_hp_guru"
+                        android:backgroundTint="@color/white"
                         android:hint="No.HandPhone"
                         android:inputType="phone"
                         android:maxLength="13"
                         android:paddingLeft="20dp"
-                        android:textSize="15sp"
-                        android:layout_toRightOf="@id/icon_hp_guru"
-                        android:backgroundTint="@color/white"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:textColor="@color/white"/>
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -232,11 +232,11 @@
                     android:layout_marginRight="30dp">
 
                     <ImageView
+                        android:id="@+id/icon_tanggal_guru"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_tanggal"
-                        android:id="@+id/icon_tanggal_guru"
-                        android:tint="@color/white"/>
+                        android:tint="@color/white" />
 
                     <!-- Edit Text Tanggal Lahir -->
                     <TextView
@@ -244,14 +244,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@id/icon_tanggal_guru"
+                        android:backgroundTint="@color/white"
                         android:hint="30-12-1999"
                         android:inputType="date"
                         android:paddingLeft="20dp"
-                        android:textSize="15sp"
-                        android:layout_toRightOf="@id/icon_tanggal_guru"
-                        android:backgroundTint="@color/white"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"/>
+                        android:textColorHint="@color/white"
+                        android:textSize="15sp" />
 
                 </RelativeLayout>
 
@@ -265,25 +265,36 @@
                     android:layout_marginRight="30dp">
 
                     <ImageView
+                        android:id="@+id/icon_lembaga"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_lembaga"
-                        android:id="@+id/icon_lembaga"
-                        android:tint="@color/white"/>
+                        android:tint="@color/white" />
 
                     <!-- Edit Text No Plat -->
-                    <EditText
-                        android:id="@+id/EditTextNoPlat"
+                    <Spinner
+                        android:id="@+id/PilihLembagaGuru"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:hint="Nama Lembaga"
-                        android:paddingLeft="20dp"
-                        android:textSize="15sp"
                         android:layout_toRightOf="@id/icon_lembaga"
                         android:backgroundTint="@color/white"
+                        android:paddingLeft="20dp"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:textColor="@color/white"/>
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/Et_Lembaga"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/PilihLembagaGuru"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="30dp"
+                        android:backgroundTint="@color/white"
+                        android:hint="Masukan Nama Lembaga Jika Tidak Ada"
+                        android:textColorHint="@color/white"
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -294,96 +305,94 @@
                     android:layout_marginRight="30dp">
 
                     <TextView
+                        android:id="@+id/text_pilih"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Pilih Keahlian"
-                        android:textSize="20dp"
                         android:textColor="@color/white"
-                        android:id="@+id/text_pilih"/>
+                        android:textSize="20dp" />
 
                     <CheckBox
                         android:id="@+id/cb_Pratahsin1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pra Tahsin 1"
                         android:layout_below="@+id/text_pilih"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Pra Tahsin 1"
+                        android:textColor="@color/white" />
 
                     <CheckBox
                         android:id="@+id/cb_Pratahsin2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pra Tahsin 2"
                         android:layout_below="@+id/cb_Pratahsin1"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Pra Tahsin 2"
+                        android:textColor="@color/white" />
 
                     <CheckBox
                         android:id="@+id/cb_Pratahsin3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pra Tahsin 3"
                         android:layout_below="@+id/cb_Pratahsin2"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Pra Tahsin 3"
+                        android:textColor="@color/white" />
 
                     <CheckBox
                         android:id="@+id/cb_Tahsin1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tahsin 1"
                         android:layout_below="@+id/cb_Pratahsin3"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Tahsin 1"
+                        android:textColor="@color/white" />
 
                     <CheckBox
                         android:id="@+id/cb_Tahsin2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tahsin 2"
                         android:layout_below="@+id/cb_Tahsin1"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Tahsin 2"
+                        android:textColor="@color/white" />
 
                     <CheckBox
                         android:id="@+id/cb_Tahsin3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tahsin 3"
                         android:layout_below="@+id/cb_Tahsin2"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Tahsin 3"
+                        android:textColor="@color/white" />
 
                     <CheckBox
                         android:id="@+id/cb_Tahsin4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tahsin 4"
                         android:layout_below="@+id/cb_Tahsin3"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
+                        android:buttonTint="@color/white"
+                        android:text="Tahsin 4"
+                        android:textColor="@color/white" />
 
                     <CheckBox
                         android:id="@+id/cb_Bahasa_arab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bahasa Arab"
                         android:layout_below="@+id/cb_Tahsin4"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
-
+                        android:buttonTint="@color/white"
+                        android:text="Bahasa Arab"
+                        android:textColor="@color/white" />
 
 
                     <CheckBox
                         android:id="@+id/cb_Tahfizh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tahfizh"
                         android:layout_below="@+id/cb_Bahasa_arab"
-                        android:textColor="@color/white"
-                        android:buttonTint="@color/white"/>
-
+                        android:buttonTint="@color/white"
+                        android:text="Tahfizh"
+                        android:textColor="@color/white" />
 
 
                 </RelativeLayout>
@@ -397,42 +406,42 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Foto KTP"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textAlignment="center"/>
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="30dp"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/btnChooseSTNK"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:background="@drawable/ic_camera"/>
+                        android:background="@drawable/ic_camera" />
 
-                <!--</LinearLayout>
+                    <!--</LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layoutheight="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp">-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layoutheight="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp">-->
 
                     <ImageView
                         android:id="@+id/imgViewSTNK"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:scaleType="fitCenter"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_marginLeft="20dp"
+                        android:scaleType="fitCenter" />
 
                 </LinearLayout>
 
@@ -444,31 +453,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Foto SIM"
-                        android:textSize="20dp"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textAlignment="center"/>
+                        android:textSize="20dp" />
 
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="30dp">
 
                     <Button
                         android:id="@+id/btnChooseSIM"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:background="@drawable/ic_camera"/>
+                        android:background="@drawable/ic_camera" />
 
                     <ImageView
                         android:id="@+id/imgViewSIM"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:scaleType="fitCenter"
-                        android:layout_marginLeft="20dp"/>
+                        android:layout_marginLeft="20dp"
+                        android:scaleType="fitCenter" />
 
                 </LinearLayout>
 
@@ -481,11 +490,11 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="30dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/button_register"
                     android:backgroundTint="@color/white"
                     android:fontFamily="sans-serif-medium"
                     android:text="UPLOAD"
-                    android:layout_marginBottom="10dp"
                     android:textColor="@color/coklat" />
 
             </LinearLayout>

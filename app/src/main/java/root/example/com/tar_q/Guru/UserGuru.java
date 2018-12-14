@@ -21,12 +21,17 @@ public class UserGuru {
     public String longitude;
     public String verifikasi;
 
-    public UserGuru(String id_user, String nama, String nohp, String alamat ,String tanggallahir, String pratahsin1,  String pratahsin2,  String pratahsin3, String tahsin1,  String tahsin2,  String tahsin3,  String tahsin4, String bahasaarab, String tahfizh, String latitude, String longitude) {
+    public UserGuru(String id_user, String nama, String nohp,
+                    String alamat ,String tanggallahir,String lembaga, String pratahsin1,
+                    String pratahsin2,  String pratahsin3, String tahsin1,
+                    String tahsin2,  String tahsin3,  String tahsin4, String bahasaarab,
+                    String tahfizh, String latitude, String longitude) {
         this.id_user = id_user;
         this.nama = nama;
         this.nohp = nohp;
         this.alamat = alamat;
         this.tanggallahir = tanggallahir;
+        this.lembaga = lembaga;
         this.level = 3;
         this.latitude = latitude;
         this.longitude = longitude;

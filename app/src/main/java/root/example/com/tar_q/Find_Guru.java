@@ -130,44 +130,46 @@ public class Find_Guru extends AppCompatActivity {
 
         final ArrayList<String> Id_Guru = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map id_penerima = (Map) entry.getValue();
-            Id_Guru.add((String) id_penerima.get("id_user"));
+            Map id_guru = (Map) entry.getValue();
+            Id_Guru.add((String) id_guru.get("id_user"));
         }
 
         final ArrayList<String> Alamat = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map id_penerima = (Map) entry.getValue();
-            Alamat.add((String) id_penerima.get("alamat"));
+            Map alamat = (Map) entry.getValue();
+            Alamat.add((String) alamat.get("alamat"));
         }
 
         final ArrayList<String> Latitude = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map id_penerima = (Map) entry.getValue();
-            Latitude.add((String) id_penerima.get("latitude"));
+            Map latitude = (Map) entry.getValue();
+            Latitude.add((String) latitude.get("latitude"));
         }
         final ArrayList<String> Longitude = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map id_penerima = (Map) entry.getValue();
-            Longitude.add((String) id_penerima.get("longitude"));
+            Map longitude = (Map) entry.getValue();
+            Longitude.add((String) longitude.get("longitude"));
         }
         final ArrayList<String> NoHp = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map id_penerima = (Map) entry.getValue();
-            NoHp.add((String) id_penerima.get("nohp"));
+            Map nohp = (Map) entry.getValue();
+            NoHp.add((String) nohp.get("nohp"));
         }
         final ArrayList<String> Verifikasi = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map id_penerima = (Map) entry.getValue();
-            Verifikasi.add((String) id_penerima.get("verifikasi"));
+            Map verifikasi = (Map) entry.getValue();
+            Verifikasi.add((String) verifikasi.get("verifikasi"));
         }
         final ArrayList<String> Kelas = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map id_penerima = (Map) entry.getValue();
-            Kelas.add((String) id_penerima.get(Kelas_Atas));
+            Map kelas = (Map) entry.getValue();
+            Kelas.add((String) kelas.get(Kelas_Atas));
         }
+
         Log.d(TAG, "showData() returned: " + Kelas_Atas);
         final ArrayList<String> listNama = new ArrayList<>();
         final ArrayList<String> listId = new ArrayList<>();
+
         try {
             int i = 0;
             while (Nama.size() > i) {
