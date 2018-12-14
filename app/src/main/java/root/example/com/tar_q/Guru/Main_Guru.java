@@ -22,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -102,7 +103,7 @@ public class Main_Guru extends AppCompatActivity
 
     //resource Layout
     private ImageView imageProfileGuru;
-    private TextView NamaGuru, EmailGuru;
+    private TextView NamaGuru, EmailGuru, Month;
     private Button test;
 
 
@@ -165,32 +166,33 @@ public class Main_Guru extends AppCompatActivity
         EmailGuru.setText(user.getEmail());
         kalenderGuru = (CompactCalendarView) findViewById(R.id.calenderGuru);
 
+        Month = (TextView) findViewById(R.id.textViewMonth);
         dateFormatMonth = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(null);
+
 
         final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, 1544605200000L, "~Coba~");
         kalenderGuru.addEvent(ev1);
         kalenderGuru.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                String[] a = String.valueOf(kalenderGuru.getEvents(dateClicked)).split("~");
-                String b = a[1];
-                toastMessage(b);
-                Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderGuru.getEvents(dateClicked)));
+                try{
+                    String[] a = String.valueOf(kalenderGuru.getEvents(dateClicked)).split("~");
+                    String b = a[1];
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    cal.setTimeInMillis(Long.parseLong(String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 43)));
+                    String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
+                    toastMessage("Anda Akan Mengajar " + b + " Pada : " + date);
+                    Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 42));
+                } catch (ArrayIndexOutOfBoundsException e){
+                    toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
+                    e.printStackTrace();
+                }
 
-                kalenderGuru.getEvents(dateClicked);
-                /*if(dateClicked == null){
-                    toastMessage("Tidak Ada Rencana");
-                } else{
-                    toastMessage("Anda Harus Mengajar");
-                }*/
             }
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                actionBar.setTitle(dateFormatMonth.format(firstDayOfNewMonth));
+                Month.setText(dateFormatMonth.format(firstDayOfNewMonth));
             }
         });
 

@@ -141,6 +141,7 @@ public class Main_Jamaah extends AppCompatActivity
                 startActivity(new Intent(Main_Jamaah.this,Find_Guru.class));
             }
         });
+
     }
 
     private void showData(DataSnapshot dataSnapshot) {
@@ -188,8 +189,7 @@ public class Main_Jamaah extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings_jamaah) {
-            return true;
-        }
+            return true; }
 
         return super.onOptionsItemSelected(item);
     }
@@ -202,6 +202,10 @@ public class Main_Jamaah extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        if (id == R.id.nav_logout){
+            mAuth.signOut();
+            startActivity(new Intent(Main_Jamaah.this,MainActivity.class));
+        }
         return true;
     }
 
