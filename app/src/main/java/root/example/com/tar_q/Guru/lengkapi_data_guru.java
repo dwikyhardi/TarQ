@@ -258,7 +258,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 String alamat = editTextAlamat.getText().toString().toUpperCase().trim();
                 String tanggallahir = mDisplayDate.getText().toString().trim();
                 String lembaga = PilihLembagaGuru.getSelectedItem().toString().trim();
-                String lembagatxt = Et_Lembaga.getText().toString().trim();
+                String lembagatxt = Et_Lembaga.getText().toString().toUpperCase().trim();
 
                 if (filePath1 == null && filePath2 == null && filePath3 == null){
                     showSnackbar(v, "Harap Lengkapi Foto", 3000);
