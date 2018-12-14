@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -74,6 +75,10 @@ public class register extends AppCompatActivity {
         });
 
         spPilih = (Spinner) findViewById(R.id.sp_Pilih);
+        String[] Kelas = getResources().getStringArray(R.array.PemilihanUser);
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Kelas);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spPilih.setAdapter(mArrayAdapter);
     }
 
     public void registerUser(View view) {

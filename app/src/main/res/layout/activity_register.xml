@@ -205,17 +205,21 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@color/editTextBG">
+                    android:layout_marginRight="30dp">
 
                     <Spinner
                         android:id="@+id/sp_Pilih"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:entries="@array/PemilihanUser"
-                        android:outlineAmbientShadowColor="@color/colorPrimary"
-                        android:outlineSpotShadowColor="@color/colorPrimary"
                         android:padding="10dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_below="@+id/sp_Pilih"
+                        android:background="@color/white">
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
