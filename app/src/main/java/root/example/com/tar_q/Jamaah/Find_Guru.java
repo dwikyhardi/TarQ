@@ -74,6 +74,10 @@ public class Find_Guru extends AppCompatActivity {
         PilihKelas = (Spinner) findViewById(R.id.PilihKelas);
         TV_ATAS = (TextView) findViewById(R.id.TV_ATAS);
         dGuru = new Dialog(this);
+        String[] Kelas = getResources().getStringArray(R.array.PemilihanGuru);
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Kelas);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        PilihKelas.setAdapter(mArrayAdapter);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -241,7 +245,7 @@ public class Find_Guru extends AppCompatActivity {
                 ShowPopupGuru(view);
             }
         });
-        ArrayAdapter namaGuru = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listNama);
+        ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style, listNama);
         mListViewGuru.setAdapter(namaGuru);
     }
 
