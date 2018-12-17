@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -77,7 +78,7 @@ import static com.google.zxing.integration.android.IntentIntegrator.REQUEST_CODE
 import static root.example.com.tar_q.Jamaah.lengkapi_data_jamaah.REQUEST_CODE_CAMERA_FOTO;
 import static root.example.com.tar_q.Jamaah.lengkapi_data_jamaah.REQUEST_CODE_GPS_FINE;
 
-public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener{
+public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     public static final int REQUEST_CODE_CAMERA_IDENTITAS = 0012;
     public static final int REQUEST_CODE_GALLERY_IDENTITAS = 0013;
@@ -96,7 +97,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private Spinner PilihLembagaGuru;
 
     //Checkbox
-    private CheckBox cb_Pratahsin1,  cb_Pratahsin2,  cb_Pratahsin3, cb_Tahsin1,  cb_Tahsin2,  cb_Tahsin3,   cb_Tahsin4, cb_Bahasa_arab, cb_Tahfizh;
+    private CheckBox cb_Pratahsin1, cb_Pratahsin2, cb_Pratahsin3, cb_Tahsin1, cb_Tahsin2, cb_Tahsin3, cb_Tahsin4, cb_Bahasa_arab, cb_Tahfizh;
     private Button Check;
 
     //Gambar
@@ -110,8 +111,9 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private final int PICK_IMAGE_REQUEST_3 = 3;
     private Button btnLoadImage;
     private ImageView ivImage;
-    private TextView tvPath,Et_Lembaga;
-    private String[] items = {"Camera", "Gallery"},Lembaga;
+    private TextView tvPath, Et_Lembaga;
+    private String[] items = {"Camera", "Gallery"}, Lembaga, Lembaga1;
+    private ArrayList<String> LembagaFix = new ArrayList<>();
     private ImageView BtnFotoProfile;
     private String LembagaString;
     /*Compressor mCompressor;*/
@@ -261,32 +263,32 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 String tanggallahir = mDisplayDate.getText().toString().trim();
                 String lembaga = PilihLembagaGuru.getSelectedItem().toString().trim();
                 String lembagatxt = Et_Lembaga.getText().toString().toUpperCase().trim();
-                Log.d(TAG, "onClick() returned: lembagatxt|"+lembagatxt+"|");
-                Log.d(TAG, "onClick() returned: lembaga|"+lembaga+"|");
+                Log.d(TAG, "onClick() returned: lembagatxt|" + lembagatxt + "|");
+                Log.d(TAG, "onClick() returned: lembaga|" + lembaga + "|");
 
-                if (filePath1 == null && filePath2 == null && filePath3 == null){
+                if (filePath1 == null && filePath2 == null && filePath3 == null) {
                     showSnackbar(v, "Harap Lengkapi Foto", 3000);
                     return;
-                }else if (filePath1 == null){
+                } else if (filePath1 == null) {
                     showSnackbar(v, "Harap Lengkapi Foto Profil", 3000);
                     return;
-                }else if(filePath2 == null) {
+                } else if (filePath2 == null) {
                     showSnackbar(v, "Harap Lengkapi Foto STNK", 3000);
                     return;
-                }else if(filePath3 == null){
+                } else if (filePath3 == null) {
                     showSnackbar(v, "Harap Lengkapi Foto SIM", 3000);
                     return;
-                }else {
+                } else {
                     uploadImageIdentitas();
                     uploadImageSTNK();
                     uploadImageSIM();
                 }
 
-                if (nama.equals("")&& nohp.equals("") && alamat.equals("") && tanggallahir.equals("")) {
+                if (nama.equals("") && nohp.equals("") && alamat.equals("") && tanggallahir.equals("")) {
                     showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);
                     return;
-                }else{
-                    if (PilihLembagaGuru.getSelectedItem().equals("PILIH")){
+                } else {
+                    if (PilihLembagaGuru.getSelectedItem().equals("PILIH")) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         String userID = user.getUid();
                         String praTahsin1 = "" + cb_Pratahsin1.isChecked();
@@ -300,10 +302,10 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         String tahfizh = "" + cb_Tahfizh.isChecked();
                         UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0");
                         myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
-                        String addLembaga = LembagaString+","+lembagatxt;
+                        String addLembaga = LembagaString + "," + lembagatxt;
                         setLembaga mSetLembaga = new setLembaga(addLembaga);
                         Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
-                        myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(mSetLembaga)
+                        myRef.child("TARQ").child("Lembaga").setValue(addLembaga)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -317,7 +319,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         });
                         Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                         startActivity(i);
-                    }else {
+                    } else {
                         FirebaseUser user = mAuth.getCurrentUser();
                         String userID = user.getUid();
                         String praTahsin1 = "" + cb_Pratahsin1.isChecked();
@@ -352,7 +354,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         lengkapi_data_guru.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
-                        year,month,day);
+                        year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -369,7 +371,21 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             }
         };
 
+        PilihLembagaGuru.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
+                    Et_Lembaga.setVisibility(View.VISIBLE);
+                } else {
+                    Et_Lembaga.setVisibility(View.INVISIBLE);
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         BtnFotoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -379,14 +395,21 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     }
 
     private void showdata(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             getLembaga uInfo = new getLembaga();
             uInfo.setLembaga(ds.child("Lembaga").getValue(getLembaga.class).getLembaga());
             Lembaga = uInfo.getLembaga().split(",");
             LembagaString = uInfo.getLembaga();
-
         }
-        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Lembaga);
+
+        int i = 0;
+        while (Lembaga.length>i){
+            LembagaFix.add(Lembaga[i]);
+            Log.d(TAG, "showdata() returned: " + Lembaga[i]);
+            i++;
+        }
+        LembagaFix.add("Lainnya");
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, LembagaFix);
         mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         PilihLembagaGuru.setAdapter(mArrayAdapter);
     }
@@ -458,8 +481,8 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                                 .into(BtnFotoProfile);
 
                         filePath1 = Uri.fromFile(imageFile);
-                        System.out.println("PATH ============== "+filePath1);
-                        System.out.println("PATH ============== "+DiskCacheStrategy.ALL.toString());
+                        System.out.println("PATH ============== " + filePath1);
+                        System.out.println("PATH ============== " + DiskCacheStrategy.ALL.toString());
                         break;
                     case REQUEST_CODE_GALLERY_IDENTITAS:
                         Glide.with(lengkapi_data_guru.this)
@@ -539,7 +562,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                     // Data tempat tidak valid
                     Toast.makeText(this, "Invalid Place !", Toast.LENGTH_SHORT).show();
                 }
-            }catch (RuntimeException e){
+            } catch (RuntimeException e) {
                 e.printStackTrace();
             }
         }
@@ -757,8 +780,10 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     }
 
     //add a toast to show when successfully signed in
+
     /**
      * customizable toast
+     *
      * @param message
      */
     public void showSnackbar(View v, String message, int duration) {

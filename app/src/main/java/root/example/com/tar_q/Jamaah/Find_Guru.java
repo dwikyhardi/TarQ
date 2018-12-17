@@ -37,6 +37,7 @@ import java.util.Map;
 
 
 import root.example.com.tar_q.R;
+import root.example.com.tar_q.services.getLembaga;
 
 public class Find_Guru extends AppCompatActivity {
     private final String TAG = "Find_guru";
@@ -44,16 +45,17 @@ public class Find_Guru extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1;
+    private DatabaseReference myRef, myRef1,myRef2;
     private String userID;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
 
-    private Spinner PilihKelas;
-    private String Kelas_Atas = "",IdGuru;
+    private Spinner PilihKelas,PilihLembaga;
+    private String Kelas_Atas = "",IdGuru,LembagaString;
     private Dialog dGuru;
     private Button btnRequest;
+    private String[] Lembaga;
 
 
     private String NamaGuru, NamaJamaah, AlamatGuru, NoTelpGuru, LembagaGuru;
@@ -81,15 +83,29 @@ public class Find_Guru extends AppCompatActivity {
         ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Kelas);
         mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         PilihKelas.setAdapter(mArrayAdapter);
+        PilihLembaga = (Spinner) findViewById(R.id.PilihLembaga);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("GURU");
         myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
+        myRef2 = mFirebaseDatabase.getReference();
         userID = user.getUid();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        myRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showdata1(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         PilihKelas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -159,6 +175,19 @@ public class Find_Guru extends AppCompatActivity {
         });
     }
 
+    private void showdata1(DataSnapshot dataSnapshot) {
+        for(DataSnapshot ds : dataSnapshot.getChildren()){
+            getLembaga uInfo = new getLembaga();
+            uInfo.setLembaga(ds.child("Lembaga").getValue(getLembaga.class).getLembaga());
+            Lembaga = uInfo.getLembaga().split(",");
+            LembagaString = uInfo.getLembaga();
+            Log.d(TAG, "showdata1() returned: " + Lembaga);
+        }
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(Find_Guru.this, R.layout.spinner_style, Lembaga);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        PilihLembaga.setAdapter(mArrayAdapter);
+    }
+
     private void showData(Map<String, Object> dataSnapshot) {
 
         final ArrayList<String> Nama = new ArrayList<>();
@@ -199,10 +228,10 @@ public class Find_Guru extends AppCompatActivity {
             Map verifikasi = (Map) entry.getValue();
             Verifikasi.add((String) verifikasi.get("verifikasi"));
         }
-        final ArrayList<String> Lembaga = new ArrayList<>();
+        final ArrayList<String> mLembaga = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
             Map lembaga = (Map) entry.getValue();
-            Lembaga.add((String) lembaga.get("lembaga"));
+            mLembaga.add((String) lembaga.get(Lembaga));
         }
         final ArrayList<String> Kelas = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
@@ -228,7 +257,7 @@ public class Find_Guru extends AppCompatActivity {
                             listId.add(Id_Guru.get(i));
                             listNama.add(Nama.get(i));
                             listNoTelp.add(NoHp.get(i));
-                            listLembaga.add(Lembaga.get(i));
+                            listLembaga.add(mLembaga.get(i));
                             listAlamat.add(Alamat.get(i));
                         }
                     }
