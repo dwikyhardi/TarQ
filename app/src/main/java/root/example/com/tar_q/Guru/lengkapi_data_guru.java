@@ -113,7 +113,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private ImageView ivImage;
     private TextView tvPath, Et_Lembaga;
     private String[] items = {"Camera", "Gallery"}, Lembaga, Lembaga1;
-    private ArrayList<String> LembagaFix = new ArrayList<>();
+    private ArrayList<String> LembagaFix;
     private ImageView BtnFotoProfile;
     private String LembagaString;
     /*Compressor mCompressor;*/
@@ -180,6 +180,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         myRef1 = mFirebaseDatabase.getReference();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        LembagaFix = new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -261,10 +262,8 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 String nohp = editTextNohp.getText().toString().trim();
                 String alamat = editTextAlamat.getText().toString().toUpperCase().trim();
                 String tanggallahir = mDisplayDate.getText().toString().trim();
-                String lembaga = PilihLembagaGuru.getSelectedItem().toString().trim();
+                String lembaga = PilihLembagaGuru.getSelectedItem().toString();
                 String lembagatxt = Et_Lembaga.getText().toString().toUpperCase().trim();
-                Log.d(TAG, "onClick() returned: lembagatxt|" + lembagatxt + "|");
-                Log.d(TAG, "onClick() returned: lembaga|" + lembaga + "|");
 
                 if (filePath1 == null && filePath2 == null && filePath3 == null) {
                     showSnackbar(v, "Harap Lengkapi Foto", 3000);
@@ -288,7 +287,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                     showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);
                     return;
                 } else {
-                    if (PilihLembagaGuru.getSelectedItem().equals("PILIH")) {
+                    if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         String userID = user.getUid();
                         String praTahsin1 = "" + cb_Pratahsin1.isChecked();
@@ -305,7 +304,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         String addLembaga = LembagaString + "," + lembagatxt;
                         setLembaga mSetLembaga = new setLembaga(addLembaga);
                         Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
-                        myRef.child("TARQ").child("Lembaga").setValue(addLembaga)
+                        myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -395,6 +394,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     }
 
     private void showdata(DataSnapshot dataSnapshot) {
+        LembagaFix.clear();
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             getLembaga uInfo = new getLembaga();
             uInfo.setLembaga(ds.child("Lembaga").getValue(getLembaga.class).getLembaga());
@@ -772,6 +772,11 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (mAuthListener != null) {
@@ -779,6 +784,15 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
     //add a toast to show when successfully signed in
 
     /**
