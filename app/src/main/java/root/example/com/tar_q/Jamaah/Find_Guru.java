@@ -35,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Map;
 
+
 import root.example.com.tar_q.R;
 
 public class Find_Guru extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class Find_Guru extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, myRef1;
     private String userID;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -55,7 +56,7 @@ public class Find_Guru extends AppCompatActivity {
     private Button btnRequest;
 
 
-    private String NamaGuru, AlamatGuru, NoTelpGuru, LembagaGuru;
+    private String NamaGuru, NamaJamaah, AlamatGuru, NoTelpGuru, LembagaGuru;
 
 
     private ImageView ivFotoGuruPopup;
@@ -70,6 +71,8 @@ public class Find_Guru extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find__guru);
 
+        NamaJamaah = getIntent().getStringExtra("NamaJamaah");
+
         mListViewGuru = (ListView) findViewById(R.id.listViewGuru);
         PilihKelas = (Spinner) findViewById(R.id.PilihKelas);
         TV_ATAS = (TextView) findViewById(R.id.TV_ATAS);
@@ -83,6 +86,7 @@ public class Find_Guru extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("GURU");
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
         userID = user.getUid();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -289,7 +293,14 @@ public class Find_Guru extends AppCompatActivity {
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String key = myRef1.push().getKey();
+                myRef1.child(key).child("idguru").setValue(IdGuru);
+                myRef1.child(key).child("guru").setValue(NamaGuru);
+                myRef1.child(key).child("idmurid").setValue(userID);
+                myRef1.child(key).child("murid").setValue(NamaJamaah);
+                myRef1.child(key).child("jadwalhari").setValue("proses");
+                myRef1.child(key).child("nokelas").setValue(key);
+                dGuru.dismiss();
                 Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
                 startActivity(mIntent);
             }

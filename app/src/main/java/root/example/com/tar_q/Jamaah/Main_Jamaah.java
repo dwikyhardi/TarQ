@@ -74,6 +74,7 @@ public class Main_Jamaah extends AppCompatActivity
     private ImageView imageProfileJamaah;
     private TextView NamaJamaah, EmailJamaah, TV;
     private Button btnBelajar;
+    public String publicNamaJamaah;
 
 
     @Override
@@ -137,7 +138,9 @@ public class Main_Jamaah extends AppCompatActivity
         btnBelajar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Main_Jamaah.this,Find_Guru.class));
+                Intent mIntent = new Intent(Main_Jamaah.this,Find_Guru.class);
+                mIntent.putExtra("NamaJamaah", publicNamaJamaah);
+                startActivity(mIntent);
             }
         });
 
@@ -147,6 +150,7 @@ public class Main_Jamaah extends AppCompatActivity
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileJamaah uInfo = new ProfileJamaah();
             uInfo.setNama(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNama());
+            publicNamaJamaah = uInfo.getNama();
             NamaJamaah.setText(uInfo.getNama());
         }
     }

@@ -96,6 +96,7 @@ public class Main_Guru extends AppCompatActivity
     private Toast backToast;
     private String userID;
     private String lat, lng;
+    public  String publicNamaGuru;
 
 
     private CompactCalendarView kalenderGuru;
@@ -279,6 +280,7 @@ public class Main_Guru extends AppCompatActivity
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
             uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
+            publicNamaGuru = uInfo.getNama();
             NamaGuru.setText(uInfo.getNama());
         }
     }
