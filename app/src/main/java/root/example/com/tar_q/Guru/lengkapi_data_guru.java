@@ -286,7 +286,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                     showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);
                     return;
                 }else{
-                    if (PilihLembagaGuru.getSelectedItem().equals(" ")){
+                    if (PilihLembagaGuru.getSelectedItem().equals("PILIH")){
                         FirebaseUser user = mAuth.getCurrentUser();
                         String userID = user.getUid();
                         String praTahsin1 = "" + cb_Pratahsin1.isChecked();
