@@ -43,8 +43,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -259,6 +261,8 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 String tanggallahir = mDisplayDate.getText().toString().trim();
                 String lembaga = PilihLembagaGuru.getSelectedItem().toString().trim();
                 String lembagatxt = Et_Lembaga.getText().toString().toUpperCase().trim();
+                Log.d(TAG, "onClick() returned: lembagatxt|"+lembagatxt+"|");
+                Log.d(TAG, "onClick() returned: lembaga|"+lembaga+"|");
 
                 if (filePath1 == null && filePath2 == null && filePath3 == null){
                     showSnackbar(v, "Harap Lengkapi Foto", 3000);
@@ -299,7 +303,18 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         String addLembaga = LembagaString+","+lembagatxt;
                         setLembaga mSetLembaga = new setLembaga(addLembaga);
                         Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
-                        myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(mSetLembaga);
+                        myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(mSetLembaga)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onComplete() returned: berhasil upload ke database");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "onComplete() returned: gagal upload ke database");
+                            }
+                        });
                         Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                         startActivity(i);
                     }else {
@@ -318,6 +333,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
                         Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                         startActivity(i);
+                        Log.i(TAG, "onClick: ga masukin ke db");
                     }
                 }
 
@@ -365,7 +381,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private void showdata(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             getLembaga uInfo = new getLembaga();
-            uInfo.setLembaga(ds.child("Lembaga").child("lembaga").getValue(getLembaga.class).getLembaga());
+            uInfo.setLembaga(ds.child("Lembaga").getValue(getLembaga.class).getLembaga());
             Lembaga = uInfo.getLembaga().split(",");
             LembagaString = uInfo.getLembaga();
 
