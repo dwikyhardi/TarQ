@@ -1,6 +1,7 @@
 package root.example.com.tar_q.Jamaah;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +40,11 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -47,7 +55,7 @@ import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
 public class Main_Jamaah extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnDateSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
     private final String TAG = "Main_Jamaah";
 
     //Add Firebase Function
@@ -60,12 +68,15 @@ public class Main_Jamaah extends AppCompatActivity
     private StorageReference storageRef;
 
 
+    private CompactCalendarView kalenderJamaah;
+    private SimpleDateFormat dateFormatMonth;
+
+
     private long backPressedTime;
     private Toast backToast;
     private String userID;
-    //radio
-    private RadioButton mantap1, mantap2;
-    private RadioGroup RadGroup;
+
+    private TextView Month;
 
     //calendar
     private MaterialCalendarView materialCalendarView;
@@ -95,8 +106,6 @@ public class Main_Jamaah extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
         userID = user.getUid();
-        materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarJamaah);
-        materialCalendarView.setOnDateChangedListener(this);
         btnBelajar = (Button) findViewById(R.id.btnBelajar);
 
 
@@ -144,6 +153,37 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
 
+
+        //Kalender
+        kalenderJamaah = (CompactCalendarView) findViewById(R.id.calendarJamaah);
+        Month = (TextView) findViewById(R.id.textViewMonth);
+        dateFormatMonth = new SimpleDateFormat("MMMM - yyyy",Locale.getDefault());
+        final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, 1544605200000L, "~Coba~");
+        kalenderJamaah.addEvent(ev1);
+        kalenderJamaah.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                try{
+                    String[] a = String.valueOf(kalenderJamaah.getEvents(dateClicked)).split("~");
+                    String b = a[1];
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    cal.setTimeInMillis(Long.parseLong(String.valueOf(kalenderJamaah.getEvents(dateClicked)).substring(30, 43)));
+                    String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
+                    toastMessage("Anda Akan Mengajar " + b + " Pada : " + date);
+                    Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderJamaah.getEvents(dateClicked)).substring(30, 42));
+                } catch (ArrayIndexOutOfBoundsException e){
+                    toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
+                    e.printStackTrace();
+                }
+
+            }
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                Month.setText(dateFormatMonth.format(firstDayOfNewMonth));
+            }
+        });
+
+
     }
 
     private void showData(DataSnapshot dataSnapshot) {
@@ -154,6 +194,7 @@ public class Main_Jamaah extends AppCompatActivity
             NamaJamaah.setText(uInfo.getNama());
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -215,13 +256,5 @@ public class Main_Jamaah extends AppCompatActivity
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onDateSelected(MaterialCalendarView materialCalendarView, CalendarDay calendarDay, boolean b) {
-        Toast.makeText(this, calendarDay.getDay() + "/" + calendarDay.getMonth() + "/" + calendarDay.getYear(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onDateSelected() called with: materialCalendarView = [" + materialCalendarView + "], calendarDay = [" + calendarDay + "], b = [" + b + "]");
-    }
-
-
 }
 

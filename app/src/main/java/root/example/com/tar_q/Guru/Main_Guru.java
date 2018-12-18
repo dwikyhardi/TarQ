@@ -28,6 +28,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageView;
@@ -102,6 +104,8 @@ public class Main_Guru extends AppCompatActivity
     private String lat, lng;
     public  String publicNamaGuru;
     private String NamaMurid, NomorKelas, JumlahPertemuan;
+    private String listNamaEvent;
+    private Long listWaktuEvent;
 
 
     private CompactCalendarView kalenderGuru;
@@ -113,6 +117,7 @@ public class Main_Guru extends AppCompatActivity
     private Button test, btnTerimaPopup, btnTolakPopup;
     private Dialog NotifikasiGuru;
     private TextView etNamaPenerimaPopup;
+    private ListView mListViewRequest;
 
 
     public static final int PERMISSIONS_REQUEST_WRITE_CALENDAR = 9005;
@@ -134,6 +139,7 @@ public class Main_Guru extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
 
         NotifikasiGuru = new Dialog(this);
+        mListViewRequest = (ListView) findViewById(R.id.listRequestGuru);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -184,46 +190,7 @@ public class Main_Guru extends AppCompatActivity
         dateFormatMonth = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
 
 
-        final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, 1544605200000L, "~Coba~");
-        kalenderGuru.addEvent(ev1);
-        kalenderGuru.setListener(new CompactCalendarView.CompactCalendarViewListener() {
-            @Override
-            public void onDayClick(Date dateClicked) {
-                try{
-                    String[] a = String.valueOf(kalenderGuru.getEvents(dateClicked)).split("~");
-                    String b = a[1];
-                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                    cal.setTimeInMillis(Long.parseLong(String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 43)));
-                    String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
-                    toastMessage("Anda Akan Mengajar " + b + " Pada : " + date);
-                    Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 42));
-                } catch (ArrayIndexOutOfBoundsException e){
-                    toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
-                    e.printStackTrace();
-                }
 
-            }
-
-
-
-            @Override
-            public void onMonthScroll(Date firstDayOfNewMonth) {
-                Month.setText(dateFormatMonth.format(firstDayOfNewMonth));
-            }
-        });
-
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -441,11 +408,20 @@ public class Main_Guru extends AppCompatActivity
             Map idMurid = (Map) entry.getValue();
             IdMurid.add((String) idMurid.get("idmurid"));
         }
+        final ArrayList<String> listNama = new ArrayList<>();
+        final ArrayList<String> listPertemuan= new ArrayList<>();
+        final ArrayList<String> listNomorKelas = new ArrayList<>();
+        final ArrayList<String> listId = new ArrayList<>();
         if(Jadwalhari != null){
             int i = 0;
             while(Jadwalhari.size() > i){
                 if(IdGuru.get(i).equals(userID)){
+                    Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
                     if(Jadwalhari.get(i).equals("proses")){
+                        listNama.add(NamaJamaah.get(i));
+                        listPertemuan.add(JmlPertemuan.get(i));
+                        listNomorKelas.add(NoKelas.get(i));
+                        listId.add(IdMurid.get(i));
                         NamaMurid = NamaJamaah.get(i);
                         JumlahPertemuan = JmlPertemuan.get(i);
                         NomorKelas = NoKelas.get(i);
@@ -455,11 +431,40 @@ public class Main_Guru extends AppCompatActivity
                         Log.d(TAG,JumlahPertemuan);
                         Log.d(TAG,NomorKelas);
                     }
+                    if(Jadwalhari.get(i).equals("request")){
+                    }
+                    if(Jadwalhari.get(i).equals("false")){
+                    }
+                    else{
+                        int j = 1;
+                        String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                        while(a.length > j){
+                            listNamaEvent = NamaJamaah.get(i);
+                            listWaktuEvent = Long.parseLong(a[j]);
+                            setEvent(listWaktuEvent, listNamaEvent);
+                            j++;
+                        }
+                    }
                 }
                 i++;
             }
         }
+        mListViewRequest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NamaMurid = listNama.get(position);
+                JumlahPertemuan = listPertemuan.get(position);
+                NomorKelas = listNomorKelas.get(position);
+                IdJamaah= listId.get(position);
+                ShowPopupNotifikasiGuru();
+            }
+        });
+
+        ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
+        mListViewRequest.setAdapter(namaGuru);
     }
+
+
+
     public void ShowPopupNotifikasiGuru() {
         TextView txtclose;
         NotifikasiGuru.setContentView(R.layout.popup_notifikasi_guru);
@@ -506,5 +511,34 @@ public class Main_Guru extends AppCompatActivity
         });
         NotifikasiGuru.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         NotifikasiGuru.show();
+    }
+
+
+    private void setEvent(Long waktu, String murid){
+
+        final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, waktu, "~" + murid + "~");
+        kalenderGuru.addEvent(ev1);
+        kalenderGuru.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                try{
+                    String[] a = String.valueOf(kalenderGuru.getEvents(dateClicked)).split("~");
+                    String b = a[1];
+                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                    cal.setTimeInMillis(Long.parseLong(String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 43)));
+                    String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
+                    toastMessage("Anda Akan Mengajar " + b + " Pada : " + date);
+                    Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 42));
+                } catch (ArrayIndexOutOfBoundsException e){
+                    toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
+                    e.printStackTrace();
+                }
+
+            }
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                Month.setText(dateFormatMonth.format(firstDayOfNewMonth));
+            }
+        });
     }
 }
