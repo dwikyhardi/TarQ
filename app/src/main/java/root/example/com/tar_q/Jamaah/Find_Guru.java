@@ -281,12 +281,13 @@ public class Find_Guru extends AppCompatActivity {
                 if(Nama.get(i) != null){
                     if (Verifikasi.get(i).equals("true")) {
                         if (Kelas.get(i).equals("true")) {
-                            if(mLembaga.get(i).equals(LembagaString))
-                            listId.add(Id_Guru.get(i));
-                            listNama.add(Nama.get(i));
-                            listNoTelp.add(NoHp.get(i));
-                            listLembaga.add(mLembaga.get(i));
-                            listAlamat.add(Alamat.get(i));
+                            if(mLembaga.get(i).equals(LembagaString)) {
+                                listId.add(Id_Guru.get(i));
+                                listNama.add(Nama.get(i));
+                                listNoTelp.add(NoHp.get(i));
+                                listLembaga.add(mLembaga.get(i));
+                                listAlamat.add(Alamat.get(i));
+                            }
                         }
                     }
                 }

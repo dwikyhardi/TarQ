@@ -30,6 +30,7 @@
         <item>Guru</item>
     </string-array>
     <string-array name="PemilihanGuru">
+        <item>Pilih Kelas</item>
         <item>Pra Tahsin 3</item>
         <item>Pra Tahsin 2</item>
         <item>Pra Tahsin 1</item>
