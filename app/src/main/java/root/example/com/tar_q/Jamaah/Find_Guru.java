@@ -52,7 +52,7 @@ public class Find_Guru extends AppCompatActivity {
 
 
     private Spinner PilihKelas,PilihLembaga;
-    private String Kelas_Atas = "",IdGuru,LembagaString;
+    private String Kelas_Atas = "",IdGuru ,LembagaString;
     private Dialog dGuru;
     private Button btnRequest;
     private String[] Lembaga;
@@ -153,6 +153,32 @@ public class Find_Guru extends AppCompatActivity {
                         break;
                     }
                 }
+                PilihLembaga.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        LembagaString = PilihLembaga.getSelectedItem().toString().trim();
+
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // This method is called once with the initial value and again
+                                // whenever data at this location is updated.
+                                showData((Map<String, Object>) dataSnapshot.getValue());
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        LembagaString = "TARQ";
+                    }
+                });
                 Log.d(TAG, "onItemSelected() Akhir returned: " + Kelas_Atas);
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -255,11 +281,13 @@ public class Find_Guru extends AppCompatActivity {
                 if(Nama.get(i) != null){
                     if (Verifikasi.get(i).equals("true")) {
                         if (Kelas.get(i).equals("true")) {
-                            listId.add(Id_Guru.get(i));
-                            listNama.add(Nama.get(i));
-                            listNoTelp.add(NoHp.get(i));
-                            listLembaga.add(mLembaga.get(i));
-                            listAlamat.add(Alamat.get(i));
+                            if(mLembaga.get(i).equals(LembagaString)) {
+                                listId.add(Id_Guru.get(i));
+                                listNama.add(Nama.get(i));
+                                listNoTelp.add(NoHp.get(i));
+                                listLembaga.add(mLembaga.get(i));
+                                listAlamat.add(Alamat.get(i));
+                            }
                         }
                     }
                 }
