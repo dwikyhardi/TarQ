@@ -22,8 +22,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/LinearPopup">
+        android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewFotoMuridPopup"
@@ -42,18 +41,7 @@
             android:inputType="textMultiLine"
             android:layout_marginTop="5dp"/>
     </LinearLayout>
-    <Spinner
-        android:id="@+id/SpinnerJumlahPertemuan"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/LinearPopup"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/white"
-        android:layout_below="@+id/SpinnerJumlahPertemuan">
 
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

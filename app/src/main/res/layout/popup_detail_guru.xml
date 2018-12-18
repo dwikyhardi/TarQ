@@ -22,7 +22,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/LinearPopup">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageViewFotoGuruPopup"
@@ -64,6 +65,19 @@
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"/>
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/SpinnerJumlahPertemuan"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/LinearPopup"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        android:layout_below="@+id/SpinnerJumlahPertemuan">
 
     </LinearLayout>
 
