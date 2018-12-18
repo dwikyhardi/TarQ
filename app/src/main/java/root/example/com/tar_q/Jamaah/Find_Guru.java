@@ -56,6 +56,7 @@ public class Find_Guru extends AppCompatActivity {
     private Dialog dGuru;
     private Button btnRequest;
     private String[] Lembaga;
+    private Spinner PilihPertemuan;
 
 
     private String NamaGuru, NamaJamaah, AlamatGuru, NoTelpGuru, LembagaGuru;
@@ -286,6 +287,7 @@ public class Find_Guru extends AppCompatActivity {
     public void ShowPopupGuru(View v) {
         TextView txtclose;
         dGuru.setContentView(R.layout.popup_detail_guru);
+        PilihPertemuan = (Spinner) dGuru.findViewById(R.id.SpinnerJumlahPertemuan);
         ivFotoGuruPopup = (ImageView) dGuru.findViewById(R.id.imageViewFotoGuruPopup);
         etNamaGuruPopup = (TextView) dGuru.findViewById(R.id.editTextNamaGuruPopup);
         etNoTelpGuruPopup = (TextView) dGuru.findViewById(R.id.editTextNoTelpPopup);
@@ -319,15 +321,21 @@ public class Find_Guru extends AppCompatActivity {
                 dGuru.dismiss();
             }
         });
+        String[] Pertemuan = new String[]{"4", "8", "12", "16"};
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(Find_Guru.this, R.layout.spinner_style, Pertemuan);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        PilihPertemuan.setAdapter(mArrayAdapter);
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String key = myRef1.push().getKey();
+
                 myRef1.child(key).child("idguru").setValue(IdGuru);
                 myRef1.child(key).child("guru").setValue(NamaGuru);
                 myRef1.child(key).child("idmurid").setValue(userID);
                 myRef1.child(key).child("murid").setValue(NamaJamaah);
                 myRef1.child(key).child("jadwalhari").setValue("proses");
+                myRef1.child(key).child("jmlpertemuan").setValue(PilihPertemuan.getSelectedItem().toString());
                 myRef1.child(key).child("nokelas").setValue(key);
                 dGuru.dismiss();
                 Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);

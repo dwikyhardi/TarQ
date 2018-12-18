@@ -48,23 +48,12 @@
             android:layout_below="@+id/PilihLembaga">
 
         </LinearLayout>
-        <Spinner
-            android:id="@+id/JumlahPertemuan"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/PilihLembaga"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/white"
-            android:layout_below="@+id/JumlahPertemuan">
 
-        </LinearLayout>
         <ListView
             android:id="@+id/listViewGuru"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/JumlahPertemuan" />
+            android:layout_below="@+id/PilihLembaga" />
 
 
     </RelativeLayout>
