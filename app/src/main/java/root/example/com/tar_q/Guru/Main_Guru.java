@@ -436,7 +436,11 @@ public class Main_Guru extends AppCompatActivity
             Map idGuru = (Map) entry.getValue();
             IdGuru.add((String) idGuru.get("idguru"));
         }
-        System.out.println("Bangsadh" + IdGuru);
+        final ArrayList<String> IdMurid= new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idMurid = (Map) entry.getValue();
+            IdMurid.add((String) idMurid.get("idmurid"));
+        }
         if(Jadwalhari != null){
             int i = 0;
             while(Jadwalhari.size() > i){
@@ -445,6 +449,7 @@ public class Main_Guru extends AppCompatActivity
                         NamaMurid = NamaJamaah.get(i);
                         JumlahPertemuan = JmlPertemuan.get(i);
                         NomorKelas = NoKelas.get(i);
+                        IdJamaah = IdMurid.get(i);
                         ShowPopupNotifikasiGuru();
                         Log.d(TAG,NamaMurid);
                         Log.d(TAG,JumlahPertemuan);
