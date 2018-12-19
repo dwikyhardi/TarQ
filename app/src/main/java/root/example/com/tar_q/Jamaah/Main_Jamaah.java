@@ -53,6 +53,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
+import root.example.com.tar_q.Tentang;
 
 public class Main_Jamaah extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -249,6 +250,18 @@ public class Main_Jamaah extends AppCompatActivity
         if (id == R.id.nav_logout){
             mAuth.signOut();
             startActivity(new Intent(Main_Jamaah.this,MainActivity.class));
+        }else if (id == R.id.nav_Prosensi_jamaah){
+            startActivity(new Intent(Main_Jamaah.this,PresensiJamaah.class));
+        }else if (id == R.id.nav_Jadwal){
+            startActivity(new Intent(Main_Jamaah.this,JadwalJamaah.class));
+        }else if (id == R.id.nav_Potensi_pengeluaran){
+            startActivity(new Intent(Main_Jamaah.this,PotensiPengeluaran.class));
+        }else if (id == R.id.nav_Tentang){
+            startActivity(new Intent(Main_Jamaah.this,Tentang.class));
+        }else if (id == R.id.nav_Account){
+            startActivity(new Intent(Main_Jamaah.this,Biodata_Jamaah.class));
+        }else if (id == R.id.nav_Home){
+            startActivity(new Intent(Main_Jamaah.this,Main_Jamaah.class));
         }
         return true;
     }
