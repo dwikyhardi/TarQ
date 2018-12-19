@@ -1,7 +1,10 @@
 package root.example.com.tar_q.Jamaah;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,7 +19,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -41,9 +47,11 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,30 +59,37 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 import butterknife.OnItemSelected;
+import root.example.com.tar_q.Guru.Main_Guru;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
 public class Main_Jamaah extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnDismissListener {
     private final String TAG = "Main_Jamaah";
 
     //Add Firebase Function
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, myRef1;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
 
+    private Dialog NotifikasiMurid;
 
     private CompactCalendarView kalenderJamaah;
     private SimpleDateFormat dateFormatMonth;
 
+    private TextView etIsiPopupCancel;
+    private ImageView ivFotoGuruPopupCancel;
+    private Button btnCLosePopupCancel;
+
+
 
     private long backPressedTime;
     private Toast backToast;
-    private String userID;
+    private String userID, namaGuru, idGuru;
 
     private TextView Month;
 
@@ -85,7 +100,10 @@ public class Main_Jamaah extends AppCompatActivity
     private ImageView imageProfileJamaah;
     private TextView NamaJamaah, EmailJamaah, TV;
     private Button btnBelajar;
-    public String publicNamaJamaah;
+    public String publicNamaJamaah, NomorKelas;
+
+    private String listNamaEvent;
+    private Long listWaktuEvent;
 
 
     @Override
@@ -105,9 +123,10 @@ public class Main_Jamaah extends AppCompatActivity
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
         userID = user.getUid();
         btnBelajar = (Button) findViewById(R.id.btnBelajar);
-
+        NotifikasiMurid = new Dialog(this);
 
         //Add Resource
         //Resource Layout
@@ -144,6 +163,19 @@ public class Main_Jamaah extends AppCompatActivity
             }
         });
 
+        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showNotification((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         btnBelajar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,32 +190,6 @@ public class Main_Jamaah extends AppCompatActivity
         kalenderJamaah = (CompactCalendarView) findViewById(R.id.calendarJamaah);
         Month = (TextView) findViewById(R.id.textViewMonth);
         dateFormatMonth = new SimpleDateFormat("MMMM - yyyy",Locale.getDefault());
-        final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, 1544605200000L, "~Coba~");
-        kalenderJamaah.addEvent(ev1);
-        kalenderJamaah.setListener(new CompactCalendarView.CompactCalendarViewListener() {
-            @Override
-            public void onDayClick(Date dateClicked) {
-                try{
-                    String[] a = String.valueOf(kalenderJamaah.getEvents(dateClicked)).split("~");
-                    String b = a[1];
-                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                    cal.setTimeInMillis(Long.parseLong(String.valueOf(kalenderJamaah.getEvents(dateClicked)).substring(30, 43)));
-                    String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
-                    toastMessage("Anda Akan Mengajar " + b + " Pada : " + date);
-                    Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderJamaah.getEvents(dateClicked)).substring(30, 42));
-                } catch (ArrayIndexOutOfBoundsException e){
-                    toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
-                    e.printStackTrace();
-                }
-
-            }
-            @Override
-            public void onMonthScroll(Date firstDayOfNewMonth) {
-                Month.setText(dateFormatMonth.format(firstDayOfNewMonth));
-            }
-        });
-
-
     }
 
     private void showData(DataSnapshot dataSnapshot) {
@@ -255,6 +261,161 @@ public class Main_Jamaah extends AppCompatActivity
 
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showNotification(Map<String, Object> dataSnapshot) {
+
+        final ArrayList<String> Jadwalhari = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map jadwalhari = (Map) entry.getValue();
+            Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
+        }
+        final ArrayList<String> NamaGuru = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map namaGuru= (Map) entry.getValue();
+            NamaGuru.add((String) namaGuru.get("guru"));
+        }
+        final ArrayList<String> JmlPertemuan = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map jmlPertemuan = (Map) entry.getValue();
+            JmlPertemuan.add((String) jmlPertemuan.get("jmlpertemuan"));
+        }
+        final ArrayList<String> NoKelas = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map noKelas = (Map) entry.getValue();
+            NoKelas.add((String) noKelas.get("nokelas"));
+        }
+        final ArrayList<String> IdGuru = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idGuru = (Map) entry.getValue();
+            IdGuru.add((String) idGuru.get("idguru"));
+        }
+        final ArrayList<String> IdMurid= new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idMurid = (Map) entry.getValue();
+            IdMurid.add((String) idMurid.get("idmurid"));
+        }
+        final ArrayList<String> listNama = new ArrayList<>();
+        final ArrayList<String> listPertemuan= new ArrayList<>();
+        final ArrayList<String> listNomorKelas = new ArrayList<>();
+        final ArrayList<String> listId = new ArrayList<>();
+        if(Jadwalhari != null){
+            int i = 0;
+            while(Jadwalhari.size() > i){
+                if(IdMurid.get(i).equals(userID)){
+                    if(Jadwalhari.get(i).equals("proses")){
+                        listNama.add(NamaGuru.get(i));
+                        listPertemuan.add(JmlPertemuan.get(i));
+                        listNomorKelas.add(NoKelas.get(i));
+                        listId.add(IdGuru.get(i));
+                    }
+                    if(Jadwalhari.get(i).equals("request")){
+                    }
+                    if(Jadwalhari.get(i).equals("false")){
+                        namaGuru = NamaGuru.get(i);
+                        idGuru = IdGuru.get(i);
+                        NomorKelas = NoKelas.get(i);
+                        ShowPopupNotifikasiMurid(namaGuru,idGuru);
+                    }
+                    else{
+                        int j = 1;
+                        String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                        while(a.length > j){
+                            listNamaEvent = NamaGuru.get(i);
+                            listWaktuEvent = Long.parseLong(a[j]);
+                            setEvent(listWaktuEvent, listNamaEvent);
+                            j++;
+                        }
+                    }
+                }
+                i++;
+            }
+        }
+    }
+    
+    private void ShowPopupNotifikasiMurid(String Guru, String IdGuru){
+        TextView txtclose;
+        NotifikasiMurid.setContentView(R.layout.popup_notifikasi_murid);
+        etIsiPopupCancel = (TextView) NotifikasiMurid.findViewById(R.id.editTextIsiNotifikasiPopupCancel);
+        ivFotoGuruPopupCancel = (ImageView) NotifikasiMurid.findViewById(R.id.imageViewFotoGuruPopupCancel);
+        btnCLosePopupCancel = (Button) NotifikasiMurid.findViewById(R.id.btnClosePopupCancel);
+
+        storageRef.child("Guru/IdentitasGuru/" + IdGuru).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                System.out.println(uri);
+                Glide.with(getApplicationContext()).load(uri).into(ivFotoGuruPopupCancel);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+        txtclose =(TextView) NotifikasiMurid.findViewById(R.id.txtclose);
+        txtclose.setText("X");
+        etIsiPopupCancel.setText("Permintaan Anda Tidak Diterima Oleh " + Guru);
+
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotifikasiMurid.dismiss();
+            }
+        });
+        btnCLosePopupCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotifikasiMurid.dismiss();
+            }
+        });
+        NotifikasiMurid.setOnDismissListener(this);
+        NotifikasiMurid.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        NotifikasiMurid.show();
+    }
+
+
+    private void setEvent(Long waktu, String guru){
+
+        final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, waktu, "~" + guru + "~");
+        kalenderJamaah.addEvent(ev1);
+        kalenderJamaah.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                ArrayList<String> NamaDiajar = new ArrayList<>();
+                try{
+                    String[] a = String.valueOf(kalenderJamaah.getEvents(dateClicked)).split("~");
+                    String[] d = String.valueOf(kalenderJamaah.getEvents(dateClicked)).split(",");
+                    int i = 1;
+                    int j = 14;
+                    int k = 27;
+                    int l = 1;
+                    while(a.length > i){
+                        String b = a[i];
+                        String c = d[l];
+                        Log.d(TAG, "Tanggal =" + c);
+                        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                        cal.setTimeInMillis(Long.parseLong(String.valueOf(c).substring(j, k)));
+                        String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
+                        toastMessage("Anda Akan Belajar Dengan " + b + " Pada : " + date);
+                        NamaDiajar.add(b);
+                        i = i + 2;
+                        l = l + 3;
+                    }
+                } catch (ArrayIndexOutOfBoundsException e){
+                    toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                Month.setText(dateFormatMonth.format(firstDayOfNewMonth));
+            }
+        });
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        myRef1.child(NomorKelas).setValue(null);
     }
 }
 

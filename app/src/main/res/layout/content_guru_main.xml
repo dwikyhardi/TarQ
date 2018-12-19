@@ -41,11 +41,27 @@
         android:id="@+id/testcal"
         android:layout_below="@+id/calenderGuru"/>
 
-    <ListView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listRequestGuru"
-        android:layout_below="@id/testcal"/>
+        android:layout_height="100dp"
+        android:layout_below="@+id/testcal"
+        android:id="@+id/svAjar">
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listMengajarGuru"/>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/svAjar">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listRequestGuru"/>
+    </ScrollView>
 
 </RelativeLayout>
