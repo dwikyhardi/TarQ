@@ -365,6 +365,7 @@ public class Find_Guru extends AppCompatActivity {
                 myRef1.child(key).child("jadwalhari").setValue("proses");
                 myRef1.child(key).child("jmlpertemuan").setValue(PilihPertemuan.getSelectedItem().toString());
                 myRef1.child(key).child("nokelas").setValue(key);
+                myRef1.child(key).child("pelajaran").setValue(Kelas_Atas);
                 dGuru.dismiss();
                 Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
                 startActivity(mIntent);
