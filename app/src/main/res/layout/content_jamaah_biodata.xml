@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient_main_jamaah">
+    android:background="@drawable/bg_gradient"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Jamaah.Biodata_Jamaah"
+    tools:showIn="@layout/app_bar_jamaah_biodata">
 
     <RelativeLayout
         android:id="@+id/RlAwal"
@@ -157,5 +160,6 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
+
 
 </RelativeLayout>

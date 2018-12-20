@@ -50,7 +50,8 @@
         <activity android:name=".Jamaah.PresensiJamaah" />
         <activity android:name=".Jamaah.JadwalJamaah" />
         <activity android:name=".Jamaah.PotensiPengeluaran" />
-        <activity android:name=".Tentang"></activity>
+        <activity android:name=".Tentang" />
+        <activity android:name=".jamaah_presensi"></activity>
     </application>
 
 </manifest>
