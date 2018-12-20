@@ -117,7 +117,7 @@ public class Main_Guru extends AppCompatActivity
     private Button test, btnTerimaPopup, btnTolakPopup;
     private Dialog NotifikasiGuru;
     private TextView etNamaPenerimaPopup;
-    private ListView mListViewRequest;
+    private ListView mListViewRequest, mListViewDataAjar;
 
 
     public static final int PERMISSIONS_REQUEST_WRITE_CALENDAR = 9005;
@@ -140,6 +140,7 @@ public class Main_Guru extends AppCompatActivity
 
         NotifikasiGuru = new Dialog(this);
         mListViewRequest = (ListView) findViewById(R.id.listRequestGuru);
+        mListViewDataAjar = (ListView) findViewById(R.id.listMengajarGuru);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -153,13 +154,12 @@ public class Main_Guru extends AppCompatActivity
 
 
 
-        addCalendarEvent();
+        /*addCalendarEvent();*/
         test = (Button) findViewById(R.id.testcal);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toastMessage("Nothing to Do Here!");
-                ShowPopupNotifikasiGuru();
             }
         });
 
@@ -270,14 +270,6 @@ public class Main_Guru extends AppCompatActivity
         return false;
     }
 
-    private void showData(DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            ProfileGuru uInfo = new ProfileGuru();
-            uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
-            publicNamaGuru = uInfo.getNama();
-            NamaGuru.setText(uInfo.getNama());
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -351,7 +343,7 @@ public class Main_Guru extends AppCompatActivity
     }
 
 
-    public void addCalendarEvent() {
+    /*public void addCalendarEvent() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -374,7 +366,7 @@ public class Main_Guru extends AppCompatActivity
         values.put(CalendarContract.Events.EVENT_TIMEZONE, "Indonesia/Jakarta");
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
         System.out.println("URI" + uri);
-    }
+    }*/
 
     private void showNotification(Map<String, Object> dataSnapshot) {
 
@@ -499,6 +491,8 @@ public class Main_Guru extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 myRef1.child(NomorKelas).child("jadwalhari").setValue("request");
+                finish();
+                startActivity(getIntent());
                 NotifikasiGuru.dismiss();
             }
         });
@@ -521,18 +515,32 @@ public class Main_Guru extends AppCompatActivity
         kalenderGuru.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
+                ArrayList<String> NamaDiajar = new ArrayList<>();
                 try{
                     String[] a = String.valueOf(kalenderGuru.getEvents(dateClicked)).split("~");
-                    String b = a[1];
-                    Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-                    cal.setTimeInMillis(Long.parseLong(String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 43)));
-                    String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
-                    toastMessage("Anda Akan Mengajar " + b + " Pada : " + date);
-                    Log.d(TAG, "onDayClick() returnee: " + String.valueOf(kalenderGuru.getEvents(dateClicked)).substring(30, 42));
+                    String[] d = String.valueOf(kalenderGuru.getEvents(dateClicked)).split(",");
+                    int i = 1;
+                    int j = 14;
+                    int k = 27;
+                    int l = 1;
+                    while(a.length > i){
+                        String b = a[i];
+                        String c = d[l];
+                        Log.d(TAG, "Tanggal =" + c);
+                        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                        cal.setTimeInMillis(Long.parseLong(String.valueOf(c).substring(j, k)));
+                        String date = DateFormat.format("dd-MM-yyyy hh:mm", cal).toString();
+                        toastMessage("Anda Akan Mengajar " + b + " Pada : " + date);
+                        NamaDiajar.add(b);
+                        i = i + 2;
+                        l = l + 3;
+                    }
                 } catch (ArrayIndexOutOfBoundsException e){
                     toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
                     e.printStackTrace();
                 }
+                ArrayAdapter namaDiajar = new ArrayAdapter(Main_Guru.this, R.layout.list_view_style_request, NamaDiajar);
+                mListViewDataAjar.setAdapter(namaDiajar);
 
             }
             @Override
