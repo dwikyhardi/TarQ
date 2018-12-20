@@ -5,13 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,10 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
-
-import root.example.com.tar_q.Guru.Main_Guru;
-import root.example.com.tar_q.Guru.ProfileGuru;
 import root.example.com.tar_q.R;
 
 public class Biodata_Guru extends AppCompatActivity {
@@ -47,7 +40,7 @@ public class Biodata_Guru extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_biodata__guru);
+        setContentView(R.layout.activity_guru_biodata);
 
         ImgBtnBack = findViewById(R.id.imageButtonBackBiodataGuru);
 
