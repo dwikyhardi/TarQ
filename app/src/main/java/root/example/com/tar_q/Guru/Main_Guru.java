@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,7 +71,7 @@ public class Main_Guru extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1, myRef2;
+    private DatabaseReference myRef, myRef1, myRef2,myRef3,myRef4;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -97,8 +98,9 @@ public class Main_Guru extends AppCompatActivity
     private TextView NamaGuru, EmailGuru, Month;
     private Button test, btnTerimaPopup, btnTolakPopup;
     private Dialog NotifikasiGuru;
-    private TextView etNamaPenerimaPopup;
-    private ListView mListViewRequest, mListViewDataAjar;
+    private TextView etNamaPenerimaPopup,Tv_Kantor,Tv_Private;
+    private LinearLayout LL;
+    private ListView mListViewRequestKantor,mListViewRequestPrivate, mListViewDataAjar;
 
 
     public static final int PERMISSIONS_REQUEST_WRITE_CALENDAR = 9005;
@@ -120,29 +122,23 @@ public class Main_Guru extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
 
         NotifikasiGuru = new Dialog(this);
-        mListViewRequest = (ListView) findViewById(R.id.listRequestGuru);
+        mListViewRequestKantor = (ListView) findViewById(R.id.listRequestGuruKantor);
+        mListViewRequestPrivate = (ListView) findViewById(R.id.listRequestGuruPrivate);
         mListViewDataAjar = (ListView) findViewById(R.id.listMengajarGuru);
+        LL = (LinearLayout) findViewById(R.id.LL);
+        Tv_Kantor = (TextView) findViewById(R.id.Tv_Kantor);
+        Tv_Private=(TextView) findViewById(R.id.Tv_Private);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
-        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR");
         myRef2 = mFirebaseDatabase.getReference().child("TARQ").child("USER");
+        myRef4 = mFirebaseDatabase.getReference();
+        myRef3 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
         mLastLocation = LocationServices.getFusedLocationProviderClient(this);
         userID = user.getUid();
-
-
-
-
-        /*addCalendarEvent();*/
-        test = (Button) findViewById(R.id.testcal);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toastMessage("Nothing to Do Here!");
-            }
-        });
 
 
         //Resource Layout
@@ -170,8 +166,18 @@ public class Main_Guru extends AppCompatActivity
         Month = (TextView) findViewById(R.id.textViewMonth);
         dateFormatMonth = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
 
+        //tambahan Ieu
+        myRef4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showNama(dataSnapshot);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
 
         myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -185,7 +191,29 @@ public class Main_Guru extends AppCompatActivity
             }
         });
 
+        myRef3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showNotification1((Map<String, Object>) dataSnapshot.getValue());
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    //tambahan Ieu
+    private void showNama(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            ProfileGuru uInfo = new ProfileGuru();
+            uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
+            NamaGuru.setText(uInfo.getNama());
+            Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
+        }
     }
 
     private void updateLokasi() {
@@ -420,7 +448,7 @@ public class Main_Guru extends AppCompatActivity
                         JumlahPertemuan = JmlPertemuan.get(i);
                         NomorKelas = NoKelas.get(i);
                         IdJamaah = IdMurid.get(i);
-                        ShowPopupNotifikasiGuru();
+                        ShowPopupNotifikasiGuruKantor();
                         Log.d(TAG,NamaMurid);
                         Log.d(TAG,JumlahPertemuan);
                         Log.d(TAG,NomorKelas);
@@ -443,23 +471,111 @@ public class Main_Guru extends AppCompatActivity
                 i++;
             }
         }
-        mListViewRequest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListViewRequestKantor.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NamaMurid = listNama.get(position);
                 JumlahPertemuan = listPertemuan.get(position);
                 NomorKelas = listNomorKelas.get(position);
                 IdJamaah= listId.get(position);
-                ShowPopupNotifikasiGuru();
+                ShowPopupNotifikasiGuruKantor();
             }
         });
 
         ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
-        mListViewRequest.setAdapter(namaGuru);
+        mListViewRequestKantor.setAdapter(namaGuru);
+    }
+
+    private void showNotification1(Map<String, Object> dataSnapshot) {
+
+        final ArrayList<String> Jadwalhari = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map jadwalhari = (Map) entry.getValue();
+            Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
+        }
+        final ArrayList<String> NamaJamaah = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map namajamaah = (Map) entry.getValue();
+            NamaJamaah.add((String) namajamaah.get("murid"));
+        }
+        final ArrayList<String> JmlPertemuan = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map jmlPertemuan = (Map) entry.getValue();
+            JmlPertemuan.add((String) jmlPertemuan.get("jmlpertemuan"));
+        }
+        final ArrayList<String> NoKelas = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map noKelas = (Map) entry.getValue();
+            NoKelas.add((String) noKelas.get("nokelas"));
+        }
+        final ArrayList<String> IdGuru = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idGuru = (Map) entry.getValue();
+            IdGuru.add((String) idGuru.get("idguru"));
+        }
+        final ArrayList<String> IdMurid= new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idMurid = (Map) entry.getValue();
+            IdMurid.add((String) idMurid.get("idmurid"));
+        }
+        final ArrayList<String> listNama = new ArrayList<>();
+        final ArrayList<String> listPertemuan= new ArrayList<>();
+        final ArrayList<String> listNomorKelas = new ArrayList<>();
+        final ArrayList<String> listId = new ArrayList<>();
+        if(Jadwalhari != null){
+            int i = 0;
+            while(Jadwalhari.size() > i){
+                if(IdGuru.get(i).equals(userID)){
+                    Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
+                    if(Jadwalhari.get(i).equals("proses")){
+                        listNama.add(NamaJamaah.get(i));
+                        listPertemuan.add(JmlPertemuan.get(i));
+                        listNomorKelas.add(NoKelas.get(i));
+                        listId.add(IdMurid.get(i));
+                        NamaMurid = NamaJamaah.get(i);
+                        JumlahPertemuan = JmlPertemuan.get(i);
+                        NomorKelas = NoKelas.get(i);
+                        IdJamaah = IdMurid.get(i);
+                        ShowPopupNotifikasiGuruPrivate();
+                        Log.d(TAG,NamaMurid);
+                        Log.d(TAG,JumlahPertemuan);
+                        Log.d(TAG,NomorKelas);
+                    }
+                    if(Jadwalhari.get(i).equals("request")){
+
+                    }
+                    if(Jadwalhari.get(i).equals("false")){
+                    }
+                    else{
+                        int j = 1;
+                        String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                        while(a.length > j){
+                            listNamaEvent = NamaJamaah.get(i);
+                            listWaktuEvent = Long.parseLong(a[j]);
+                            setEvent(listWaktuEvent, listNamaEvent);
+                            j++;
+                        }
+                    }
+                }
+                i++;
+            }
+        }
+        mListViewRequestPrivate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NamaMurid = listNama.get(position);
+                JumlahPertemuan = listPertemuan.get(position);
+                NomorKelas = listNomorKelas.get(position);
+                IdJamaah= listId.get(position);
+                ShowPopupNotifikasiGuruPrivate();
+            }
+        });
+
+        ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
+        mListViewRequestPrivate.setAdapter(namaGuru);
     }
 
 
 
-    public void ShowPopupNotifikasiGuru() {
+    public void ShowPopupNotifikasiGuruPrivate() {
         TextView txtclose;
         NotifikasiGuru.setContentView(R.layout.popup_notifikasi_guru);
         etNamaPenerimaPopup = (TextView) NotifikasiGuru.findViewById(R.id.editTextIsiNotifikasiPopup);
@@ -481,7 +597,57 @@ public class Main_Guru extends AppCompatActivity
         });
         txtclose =(TextView) NotifikasiGuru.findViewById(R.id.txtclose);
         txtclose.setText("X");
-        etNamaPenerimaPopup.setText(NamaMurid + " Telah Memilih Anda Untuk Mengajar Untuk" + JumlahPertemuan + " Pertemuan");
+        etNamaPenerimaPopup.setText(NamaMurid + " Telah Memilih Anda Untuk Mengajar Untuk " + JumlahPertemuan + " Pertemuan");
+
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotifikasiGuru.dismiss();
+            }
+        });
+        btnTerimaPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myRef3.child(NomorKelas).child("jadwalhari").setValue("request");
+                finish();
+                startActivity(getIntent());
+                NotifikasiGuru.dismiss();
+            }
+        });
+        btnTolakPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myRef3.child(NomorKelas).child("jadwalhari").setValue("false");
+                NotifikasiGuru.dismiss();
+            }
+        });
+        NotifikasiGuru.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        NotifikasiGuru.show();
+    }
+
+    public void ShowPopupNotifikasiGuruKantor() {
+        TextView txtclose;
+        NotifikasiGuru.setContentView(R.layout.popup_notifikasi_guru);
+        etNamaPenerimaPopup = (TextView) NotifikasiGuru.findViewById(R.id.editTextIsiNotifikasiPopup);
+        ivFotoMuridPopup = (ImageView) NotifikasiGuru.findViewById(R.id.imageViewFotoMuridPopup);
+        btnTerimaPopup = (Button) NotifikasiGuru.findViewById(R.id.btnTerimaPopup);
+        btnTolakPopup = (Button) NotifikasiGuru.findViewById(R.id.btnTolakPopup);
+
+        storageRef.child("Jamaah/FotoProfil/" + IdJamaah).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                System.out.println(uri);
+                Glide.with(getApplicationContext()).load(uri).into(ivFotoMuridPopup);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+        txtclose =(TextView) NotifikasiGuru.findViewById(R.id.txtclose);
+        txtclose.setText("X");
+        etNamaPenerimaPopup.setText(NamaMurid + " Telah Memilih Anda Untuk Mengajar Untuk " + JumlahPertemuan + " Pertemuan");
 
         txtclose.setOnClickListener(new View.OnClickListener() {
             @Override
