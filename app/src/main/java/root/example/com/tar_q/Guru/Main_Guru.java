@@ -1,20 +1,15 @@
 package root.example.com.tar_q.Guru;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.ActivityManager;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -31,7 +26,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,8 +36,6 @@ import com.bumptech.glide.Glide;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,29 +49,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import me.everything.providers.android.calendar.CalendarProvider;
-import me.everything.providers.android.calendar.Event;
-import root.example.com.tar_q.Jamaah.Find_Guru;
-import root.example.com.tar_q.Jamaah.Main_Jamaah;
+import root.example.com.tar_q.Data_Jamaah;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
+import root.example.com.tar_q.Tentang;
 import root.example.com.tar_q.services.LocationUpdate;
 
 public class Main_Guru extends AppCompatActivity
@@ -351,11 +332,32 @@ public class Main_Guru extends AppCompatActivity
         if (id == R.id.nav_account) {
             Intent mIntent = new Intent(Main_Guru.this, Biodata_Guru.class);
             startActivity(mIntent);
-        } else if (id == R.id.nav_Tentang) {
+        }else if (id == R.id.nav_Prosensi) {
+            Intent mIntent = new Intent(Main_Guru.this, Presensi_Guru.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_data_jamaah) {
+            Intent mIntent = new Intent(Main_Guru.this, Data_Jamaah.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_jadwal_mengajar) {
+            Intent mIntent = new Intent(Main_Guru.this, Jadwal_Guru.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Materi_pengajaran) {
+            Intent mIntent = new Intent(Main_Guru.this, Guru_Materi.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Potential_pendapatan) {
+            Intent mIntent = new Intent(Main_Guru.this, Guru_Potensi.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Progres_report) {
+            Intent mIntent = new Intent(Main_Guru.this, Guru_Progres.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Pendapatan) {
+            Intent mIntent = new Intent(Main_Guru.this, Tentang.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);
             startActivity(mIntent);*/
-        } else if (id == R.id.nav_logout) {
+        }else if (id == R.id.nav_logout) {
             mAuth.signOut();
             Intent mIntent = new Intent(Main_Guru.this, MainActivity.class);
             startActivity(mIntent);

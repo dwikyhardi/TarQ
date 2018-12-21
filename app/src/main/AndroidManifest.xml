@@ -54,11 +54,11 @@
         <activity android:name=".Jamaah.jamaah_presensi" />
         <activity android:name=".Guru.Presensi_Guru" />
         <activity android:name=".Data_Jamaah" />
-        <activity android:name=".Jadwal_Guru" />
-        <activity android:name=".Guru_Materi" />
-        <activity android:name=".Guru_Potensi" />
-        <activity android:name=".Guru_Progres" />
-        <activity android:name=".Guru_Pendapatan"></activity>
+        <activity android:name=".Guru.Jadwal_Guru" />
+        <activity android:name=".Guru.Guru_Materi" />
+        <activity android:name=".Guru.Guru_Potensi" />
+        <activity android:name=".Guru.Guru_Progres" />
+        <activity android:name=".Guru.Guru_Pendapatan"></activity>
     </application>
 
 </manifest>
