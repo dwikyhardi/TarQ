@@ -63,14 +63,16 @@
                     android:layout_weight="1"
                     android:textSize="20dp"
                     android:text="Private"
-                    android:paddingLeft="10dp"/>
+                    android:paddingLeft="10dp"
+                    android:id="@+id/Tv_Private"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:textSize="20dp"
                     android:text="Kantor"
-                    android:paddingLeft="10dp"/>
+                    android:paddingLeft="10dp"
+                    android:id="@+id/Tv_Kantor"/>
             </LinearLayout>
 
             <ScrollView

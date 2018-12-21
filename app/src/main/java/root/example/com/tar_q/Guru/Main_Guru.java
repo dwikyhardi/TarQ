@@ -90,7 +90,7 @@ public class Main_Guru extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1, myRef2,myRef3;
+    private DatabaseReference myRef, myRef1, myRef2,myRef3,myRef4;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -117,7 +117,7 @@ public class Main_Guru extends AppCompatActivity
     private TextView NamaGuru, EmailGuru, Month;
     private Button test, btnTerimaPopup, btnTolakPopup;
     private Dialog NotifikasiGuru;
-    private TextView etNamaPenerimaPopup;
+    private TextView etNamaPenerimaPopup,Tv_Kantor,Tv_Private;
     private LinearLayout LL;
     private ListView mListViewRequestKantor,mListViewRequestPrivate, mListViewDataAjar;
 
@@ -145,6 +145,8 @@ public class Main_Guru extends AppCompatActivity
         mListViewRequestPrivate = (ListView) findViewById(R.id.listRequestGuruPrivate);
         mListViewDataAjar = (ListView) findViewById(R.id.listMengajarGuru);
         LL = (LinearLayout) findViewById(R.id.LL);
+        Tv_Kantor = (TextView) findViewById(R.id.Tv_Kantor);
+        Tv_Private=(TextView) findViewById(R.id.Tv_Private);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -152,6 +154,7 @@ public class Main_Guru extends AppCompatActivity
         myRef = mFirebaseDatabase.getReference();
         myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR");
         myRef2 = mFirebaseDatabase.getReference().child("TARQ").child("USER");
+        myRef4 = mFirebaseDatabase.getReference();
         myRef3 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
         mLastLocation = LocationServices.getFusedLocationProviderClient(this);
         userID = user.getUid();
@@ -182,8 +185,18 @@ public class Main_Guru extends AppCompatActivity
         Month = (TextView) findViewById(R.id.textViewMonth);
         dateFormatMonth = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
 
+        //tambahan Ieu
+        myRef4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showNama(dataSnapshot);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
 
         myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -210,6 +223,16 @@ public class Main_Guru extends AppCompatActivity
         });
 
 
+    }
+
+    //tambahan Ieu
+    private void showNama(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            ProfileGuru uInfo = new ProfileGuru();
+            uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
+            NamaGuru.setText(uInfo.getNama());
+            Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
+        }
     }
 
     private void updateLokasi() {
@@ -446,11 +469,6 @@ public class Main_Guru extends AppCompatActivity
                 i++;
             }
         }
-        if (NamaJamaah.size()>0){
-            LL.setVisibility(View.VISIBLE);
-        }else {
-            LL.setVisibility(View.INVISIBLE);
-        }
         mListViewRequestKantor.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NamaMurid = listNama.get(position);
@@ -538,11 +556,6 @@ public class Main_Guru extends AppCompatActivity
                 }
                 i++;
             }
-        }
-        if (NamaMurid.length()>0){
-            LL.setVisibility(View.VISIBLE);
-        }else {
-            LL.setVisibility(View.INVISIBLE);
         }
         mListViewRequestPrivate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
