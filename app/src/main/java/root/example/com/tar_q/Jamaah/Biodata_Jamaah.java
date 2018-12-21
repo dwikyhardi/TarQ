@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import root.example.com.tar_q.Guru.Guru_Pendapatan;
+import root.example.com.tar_q.Guru.Main_Guru;
 import root.example.com.tar_q.R;
 
 public class Biodata_Jamaah extends AppCompatActivity {
@@ -108,6 +114,27 @@ public class Biodata_Jamaah extends AppCompatActivity {
             noTelp.setText("Nomor Telepon : "+uInfo.getNohp());
             tanggalLahir.setText("Tanggal Lahir : "+uInfo.getTanggallahir());
         }
+    }
+
+    private long backPressedTime;
+    private Toast backToast;
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            Intent intent = new Intent(Biodata_Jamaah.this, Main_Jamaah.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Tekan Lagi Untuk Keluar", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }
 
