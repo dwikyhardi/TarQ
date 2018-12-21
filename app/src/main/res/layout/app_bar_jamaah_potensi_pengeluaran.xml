@@ -22,6 +22,5 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_jamaah_potensi_pengeluaran" />
-
-
+    
 </android.support.design.widget.CoordinatorLayout>

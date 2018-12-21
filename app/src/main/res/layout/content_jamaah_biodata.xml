@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Jamaah.Biodata_Jamaah"
+    tools:context=".Jamaah.PresensiJamaah"
     tools:showIn="@layout/app_bar_jamaah_biodata">
 
     <RelativeLayout
@@ -32,7 +31,7 @@
                 android:layout_marginBottom="40dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="Profile"
-                android:textColor="@color/white"
+                android:textColor="@color/biru1"
                 android:textSize="22sp" />
 
         </LinearLayout>
@@ -83,7 +82,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             android:text="Nama : "
-            android:textColor="@color/white"
+            android:textColor="@color/biru1"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -110,7 +109,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="10dp"
                 android:text="Alamat : "
-                android:textColor="@color/white"
+                android:textColor="@color/biru1"
                 android:textSize="15sp"
                 android:textStyle="bold" />
         </HorizontalScrollView>
@@ -133,7 +132,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             android:text="Nomor Telepon : "
-            android:textColor="@color/white"
+            android:textColor="@color/biru1"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -155,7 +154,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             android:text="Tanggal Lahir : "
-            android:textColor="@color/white"
+            android:textColor="@color/biru1"
             android:textSize="15sp"
             android:textStyle="bold" />
 

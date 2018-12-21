@@ -24,7 +24,7 @@ import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.Tentang;
 
-public class Presensi_Guru extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Guru_Pendapatan extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     //Add Firebase Function
     private FirebaseDatabase mFirebaseDatabase;
@@ -38,12 +38,12 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guru_presensi);
+        setContentView(R.layout.activity_guru_pendapatan);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Presensi_Guru.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Guru_Pendapatan.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view_guru);
@@ -59,28 +59,28 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.nav_account) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Biodata_Guru.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Biodata_Guru.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Prosensi) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Presensi_Guru.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Presensi_Guru.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_data_jamaah) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Data_Jamaah.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Data_Jamaah.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_jadwal_mengajar) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Jadwal_Guru.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Jadwal_Guru.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Materi_pengajaran) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Guru_Materi.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Guru_Materi.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Potential_pendapatan) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Guru_Potensi.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Guru_Potensi.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Progres_report) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Guru_Progres.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Guru_Progres.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Pendapatan) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Tentang.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, Tentang.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
@@ -88,7 +88,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             startActivity(mIntent);*/
         }else if (id == R.id.nav_logout) {
             mAuth.signOut();
-            Intent mIntent = new Intent(Presensi_Guru.this, MainActivity.class);
+            Intent mIntent = new Intent(Guru_Pendapatan.this, MainActivity.class);
             startActivity(mIntent);
         }
 
@@ -100,4 +100,5 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
 }

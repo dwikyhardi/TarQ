@@ -7,7 +7,7 @@
     android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Jamaah.PotensiPengeluaran"
-    tools:showIn="@layout/app_bar_jamaah_presensi">
+    tools:showIn="@layout/app_bar_jamaah_potensi_pengeluaran">
 
     <TextView
         android:layout_width="match_parent"
@@ -16,6 +16,6 @@
         android:layout_centerVertical="true"
         android:text="Potensi Pengeluaran Jamaah"
         android:textColor="@color/biru"
-        android:textSize="30dp" />
+        android:textSize="25dp" />
 
 </RelativeLayout>

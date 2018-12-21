@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/biru1"
-    tools:context=".Guru_Progres">
+    tools:context=".Guru.Guru_Progres">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
