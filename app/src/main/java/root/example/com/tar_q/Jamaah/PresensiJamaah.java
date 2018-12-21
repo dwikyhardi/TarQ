@@ -65,21 +65,21 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout){
+        if (id == R.id.nav_logout) {
             mAuth.signOut();
-            startActivity(new Intent(PresensiJamaah.this,MainActivity.class));
-        }else if (id == R.id.nav_Prosensi_jamaah){
-            startActivity(new Intent(PresensiJamaah.this,PresensiJamaah.class));
-        }else if (id == R.id.nav_Jadwal){
-            startActivity(new Intent(PresensiJamaah.this,JadwalJamaah.class));
-        }else if (id == R.id.nav_Potensi_pengeluaran){
-            startActivity(new Intent(PresensiJamaah.this,PotensiPengeluaran.class));
-        }else if (id == R.id.nav_Tentang){
-            startActivity(new Intent(PresensiJamaah.this,Tentang.class));
-        }else if (id == R.id.nav_Account){
-            startActivity(new Intent(PresensiJamaah.this,Biodata_Jamaah.class));
-        }else if (id == R.id.nav_Home){
-            startActivity(new Intent(PresensiJamaah.this,Main_Jamaah.class));
+            startActivity(new Intent(PresensiJamaah.this, MainActivity.class));
+        } else if (id == R.id.nav_Prosensi_jamaah) {
+            startActivity(new Intent(PresensiJamaah.this, PresensiJamaah.class));
+        } else if (id == R.id.nav_Jadwal) {
+            startActivity(new Intent(PresensiJamaah.this, JadwalJamaah.class));
+        } else if (id == R.id.nav_Potensi_pengeluaran) {
+            startActivity(new Intent(PresensiJamaah.this, PotensiPengeluaran.class));
+        } else if (id == R.id.nav_Tentang) {
+            startActivity(new Intent(PresensiJamaah.this, Tentang.class));
+        } else if (id == R.id.nav_Account) {
+            startActivity(new Intent(PresensiJamaah.this, Biodata_Jamaah.class));
+        } else if (id == R.id.nav_Home) {
+            startActivity(new Intent(PresensiJamaah.this, Main_Jamaah.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -87,24 +87,15 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
         return true;
     }
 
-    private long backPressedTime;
-    private Toast backToast;
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            backToast.cancel();
+        } else {
             super.onBackPressed();
             Intent intent = new Intent(PresensiJamaah.this, Main_Jamaah.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("EXIT", true);
             startActivity(intent);
-        } else {
-            backToast = Toast.makeText(getBaseContext(), "Tekan Lagi Untuk Keluar", Toast.LENGTH_SHORT);
-            backToast.show();
         }
-        backPressedTime = System.currentTimeMillis();
     }
 }

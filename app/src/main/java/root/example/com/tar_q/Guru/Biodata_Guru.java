@@ -32,7 +32,7 @@ public class Biodata_Guru extends AppCompatActivity {
 
     private ImageButton ImgBtnBack;
     private ImageView fotoProfile;
-    private TextView namaProfile,alamatProfile,noTelp,tanggalLahir;
+    private TextView namaProfile, alamatProfile, noTelp, tanggalLahir;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference myRef;
@@ -100,38 +100,24 @@ public class Biodata_Guru extends AppCompatActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
             uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
             uInfo.setAlamat(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getAlamat());
             uInfo.setTanggallahir(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getTanggallahir());
             uInfo.setNohp(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNohp());
 
-            namaProfile.setText("Nama : "+uInfo.getNama());
-            alamatProfile.setText("Alamat : "+uInfo.getAlamat());
-            noTelp.setText("Nomor Telepon : "+uInfo.getNohp());
-            tanggalLahir.setText("Tanggal Lahir : "+uInfo.getTanggallahir());
+            namaProfile.setText("Nama : " + uInfo.getNama());
+            alamatProfile.setText("Alamat : " + uInfo.getAlamat());
+            noTelp.setText("Nomor Telepon : " + uInfo.getNohp());
+            tanggalLahir.setText("Tanggal Lahir : " + uInfo.getTanggallahir());
         }
     }
 
-    private long backPressedTime;
-    private Toast backToast;
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            backToast.cancel();
-            super.onBackPressed();
-            Intent intent = new Intent(Biodata_Guru.this, Main_Guru.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("EXIT", true);
-            startActivity(intent);
-        } else {
-            backToast = Toast.makeText(getBaseContext(), "Tekan Lagi Untuk Keluar", Toast.LENGTH_SHORT);
-            backToast.show();
-        }
-        backPressedTime = System.currentTimeMillis();
+        super.onBackPressed();
+        Intent intent = new Intent(Biodata_Guru.this, Main_Guru.class);
+        startActivity(intent);
     }
 }

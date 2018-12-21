@@ -87,24 +87,15 @@ public class JadwalJamaah extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private long backPressedTime;
-    private Toast backToast;
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            backToast.cancel();
+        } else {
             super.onBackPressed();
             Intent intent = new Intent(JadwalJamaah.this, Main_Jamaah.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("EXIT", true);
             startActivity(intent);
-        } else {
-            backToast = Toast.makeText(getBaseContext(), "Tekan Lagi Untuk Keluar", Toast.LENGTH_SHORT);
-            backToast.show();
         }
-        backPressedTime = System.currentTimeMillis();
     }
 }
