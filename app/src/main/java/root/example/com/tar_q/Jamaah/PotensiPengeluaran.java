@@ -56,7 +56,7 @@ public class PotensiPengeluaran extends AppCompatActivity  implements Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_potensi_pengeluaran);setContentView(R.layout.activity_presensi_jamaah);
+        setContentView(R.layout.activity_jamaah_potensi_pengeluaran);setContentView(R.layout.activity_jamaah_presensi);
         Toolbar toolbar = findViewById(R.id.toolbar_jamaah);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

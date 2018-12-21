@@ -56,7 +56,8 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_presensi_jamaah);
+        setContentView(R.layout.activity_jamaah_presensi);
+
         Toolbar toolbar = findViewById(R.id.toolbar_jamaah);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

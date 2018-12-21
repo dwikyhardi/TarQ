@@ -50,7 +50,15 @@
         <activity android:name=".Jamaah.PresensiJamaah" />
         <activity android:name=".Jamaah.JadwalJamaah" />
         <activity android:name=".Jamaah.PotensiPengeluaran" />
-        <activity android:name=".Tentang"></activity>
+        <activity android:name=".Tentang" />
+        <activity android:name=".Jamaah.jamaah_presensi" />
+        <activity android:name=".Guru.Presensi_Guru" />
+        <activity android:name=".Data_Jamaah" />
+        <activity android:name=".Jadwal_Guru" />
+        <activity android:name=".Guru_Materi" />
+        <activity android:name=".Guru_Potensi" />
+        <activity android:name=".Guru_Progres" />
+        <activity android:name=".Guru_Pendapatan"></activity>
     </application>
 
 </manifest>

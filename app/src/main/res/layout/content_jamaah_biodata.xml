@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient_main_guru">
+    android:background="@drawable/bg_gradient"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".Jamaah.Biodata_Jamaah"
+    tools:showIn="@layout/app_bar_jamaah_biodata">
 
     <RelativeLayout
         android:id="@+id/RlAwal"
@@ -36,7 +39,7 @@
     </RelativeLayout>
 
     <ImageButton
-        android:id="@+id/imageButtonBackBiodataGuru"
+        android:id="@+id/imageButtonBackBiodataJamaah"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_below="@+id/RlAwal"
@@ -58,7 +61,7 @@
         android:layout_marginTop="90dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/fotoProfileBiodataGuru"
+            android:id="@+id/fotoProfileBiodataJamaah"
             android:layout_width="150dp"
             android:layout_centerHorizontal="true"
             android:layout_height="150dp" />
@@ -73,7 +76,7 @@
         android:layout_marginTop="20dp">
 
         <TextView
-            android:id="@+id/textViewNamaProfileGuru"
+            android:id="@+id/textViewNamaProfileJamaah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -100,7 +103,7 @@
             android:scrollbars="none">
 
             <TextView
-                android:id="@+id/textViewAlamatProfileGuru"
+                android:id="@+id/textViewAlamatProfileJamaah"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -123,7 +126,7 @@
         android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/textViewNoTelpGuru"
+            android:id="@+id/textViewNoTelpJamaah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -145,7 +148,7 @@
         android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/textViewTanggalLahirGuru"
+            android:id="@+id/textViewTanggalLahirJamaah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -157,5 +160,6 @@
             android:textStyle="bold" />
 
     </RelativeLayout>
+
 
 </RelativeLayout>
