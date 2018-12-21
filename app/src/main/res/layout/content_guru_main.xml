@@ -4,64 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Guru.Main_Guru"
-    android:background="@color/white"
     tools:showIn="@layout/app_bar_guru_main">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewMonth"
-        android:textAlignment="center"
-        android:textSize="50sp"
-        />
-
-    <com.github.sundeepk.compactcalendarview.CompactCalendarView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/calenderGuru"
-        android:layout_width="fill_parent"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:layout_height="250dp"
-        android:layout_below="@+id/textViewMonth"
-        app:compactCalendarTargetHeight="250dp"
-        app:compactCalendarTextSize="12sp"
-        app:compactCalendarBackgroundColor="#ffe95451"
-        app:compactCalendarTextColor="#fff"
-        app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
-        app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
-        app:compactCalendarMultiEventIndicatorColor="#fff"
-        />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TEST"
-        android:id="@+id/testcal"
-        android:layout_below="@+id/calenderGuru"/>
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@+id/testcal"
-        android:id="@+id/svAjar">
+        android:layout_height="match_parent">
 
-        <ListView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listMengajarGuru"/>
-    </ScrollView>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_below="@id/svAjar">
+            <TextView
+                android:id="@+id/textViewMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="30sp" />
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listRequestGuru"/>
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/calenderGuru"
+                android:layout_width="fill_parent"
+                android:layout_height="250dp"
+                android:layout_below="@+id/textViewMonth"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:compactCalendarBackgroundColor="#ffe95451"
+                app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+                app:compactCalendarCurrentSelectedDayBackgroundColor="#E57373"
+                app:compactCalendarMultiEventIndicatorColor="#fff"
+                app:compactCalendarTargetHeight="250dp"
+                app:compactCalendarTextColor="#fff"
+                app:compactCalendarTextSize="12sp" />
+
+            <ScrollView
+                android:id="@+id/svAjar"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/testcal">
+
+                <ListView
+                    android:id="@+id/listMengajarGuru"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="2"
+                android:id="@+id/LL">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:text="Private"
+                    android:paddingLeft="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:text="Kantor"
+                    android:paddingLeft="10dp"/>
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/svAjar">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+                    <ListView
+                        android:id="@+id/listRequestGuruPrivate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <LinearLayout
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/coklat">
+
+                    </LinearLayout>
+                    <ListView
+                        android:id="@+id/listRequestGuruKantor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>
