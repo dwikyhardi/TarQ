@@ -80,7 +80,10 @@ public class Guru_Progres extends AppCompatActivity implements NavigationView.On
             Intent mIntent = new Intent(Guru_Progres.this, Guru_Progres.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Pendapatan) {
-            Intent mIntent = new Intent(Guru_Progres.this, Tentang.class);
+            Intent mIntent = new Intent(Guru_Progres.this, Guru_Pendapatan.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_main_guru) {
+            Intent mIntent = new Intent(Guru_Progres.this, Main_Guru.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");

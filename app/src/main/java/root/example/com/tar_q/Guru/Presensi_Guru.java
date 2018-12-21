@@ -80,7 +80,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             Intent mIntent = new Intent(Presensi_Guru.this, Guru_Progres.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Pendapatan) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Tentang.class);
+            Intent mIntent = new Intent(Presensi_Guru.this, Guru_Pendapatan.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");

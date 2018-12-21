@@ -40,23 +40,12 @@ public class JadwalJamaah extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
-    //Storage
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
-
-    //
-    private String userID;
-
-    //resource Layout
-    private ImageView imageProfileJamaah;
-    private TextView NamaJamaah, EmailJamaah, TV;
-    private Button btnBelajar;
-    public String publicNamaJamaah;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jamaah_jadwal);setContentView(R.layout.activity_jamaah_presensi);
+        setContentView(R.layout.activity_jamaah_jadwal);
+
         Toolbar toolbar = findViewById(R.id.toolbar_jamaah);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -66,83 +55,15 @@ public class JadwalJamaah extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view_jamaah);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
+
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
-        userID = user.getUid();
 
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
-        imageProfileJamaah = (ImageView) header.findViewById(R.id.imageProfileJamaah);
-        NamaJamaah = (TextView) header.findViewById(R.id.textViewNamaJamaah);
-        EmailJamaah = (TextView) header.findViewById(R.id.textViewEmailJamaah);
-        final String userID = user.getUid();
-        storageRef.child("Jamaah/FotoProfil/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                System.out.println(uri);
-                Glide.with(getApplicationContext()).load(uri).into(imageProfileJamaah);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-        EmailJamaah.setText(user.getEmail());
-
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
-
-    private void showData(DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            ProfileJamaah uInfo = new ProfileJamaah();
-            uInfo.setNama(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNama());
-            publicNamaJamaah = uInfo.getNama();
-            NamaJamaah.setText(uInfo.getNama());
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.jamaah_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings_jamaah) {
-            return true; }
-
-        return super.onOptionsItemSelected(item);
-    }
-    @SuppressWarnings("StatementWithEmptyBody")
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         if (id == R.id.nav_logout){
             mAuth.signOut();
             startActivity(new Intent(JadwalJamaah.this,MainActivity.class));
@@ -159,6 +80,9 @@ public class JadwalJamaah extends AppCompatActivity implements NavigationView.On
         }else if (id == R.id.nav_Home){
             startActivity(new Intent(JadwalJamaah.this,Main_Jamaah.class));
         }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

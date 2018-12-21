@@ -51,7 +51,6 @@
         <activity android:name=".Jamaah.JadwalJamaah" />
         <activity android:name=".Jamaah.PotensiPengeluaran" />
         <activity android:name=".Tentang" />
-        <activity android:name=".Jamaah.jamaah_presensi" />
         <activity android:name=".Guru.Presensi_Guru" />
         <activity android:name=".Data_Jamaah" />
         <activity android:name=".Guru.Jadwal_Guru" />

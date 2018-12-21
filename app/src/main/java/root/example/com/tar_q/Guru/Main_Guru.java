@@ -351,7 +351,10 @@ public class Main_Guru extends AppCompatActivity
             Intent mIntent = new Intent(Main_Guru.this, Guru_Progres.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Pendapatan) {
-            Intent mIntent = new Intent(Main_Guru.this, Tentang.class);
+            Intent mIntent = new Intent(Main_Guru.this, Guru_Pendapatan.class);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_main_guru) {
+            Intent mIntent = new Intent(Main_Guru.this, Main_Guru.class);
             startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
