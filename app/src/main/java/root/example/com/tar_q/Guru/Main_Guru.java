@@ -57,10 +57,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import root.example.com.tar_q.Data_Jamaah;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
-import root.example.com.tar_q.Tentang;
 import root.example.com.tar_q.services.LocationUpdate;
 
 public class Main_Guru extends AppCompatActivity

@@ -30,10 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import root.example.com.tar_q.Data_Jamaah;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
-import root.example.com.tar_q.Tentang;
 
 public class Presensi_Guru extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
