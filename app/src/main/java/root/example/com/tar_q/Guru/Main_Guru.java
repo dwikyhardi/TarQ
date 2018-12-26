@@ -94,7 +94,7 @@ public class Main_Guru extends AppCompatActivity
 
     //resource Layout
     private ImageView imageProfileGuru, ivFotoMuridPopup;
-    private TextView NamaGuru, EmailGuru, Month;
+    private TextView NamaGuru, EmailGuru, Month, SaldoGuru;
     private Button test, btnTerimaPopup, btnTolakPopup;
     private Dialog NotifikasiGuru;
     private TextView etNamaPenerimaPopup,Tv_Kantor,Tv_Private;
@@ -147,6 +147,7 @@ public class Main_Guru extends AppCompatActivity
         imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
         NamaGuru = (TextView) header.findViewById(R.id.textViewNamaGuru);
         EmailGuru = (TextView) header.findViewById(R.id.textViewEmailGuru);
+        SaldoGuru = (TextView) header.findViewById(R.id.textViewSaldoGuru);
         final String userID = user.getUid();
         storageRef.child("Guru/IdentitasGuru/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -212,7 +213,9 @@ public class Main_Guru extends AppCompatActivity
             ProfileGuru uInfo = new ProfileGuru();
             Log.d(TAG, "showNama() returned: " + Lokasi);
             uInfo.setNama(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
+            uInfo.setSaldo(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getSaldo());
             NamaGuru.setText(uInfo.getNama());
+            SaldoGuru.setText("Saldo Rp." + uInfo.getSaldo());
             Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
         }
     }
@@ -560,6 +563,7 @@ public class Main_Guru extends AppCompatActivity
                         int j = 1;
                         String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
                         while(a.length > j){
+                            int sab = j * 35000;
                             listNamaEvent = NamaJamaah.get(i);
                             listWaktuEvent = Long.parseLong(a[j]);
                             setEvent(listWaktuEvent, listNamaEvent);
@@ -689,6 +693,7 @@ public class Main_Guru extends AppCompatActivity
 
     private void setEvent(Long waktu, String murid){
 
+        Log.d(TAG, "setEvent() returned: ");
         final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, waktu, "~" + murid + "~");
         kalenderGuru.addEvent(ev1);
         kalenderGuru.setListener(new CompactCalendarView.CompactCalendarViewListener() {

@@ -10,6 +10,7 @@ public class ProfileJamaah {
     private String latitude;
     private String longitude;
     private int level;
+    private int saldo;
 
     public String getId_user() {
         return id_user;
@@ -81,5 +82,13 @@ public class ProfileJamaah {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(int saldo) {
+        this.saldo = saldo;
     }
 }

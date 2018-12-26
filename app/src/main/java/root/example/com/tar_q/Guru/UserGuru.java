@@ -8,6 +8,7 @@ public class UserGuru {
     public String tanggallahir;
     public String lembaga;
     public int level;
+    public int saldo;
     public String pratahsin1;
     public String pratahsin2;
     public String pratahsin3;
@@ -35,6 +36,7 @@ public class UserGuru {
         this.tanggallahir = tanggallahir;
         this.lembaga = lembaga;
         this.level = 3;
+        this.saldo = 0;
         this.latitude = latitude;
         this.longitude = longitude;
         this.latitudeRumah = latitudeRumah;

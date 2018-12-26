@@ -8,6 +8,7 @@ public class ProfileGuru {
     private String tanggallahir;
     private String lembaga;
     private int level;
+    private int saldo;
     private String latitude;
     private String longitude;
     private String verifikasi;
@@ -171,5 +172,13 @@ public class ProfileGuru {
 
     public void setBahasaarab(String bahasaarab) {
         this.bahasaarab = bahasaarab;
+    }
+
+    public int getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(int saldo) {
+        this.saldo = saldo;
     }
 }

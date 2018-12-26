@@ -10,6 +10,7 @@ public class UserJamaah {
     public String latitude;
     public String longitude;
     public int level;
+    public int saldo;
 
     public UserJamaah(String id_user, String nama, String noNIK, String nohp, String alamat, String tanggallahir, String latitude, String longitude) {
         this.id_user = id_user;
@@ -21,5 +22,6 @@ public class UserJamaah {
         this.latitude = latitude;
         this.longitude = longitude;
         this.level = 2;
+        this.saldo = 0;
     }
 }
