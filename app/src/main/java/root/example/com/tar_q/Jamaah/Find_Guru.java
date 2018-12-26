@@ -526,6 +526,7 @@ public class Find_Guru extends AppCompatActivity
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
                         startActivity(mIntent);
+                        break;
                     }
                     case "Rumah":{
                         myRef1.child(key).child("idguru").setValue(IdGuru);
@@ -541,6 +542,7 @@ public class Find_Guru extends AppCompatActivity
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
                         startActivity(mIntent);
+                        break;
                     }
                     case "Lainnya":{
                         myRef1.child(key).child("idguru").setValue(IdGuru);
@@ -556,6 +558,7 @@ public class Find_Guru extends AppCompatActivity
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
                         startActivity(mIntent);
+                        break;
                     }
                 }
             }
