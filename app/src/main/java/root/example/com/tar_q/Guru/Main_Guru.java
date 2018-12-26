@@ -88,6 +88,7 @@ public class Main_Guru extends AppCompatActivity
     private String NamaMurid, NomorKelas, JumlahPertemuan;
     private String listNamaEvent;
     private Long listWaktuEvent;
+    private String Lokasi;
 
 
     private CompactCalendarView kalenderGuru;
@@ -128,6 +129,7 @@ public class Main_Guru extends AppCompatActivity
         LL = (LinearLayout) findViewById(R.id.LL);
         Tv_Kantor = (TextView) findViewById(R.id.Tv_Kantor);
         Tv_Private=(TextView) findViewById(R.id.Tv_Private);
+        Lokasi = getIntent().getStringExtra("Lokasi");
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -210,8 +212,18 @@ public class Main_Guru extends AppCompatActivity
     private void showNama(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
-            uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
-            NamaGuru.setText(uInfo.getNama());
+            Log.d(TAG, "showNama() returned: " + Lokasi);
+            try {
+                if (Lokasi.equals("BANDUNG")) {
+                    uInfo.setNama(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getNama());
+                    NamaGuru.setText(uInfo.getNama());
+                } else {
+                    uInfo.setNama(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getNama());
+                    NamaGuru.setText(uInfo.getNama());
+                }
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
             Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
         }
     }
@@ -233,9 +245,9 @@ public class Main_Guru extends AppCompatActivity
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
-                    myRef2.child("GURU").child(userID)
+                    myRef2.child("GURU").child(Lokasi).child(userID)
                             .child("latitude").setValue(lat);
-                    myRef2.child("GURU").child(userID)
+                    myRef2.child("GURU").child(Lokasi).child(userID)
                             .child("longitude").setValue(lng);
                     startLocationService();
                 } else {
@@ -331,35 +343,42 @@ public class Main_Guru extends AppCompatActivity
 
         if (id == R.id.nav_account) {
             Intent mIntent = new Intent(Main_Guru.this, Biodata_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Prosensi) {
             Intent mIntent = new Intent(Main_Guru.this, Presensi_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_data_jamaah) {
             Intent mIntent = new Intent(Main_Guru.this, Data_Jamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_jadwal_mengajar) {
             Intent mIntent = new Intent(Main_Guru.this, Jadwal_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Materi_pengajaran) {
             Intent mIntent = new Intent(Main_Guru.this, Guru_Materi.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Potential_pendapatan) {
             Intent mIntent = new Intent(Main_Guru.this, Guru_Potensi.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Progres_report) {
             Intent mIntent = new Intent(Main_Guru.this, Guru_Progres.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Pendapatan) {
             Intent mIntent = new Intent(Main_Guru.this, Guru_Pendapatan.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_main_guru) {
             Intent mIntent = new Intent(Main_Guru.this, Main_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
-            /*Intent mIntent = new Intent(Main_Guru.this, Authors.class);
-            startActivity(mIntent);*/
         }else if (id == R.id.nav_logout) {
             mAuth.signOut();
             Intent mIntent = new Intent(Main_Guru.this, MainActivity.class);

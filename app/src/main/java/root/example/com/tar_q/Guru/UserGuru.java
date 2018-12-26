@@ -19,13 +19,15 @@ public class UserGuru {
     public String tahfizh;
     public String latitude;
     public String longitude;
+    public String latitudeRumah;
+    public String longitudeRumah;
     public String verifikasi;
 
     public UserGuru(String id_user, String nama, String nohp,
                     String alamat ,String tanggallahir,String lembaga, String pratahsin1,
                     String pratahsin2,  String pratahsin3, String tahsin1,
                     String tahsin2,  String tahsin3,  String tahsin4, String bahasaarab,
-                    String tahfizh, String latitude, String longitude) {
+                    String tahfizh, String latitude, String longitude, String latitudeRumah, String longitudeRumah) {
         this.id_user = id_user;
         this.nama = nama;
         this.nohp = nohp;
@@ -35,6 +37,8 @@ public class UserGuru {
         this.level = 3;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.latitudeRumah = latitudeRumah;
+        this.longitudeRumah = longitudeRumah;
         this.pratahsin1 = pratahsin1;
         this.pratahsin2 = pratahsin2;
         this.pratahsin3 = pratahsin3;

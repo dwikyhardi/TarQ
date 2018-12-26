@@ -131,15 +131,16 @@ public class Berhasil extends AppCompatActivity {
             ProfileGuru kuInfo = new ProfileGuru();
             try {
 
-                kuInfo.setLevel(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getLevel());
+                kuInfo.setLevel(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getLevel());
                 System.out.println("kuInfo = " + kuInfo.getLevel());
 
                 if (kuInfo.getLevel() == 3) {
                     try {
-                        kuInfo.setVerifikasi(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getVerifikasi());
+                        kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getVerifikasi());
                         if (kuInfo.getVerifikasi().equals("true")) {
-                            System.out.println("HAHA GURU");
+                            System.out.println("Bandung");
                             Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
+                            mIntent.putExtra("Lokasi", "BANDUNG");
                             startActivity(mIntent);
                         } else {
                             toastMessage("Akun Anda Belum Ter-Verifikasi");
@@ -149,8 +150,18 @@ public class Berhasil extends AppCompatActivity {
                         startActivity(sIntent);
                     }
                 }
-
-
+                kuInfo.setLevel(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getLevel());
+                if (kuInfo.getLevel() == 3){
+                    kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getVerifikasi());
+                    if (kuInfo.getVerifikasi().equals("true")) {
+                        System.out.println("Jakarta");
+                        Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
+                        mIntent.putExtra("Lokasi","JAKARTA");
+                        startActivity(mIntent);
+                    } else {
+                        toastMessage("Akun Anda Belum Ter-Verifikasi");
+                    }
+                }
             } catch (NullPointerException e) {
                 return e;
             }
