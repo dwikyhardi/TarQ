@@ -1,6 +1,7 @@
 package root.example.com.tar_q.Guru;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,9 +31,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
+import root.example.com.tar_q.ScanBarcode;
+
+import static com.facebook.login.widget.ProfilePictureView.TAG;
 
 public class Presensi_Guru extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -44,6 +56,9 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private TextView NamaGuru, EmailGuru;
+
+    private Button Scan;
+    private ImageView BarcodeGuru;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +83,19 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         myRef = mFirebaseDatabase.getReference();
 
         //Resource Layout
+        BarcodeGuru = (ImageView) findViewById(R.id.BarcodeGuru);
+        Scan = (Button) findViewById(R.id.ScanBarcodeGuru);
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(userID, BarcodeFormat.QR_CODE, 1000, 1000);//200,200 ukuran barcodenya
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            BarcodeGuru.setImageBitmap(bitmap);
+        } catch (WriterException | NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
         imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
@@ -97,6 +125,20 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        Scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(Presensi_Guru.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setPrompt("Judul");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(false);
+                integrator.setCaptureActivity(ScanBarcode.class);
+                integrator.setBarcodeImageEnabled(false);
+                integrator.initiateScan();
             }
         });
 
@@ -148,6 +190,10 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             Intent mIntent = new Intent(Presensi_Guru.this, Guru_Pendapatan.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
+        }else if (id == R.id.nav_main_guru) {
+            Intent mIntent = new Intent(Presensi_Guru.this, Main_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Data_Jamaah.this, Authors.class);
@@ -162,6 +208,16 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            //disini kode
+            String naun = result.getContents();//ambil hasil scan
+            Log.d(TAG, "onActivityResult() returned: " + naun);
+        }
+    }
 
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -175,6 +231,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         } else {
             super.onBackPressed();
             Intent intent = new Intent(Presensi_Guru.this, Main_Guru.class);
+            intent.putExtra("Lokasi", Lokasi);
             startActivity(intent);
         }
     }

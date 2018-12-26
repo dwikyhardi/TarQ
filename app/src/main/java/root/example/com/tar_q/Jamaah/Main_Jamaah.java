@@ -3,6 +3,7 @@ package root.example.com.tar_q.Jamaah;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -42,6 +43,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -99,7 +105,7 @@ public class Main_Jamaah extends AppCompatActivity
 
     //resource Layout
     private ImageView imageProfileJamaah;
-    private TextView NamaJamaah, EmailJamaah, TV;
+    private TextView NamaJamaah, EmailJamaah, SaldoJamaah;
     private Button btnBelajar;
     public String publicNamaJamaah, NomorKelas;
 
@@ -136,6 +142,7 @@ public class Main_Jamaah extends AppCompatActivity
         imageProfileJamaah = (ImageView) header.findViewById(R.id.imageProfileJamaah);
         NamaJamaah = (TextView) header.findViewById(R.id.textViewNamaJamaah);
         EmailJamaah = (TextView) header.findViewById(R.id.textViewEmailJamaah);
+        SaldoJamaah = (TextView) header.findViewById(R.id.textViewSaldoJamaah);
         final String userID = user.getUid();
         storageRef.child("Jamaah/FotoProfil/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -197,6 +204,8 @@ public class Main_Jamaah extends AppCompatActivity
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileJamaah uInfo = new ProfileJamaah();
             uInfo.setNama(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNama());
+            uInfo.setSaldo(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getSaldo());
+            SaldoJamaah.setText("Saldo Rp." + uInfo.getSaldo());
             publicNamaJamaah = uInfo.getNama();
             NamaJamaah.setText(uInfo.getNama());
         }
@@ -334,6 +343,7 @@ public class Main_Jamaah extends AppCompatActivity
                         int j = 1;
                         String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
                         while(a.length > j){
+                            int sab = j * 35000;
                             listNamaEvent = NamaGuru.get(i);
                             listWaktuEvent = Long.parseLong(a[j]);
                             setEvent(listWaktuEvent, listNamaEvent);

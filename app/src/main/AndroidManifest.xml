@@ -57,7 +57,8 @@
         <activity android:name=".Guru.Guru_Materi" />
         <activity android:name=".Guru.Guru_Potensi" />
         <activity android:name=".Guru.Guru_Progres" />
-        <activity android:name=".Guru.Guru_Pendapatan"></activity>
+        <activity android:name=".Guru.Guru_Pendapatan" />
+        <activity android:name=".ScanBarcode"></activity>
     </application>
 
 </manifest>
