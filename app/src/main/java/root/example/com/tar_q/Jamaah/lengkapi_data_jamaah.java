@@ -248,11 +248,13 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
                     if (spin_Lokasi.getSelectedItem().toString().equals("Bandung")) {
                         UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
                         myRef.child("TARQ").child("USER").child("JAMAAH").child("BANDUNG").child(userID).setValue(newUser);
+                        myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).removeValue();
                         Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
                         startActivity(i);
                     } else {
                         UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
                         myRef.child("TARQ").child("USER").child("JAMAAH").child("BANDUNG").child(userID).setValue(newUser);
+                        myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).removeValue();
                         Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
                         startActivity(i);
                     }
