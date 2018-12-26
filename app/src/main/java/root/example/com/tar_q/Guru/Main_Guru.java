@@ -213,17 +213,8 @@ public class Main_Guru extends AppCompatActivity
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
             Log.d(TAG, "showNama() returned: " + Lokasi);
-            try {
-                if (Lokasi.equals("BANDUNG")) {
-                    uInfo.setNama(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getNama());
-                    NamaGuru.setText(uInfo.getNama());
-                } else {
-                    uInfo.setNama(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getNama());
-                    NamaGuru.setText(uInfo.getNama());
-                }
-            }catch (NullPointerException e){
-                e.printStackTrace();
-            }
+            uInfo.setNama(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
+            NamaGuru.setText(uInfo.getNama());
             Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
         }
     }
