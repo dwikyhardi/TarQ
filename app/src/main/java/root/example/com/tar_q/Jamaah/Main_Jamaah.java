@@ -128,6 +128,7 @@ public class Main_Jamaah extends AppCompatActivity
         userID = user.getUid();
         btnBelajar = (Button) findViewById(R.id.btnBelajar);
         NotifikasiMurid = new Dialog(this);
+        Lokasi = getIntent().getStringExtra("Lokasi");
 
         //Add Resource
         //Resource Layout

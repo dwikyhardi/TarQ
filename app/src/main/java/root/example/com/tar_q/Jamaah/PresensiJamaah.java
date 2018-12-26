@@ -43,11 +43,11 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
     private String Lokasi,userID;
     private FirebaseStorage storage;
     private StorageReference storageRef;
-    private ImageView imageProfileGuru;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
-    private TextView NamaGuru, EmailGuru;
+    private ImageView imageProfileJamaah;
+    private TextView NamaJamaah, EmailJamaah;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +74,15 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
         //Resource Layout
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
-        imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
-        NamaGuru = (TextView) header.findViewById(R.id.textViewNamaGuru);
-        EmailGuru = (TextView) header.findViewById(R.id.textViewEmailGuru);
+        imageProfileJamaah = (ImageView) header.findViewById(R.id.imageProfileJamaah);
+        NamaJamaah = (TextView) header.findViewById(R.id.textViewNamaJamaah);
+        EmailJamaah = (TextView) header.findViewById(R.id.textViewEmailJamaah);
         final String userID = user.getUid();
-        storageRef.child("Guru/IdentitasGuru/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageRef.child("Jamaah/FotoProfil/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 System.out.println(uri);
-                Glide.with(getApplicationContext()).load(uri).into(imageProfileGuru);
+                Glide.with(getApplicationContext()).load(uri).into(imageProfileJamaah);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -90,7 +90,7 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
                 // Handle any errors
             }
         });
-        EmailGuru.setText(user.getEmail());
+        EmailJamaah.setText(user.getEmail());
         //tambahan Ieu
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -111,7 +111,7 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
             ProfileJamaah uInfo = new ProfileJamaah();
             Log.d(TAG, "showNama() returned: " + Lokasi);
             uInfo.setNama(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
-            NamaGuru.setText(uInfo.getNama());
+            NamaJamaah.setText(uInfo.getNama());
             Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
         }
     }
