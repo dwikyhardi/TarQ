@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +32,7 @@ public class Biodata_Guru extends AppCompatActivity {
 
     private ImageButton ImgBtnBack;
     private ImageView fotoProfile;
-    private TextView namaProfile,alamatProfile,noTelp,tanggalLahir;
+    private TextView namaProfile, alamatProfile, noTelp, tanggalLahir;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference myRef;
@@ -97,17 +100,24 @@ public class Biodata_Guru extends AppCompatActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
             uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
             uInfo.setAlamat(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getAlamat());
             uInfo.setTanggallahir(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getTanggallahir());
             uInfo.setNohp(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNohp());
 
-            namaProfile.setText("Nama : "+uInfo.getNama());
-            alamatProfile.setText("Alamat : "+uInfo.getAlamat());
-            noTelp.setText("Nomor Telepon : "+uInfo.getNohp());
-            tanggalLahir.setText("Tanggal Lahir : "+uInfo.getTanggallahir());
+            namaProfile.setText("Nama : " + uInfo.getNama());
+            alamatProfile.setText("Alamat : " + uInfo.getAlamat());
+            noTelp.setText("Nomor Telepon : " + uInfo.getNohp());
+            tanggalLahir.setText("Tanggal Lahir : " + uInfo.getTanggallahir());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Biodata_Guru.this, Main_Guru.class);
+        startActivity(intent);
     }
 }

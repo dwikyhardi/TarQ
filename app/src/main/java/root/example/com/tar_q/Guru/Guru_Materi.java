@@ -18,7 +18,7 @@ import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.Tentang;
 
-public class Guru_Materi extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Guru_Materi extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +44,35 @@ public class Guru_Materi extends AppCompatActivity implements NavigationView.OnN
         if (id == R.id.nav_account) {
             Intent mIntent = new Intent(Guru_Materi.this, Biodata_Guru.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Prosensi) {
+        } else if (id == R.id.nav_Prosensi) {
             Intent mIntent = new Intent(Guru_Materi.this, Presensi_Guru.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_data_jamaah) {
+        } else if (id == R.id.nav_data_jamaah) {
             Intent mIntent = new Intent(Guru_Materi.this, Data_Jamaah.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_jadwal_mengajar) {
+        } else if (id == R.id.nav_jadwal_mengajar) {
             Intent mIntent = new Intent(Guru_Materi.this, Jadwal_Guru.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Materi_pengajaran) {
+        } else if (id == R.id.nav_Materi_pengajaran) {
             Intent mIntent = new Intent(Guru_Materi.this, Guru_Materi.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Potential_pendapatan) {
+        } else if (id == R.id.nav_Potential_pendapatan) {
             Intent mIntent = new Intent(Guru_Materi.this, Guru_Potensi.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Progres_report) {
+        } else if (id == R.id.nav_Progres_report) {
             Intent mIntent = new Intent(Guru_Materi.this, Guru_Progres.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Pendapatan) {
+        } else if (id == R.id.nav_Pendapatan) {
             Intent mIntent = new Intent(Guru_Materi.this, Guru_Pendapatan.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_main_guru) {
+        } else if (id == R.id.nav_main_guru) {
             Intent mIntent = new Intent(Guru_Materi.this, Main_Guru.class);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Tentang) {
+        } else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Data_Jamaah.this, Authors.class);
             startActivity(mIntent);*/
-        }else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             /*mAuth.signOut();*/
             Intent mIntent = new Intent(Guru_Materi.this, MainActivity.class);
             startActivity(mIntent);
@@ -85,5 +85,18 @@ public class Guru_Materi extends AppCompatActivity implements NavigationView.OnN
 
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            Intent intent = new Intent(Guru_Materi.this, Main_Guru.class);
+            startActivity(intent);
+        }
     }
 }

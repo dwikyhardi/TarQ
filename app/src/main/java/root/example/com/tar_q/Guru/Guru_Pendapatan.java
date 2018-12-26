@@ -100,6 +100,18 @@ public class Guru_Pendapatan extends AppCompatActivity implements NavigationView
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            Intent intent = new Intent(Guru_Pendapatan.this, Main_Guru.class);
+            startActivity(intent);
+        }
+    }
+
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }

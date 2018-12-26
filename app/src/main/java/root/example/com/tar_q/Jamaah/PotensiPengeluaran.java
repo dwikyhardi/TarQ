@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,7 +41,7 @@ public class PotensiPengeluaran extends AppCompatActivity  implements Navigation
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,25 +64,37 @@ public class PotensiPengeluaran extends AppCompatActivity  implements Navigation
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout){
+        if (id == R.id.nav_logout) {
             mAuth.signOut();
-            startActivity(new Intent(PotensiPengeluaran.this,MainActivity.class));
-        }else if (id == R.id.nav_Prosensi_jamaah){
-            startActivity(new Intent(PotensiPengeluaran.this,PresensiJamaah.class));
-        }else if (id == R.id.nav_Jadwal){
-            startActivity(new Intent(PotensiPengeluaran.this,JadwalJamaah.class));
-        }else if (id == R.id.nav_Potensi_pengeluaran){
-            startActivity(new Intent(PotensiPengeluaran.this,PotensiPengeluaran.class));
-        }else if (id == R.id.nav_Tentang){
-            startActivity(new Intent(PotensiPengeluaran.this,Tentang.class));
-        }else if (id == R.id.nav_Account){
-            startActivity(new Intent(PotensiPengeluaran.this,Biodata_Jamaah.class));
-        }else if (id == R.id.nav_Home){
-            startActivity(new Intent(PotensiPengeluaran.this,Main_Jamaah.class));
+            startActivity(new Intent(PotensiPengeluaran.this, MainActivity.class));
+        } else if (id == R.id.nav_Prosensi_jamaah) {
+            startActivity(new Intent(PotensiPengeluaran.this, PresensiJamaah.class));
+        } else if (id == R.id.nav_Jadwal) {
+            startActivity(new Intent(PotensiPengeluaran.this, JadwalJamaah.class));
+        } else if (id == R.id.nav_Potensi_pengeluaran) {
+            startActivity(new Intent(PotensiPengeluaran.this, PotensiPengeluaran.class));
+        } else if (id == R.id.nav_Tentang) {
+            startActivity(new Intent(PotensiPengeluaran.this, Tentang.class));
+        } else if (id == R.id.nav_Account) {
+            startActivity(new Intent(PotensiPengeluaran.this, Biodata_Jamaah.class));
+        } else if (id == R.id.nav_Home) {
+            startActivity(new Intent(PotensiPengeluaran.this, Main_Jamaah.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            Intent intent = new Intent(PotensiPengeluaran.this, Main_Jamaah.class);
+            startActivity(intent);
+        }
     }
 }

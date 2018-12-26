@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -64,25 +65,37 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout){
+        if (id == R.id.nav_logout) {
             mAuth.signOut();
-            startActivity(new Intent(PresensiJamaah.this,MainActivity.class));
-        }else if (id == R.id.nav_Prosensi_jamaah){
-            startActivity(new Intent(PresensiJamaah.this,PresensiJamaah.class));
-        }else if (id == R.id.nav_Jadwal){
-            startActivity(new Intent(PresensiJamaah.this,JadwalJamaah.class));
-        }else if (id == R.id.nav_Potensi_pengeluaran){
-            startActivity(new Intent(PresensiJamaah.this,PotensiPengeluaran.class));
-        }else if (id == R.id.nav_Tentang){
-            startActivity(new Intent(PresensiJamaah.this,Tentang.class));
-        }else if (id == R.id.nav_Account){
-            startActivity(new Intent(PresensiJamaah.this,Biodata_Jamaah.class));
-        }else if (id == R.id.nav_Home){
-            startActivity(new Intent(PresensiJamaah.this,Main_Jamaah.class));
+            startActivity(new Intent(PresensiJamaah.this, MainActivity.class));
+        } else if (id == R.id.nav_Prosensi_jamaah) {
+            startActivity(new Intent(PresensiJamaah.this, PresensiJamaah.class));
+        } else if (id == R.id.nav_Jadwal) {
+            startActivity(new Intent(PresensiJamaah.this, JadwalJamaah.class));
+        } else if (id == R.id.nav_Potensi_pengeluaran) {
+            startActivity(new Intent(PresensiJamaah.this, PotensiPengeluaran.class));
+        } else if (id == R.id.nav_Tentang) {
+            startActivity(new Intent(PresensiJamaah.this, Tentang.class));
+        } else if (id == R.id.nav_Account) {
+            startActivity(new Intent(PresensiJamaah.this, Biodata_Jamaah.class));
+        } else if (id == R.id.nav_Home) {
+            startActivity(new Intent(PresensiJamaah.this, Main_Jamaah.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            Intent intent = new Intent(PresensiJamaah.this, Main_Jamaah.class);
+            startActivity(intent);
+        }
     }
 }

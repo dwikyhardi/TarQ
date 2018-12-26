@@ -103,4 +103,16 @@ public class Guru_Potensi extends AppCompatActivity implements NavigationView.On
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            Intent intent = new Intent(Guru_Potensi.this, Main_Guru.class);
+            startActivity(intent);
+        }
+    }
 }
