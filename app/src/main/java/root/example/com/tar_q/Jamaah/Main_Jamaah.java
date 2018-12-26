@@ -204,8 +204,8 @@ public class Main_Jamaah extends AppCompatActivity
     private void showData(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileJamaah uInfo = new ProfileJamaah();
-            uInfo.setNama(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNama());
-            uInfo.setSaldo(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getSaldo());
+            uInfo.setNama(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getNama());
+            uInfo.setSaldo(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getSaldo());
             SaldoJamaah.setText("Saldo Rp." + uInfo.getSaldo());
             publicNamaJamaah = uInfo.getNama();
             NamaJamaah.setText(uInfo.getNama());
