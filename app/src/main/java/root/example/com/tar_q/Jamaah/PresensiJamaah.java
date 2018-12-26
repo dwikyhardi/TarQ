@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,16 +32,22 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import root.example.com.tar_q.Guru.ProfileGuru;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.Tentang;
 
 public class PresensiJamaah extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FirebaseDatabase mFirebaseDatabase;
+    private static final String TAG = "PresensiJamaah";
+    private String Lokasi,userID;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private ImageView imageProfileGuru;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private TextView NamaGuru, EmailGuru;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,33 +64,100 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
 
+        Lokasi = getIntent().getStringExtra("Lokasi");
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        userID = user.getUid();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
 
+        //Resource Layout
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
+        imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
+        NamaGuru = (TextView) header.findViewById(R.id.textViewNamaGuru);
+        EmailGuru = (TextView) header.findViewById(R.id.textViewEmailGuru);
+        final String userID = user.getUid();
+        storageRef.child("Guru/IdentitasGuru/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                System.out.println(uri);
+                Glide.with(getApplicationContext()).load(uri).into(imageProfileGuru);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+        EmailGuru.setText(user.getEmail());
+        //tambahan Ieu
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showNama(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void showNama(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            ProfileJamaah uInfo = new ProfileJamaah();
+            Log.d(TAG, "showNama() returned: " + Lokasi);
+            uInfo.setNama(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
+            NamaGuru.setText(uInfo.getNama());
+            Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
+        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_logout) {
-            mAuth.signOut();
-            startActivity(new Intent(PresensiJamaah.this, MainActivity.class));
-        } else if (id == R.id.nav_Prosensi_jamaah) {
-            startActivity(new Intent(PresensiJamaah.this, PresensiJamaah.class));
-        } else if (id == R.id.nav_Jadwal) {
-            startActivity(new Intent(PresensiJamaah.this, JadwalJamaah.class));
-        } else if (id == R.id.nav_Potensi_pengeluaran) {
-            startActivity(new Intent(PresensiJamaah.this, PotensiPengeluaran.class));
-        } else if (id == R.id.nav_Tentang) {
-            startActivity(new Intent(PresensiJamaah.this, Tentang.class));
-        } else if (id == R.id.nav_Account) {
-            startActivity(new Intent(PresensiJamaah.this, Biodata_Jamaah.class));
-        } else if (id == R.id.nav_Home) {
-            startActivity(new Intent(PresensiJamaah.this, Main_Jamaah.class));
-        }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        if (id == R.id.nav_logout){
+            mAuth.signOut();
+            Intent mIntent = new Intent(PresensiJamaah.this,MainActivity.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Prosensi_jamaah){
+            mAuth.signOut();
+            Intent mIntent = new Intent(PresensiJamaah.this,PresensiJamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Jadwal){
+            mAuth.signOut();
+            Intent mIntent = new Intent(PresensiJamaah.this,JadwalJamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Potensi_pengeluaran){
+            mAuth.signOut();
+            Intent mIntent = new Intent(PresensiJamaah.this,PotensiPengeluaran.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Tentang){
+            mAuth.signOut();
+            Intent mIntent = new Intent(PresensiJamaah.this,Tentang.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Account){
+            mAuth.signOut();
+            Intent mIntent = new Intent(PresensiJamaah.this,Biodata_Jamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        }else if (id == R.id.nav_Home){
+            mAuth.signOut();
+            Intent mIntent = new Intent(PresensiJamaah.this,Main_Jamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        }
         return true;
     }
 
@@ -95,6 +169,7 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
         } else {
             super.onBackPressed();
             Intent intent = new Intent(PresensiJamaah.this, Main_Jamaah.class);
+            intent.putExtra("Lokasi", Lokasi);
             startActivity(intent);
         }
     }

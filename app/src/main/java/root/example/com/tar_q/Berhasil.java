@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import root.example.com.tar_q.Guru.Main_Guru;
 import root.example.com.tar_q.Guru.ProfileGuru;
 import root.example.com.tar_q.Guru.lengkapi_data_guru;
@@ -35,7 +38,7 @@ public class Berhasil extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, myRef1;
     private String userID;
     private long backPressedTime;
     private Toast backToast;
@@ -56,8 +59,21 @@ public class Berhasil extends AppCompatActivity {
         myRef = mFirebaseDatabase.getReference();
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("GURU");
         System.out.println("User = " + userID);
 
+
+        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showLokasi((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -95,6 +111,21 @@ public class Berhasil extends AppCompatActivity {
 
     }
 
+    private void showLokasi(Map<String, Object> dataSnapshot) {
+        final ArrayList<String> Lokasi = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map lokasi = (Map) entry.getValue();
+            Lokasi.add((String) lokasi.get("GURU"));
+        }
+        final ArrayList<String> listLokasi = new ArrayList<>();
+        int i = 0 ;
+        while (Lokasi.size()>i){
+            listLokasi.add(Lokasi.get(i));
+            i++;
+        }
+        Log.d(TAG, "showLokasi() returned: " + listLokasi);
+    }
+
     private NullPointerException showData(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             System.out.println("INI SHOWDATA 1");
@@ -105,11 +136,10 @@ public class Berhasil extends AppCompatActivity {
                     try {
                         uInfo.setNama(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNama());
                         System.out.println("HAHA JAMAAH " + uInfo.getNama());
-                        if(uInfo.getNama() == null){
+                        if (uInfo.getNama() == null) {
                             Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
                             startActivity(sIntent);
-                        }
-                        else{
+                        } else {
                             Intent mIntent = new Intent(Berhasil.this, Main_Jamaah.class);
                             startActivity(mIntent);
                         }
@@ -150,16 +180,22 @@ public class Berhasil extends AppCompatActivity {
                         startActivity(sIntent);
                     }
                 }
+
                 kuInfo.setLevel(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getLevel());
-                if (kuInfo.getLevel() == 3){
-                    kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getVerifikasi());
-                    if (kuInfo.getVerifikasi().equals("true")) {
-                        System.out.println("Jakarta");
-                        Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
-                        mIntent.putExtra("Lokasi","JAKARTA");
-                        startActivity(mIntent);
-                    } else {
-                        toastMessage("Akun Anda Belum Ter-Verifikasi");
+                if (kuInfo.getLevel() == 3) {
+                    try {
+                        kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getVerifikasi());
+                        if (kuInfo.getVerifikasi().equals("true")) {
+                            System.out.println("Jakarta");
+                            Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
+                            mIntent.putExtra("Lokasi", "JAKARTA");
+                            startActivity(mIntent);
+                        } else {
+                            toastMessage("Akun Anda Belum Ter-Verifikasi");
+                        }
+                    } catch (NullPointerException e) {
+                        Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
+                        startActivity(sIntent);
                     }
                 }
             } catch (NullPointerException e) {

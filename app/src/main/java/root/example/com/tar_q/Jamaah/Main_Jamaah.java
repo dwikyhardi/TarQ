@@ -90,7 +90,7 @@ public class Main_Jamaah extends AppCompatActivity
 
     private long backPressedTime;
     private Toast backToast;
-    private String userID, namaGuru, idGuru;
+    private String userID, namaGuru, idGuru,Lokasi;
 
     private TextView Month;
 
@@ -255,19 +255,39 @@ public class Main_Jamaah extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         if (id == R.id.nav_logout){
             mAuth.signOut();
-            startActivity(new Intent(Main_Jamaah.this,MainActivity.class));
+            Intent mIntent = new Intent(Main_Jamaah.this,MainActivity.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }else if (id == R.id.nav_Prosensi_jamaah){
-            startActivity(new Intent(Main_Jamaah.this,PresensiJamaah.class));
+            mAuth.signOut();
+            Intent mIntent = new Intent(Main_Jamaah.this,PresensiJamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }else if (id == R.id.nav_Jadwal){
-            startActivity(new Intent(Main_Jamaah.this,JadwalJamaah.class));
+            mAuth.signOut();
+            Intent mIntent = new Intent(Main_Jamaah.this,JadwalJamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }else if (id == R.id.nav_Potensi_pengeluaran){
-            startActivity(new Intent(Main_Jamaah.this,PotensiPengeluaran.class));
+            mAuth.signOut();
+            Intent mIntent = new Intent(Main_Jamaah.this,PotensiPengeluaran.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }else if (id == R.id.nav_Tentang){
-            startActivity(new Intent(Main_Jamaah.this,Tentang.class));
+            mAuth.signOut();
+            Intent mIntent = new Intent(Main_Jamaah.this,Tentang.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }else if (id == R.id.nav_Account){
-            startActivity(new Intent(Main_Jamaah.this,Biodata_Jamaah.class));
+            mAuth.signOut();
+            Intent mIntent = new Intent(Main_Jamaah.this,Biodata_Jamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }else if (id == R.id.nav_Home){
-            startActivity(new Intent(Main_Jamaah.this,Main_Jamaah.class));
+            mAuth.signOut();
+            Intent mIntent = new Intent(Main_Jamaah.this,Main_Jamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
         }
         return true;
     }

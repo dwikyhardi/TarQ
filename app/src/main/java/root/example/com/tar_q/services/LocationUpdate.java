@@ -44,6 +44,7 @@ public class LocationUpdate extends Service {
     private DatabaseReference myRef;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String userID,lat,lng;
+    private String Lokasi;
     private final static long UPDATE_INTERVAL = 4 * 1000;  /* 4 secs */
     private final static long FASTEST_INTERVAL = 2000; /* 2 sec */
     private final static long DISTANCE = 10; /* 2 sec */
@@ -51,13 +52,13 @@ public class LocationUpdate extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Lokasi = intent.getStringExtra("Lokasi");
         return null;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -131,9 +132,10 @@ public class LocationUpdate extends Service {
             myRef = mFirebaseDatabase.getReference();
             FirebaseUser user = mAuth.getCurrentUser();
             userID = user.getUid();
+            Log.d(TAG, "saveUserLocation() returned: " + Lokasi);
 
-            myRef.child("TARQ").child("USER").child("GURU").child(userID).child("latitude").setValue(lat);
-            myRef.child("TARQ").child("USER").child("GURU").child(userID).child("longitude").setValue(lng);
+            myRef.child("TARQ").child("USER").child("GURU").child(Lokasi).child(userID).child("latitude").setValue(lat);
+            myRef.child("TARQ").child("USER").child("GURU").child(Lokasi).child(userID).child("longitude").setValue(lng);
         }catch (NullPointerException e){
             Log.e(TAG, "saveUserLocation: User instance is null, stopping location service.");
             Log.e(TAG, "saveUserLocation: NullPointerException: "  + e.getMessage() );
