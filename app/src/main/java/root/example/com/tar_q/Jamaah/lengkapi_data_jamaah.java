@@ -1,5 +1,6 @@
 package root.example.com.tar_q.Jamaah;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -21,10 +22,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +80,7 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
     private EditText editTextIdentitas;
     private Button btnTambah;
     private TextView EditTexttanggallahir;
+    private Spinner spin_Lokasi;
 
     //Lokasi
     private GoogleMap mMap;
@@ -148,6 +152,11 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
 
+        spin_Lokasi = (Spinner) findViewById(R.id.spin_Lokasi);
+        String[] Lokasi = new String[]{"Pilih Lokasi", "Bandung", "Jakarta"};
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Lokasi);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin_Lokasi.setAdapter(mArrayAdapter);
 
         /*requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_GPS_FINE);*/
 
@@ -227,16 +236,26 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
                     } else if (filePath2 == null) {
                         showSnackbar(v, "Harap Lengkapi Foto Profil", 3000);
                         return;
+                    } else if (spin_Lokasi.getSelectedItem().toString().equals("Pilih Lokasi")) {
+                        showSnackbar(v, "Harap Pilih Lokasi", 3000);
+                        return;
                     } else {
                         uploadImageIdentitasJamaah();
                         uploadImageFotoJamaah();
                     }
                     FirebaseUser user = mAuth.getCurrentUser();
                     String userID = user.getUid();
-                    UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
-                    myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).setValue(newUser);
-                    Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
-                    startActivity(i);
+                    if (spin_Lokasi.getSelectedItem().toString().equals("Bandung")) {
+                        UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
+                        myRef.child("TARQ").child("USER").child("JAMAAH").child("BANDUNG").child(userID).setValue(newUser);
+                        Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
+                        startActivity(i);
+                    } else {
+                        UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
+                        myRef.child("TARQ").child("USER").child("JAMAAH").child("BANDUNG").child(userID).setValue(newUser);
+                        Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
+                        startActivity(i);
+                    }
                 } else {
                     showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);
                     return;
@@ -269,7 +288,7 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
                         lengkapi_data_jamaah.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
-                        year,month,day);
+                        year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -527,6 +546,9 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //minta permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         int currentApiVersion = Build.VERSION.SDK_INT;
         if (currentApiVersion >= Build.VERSION_CODES.M) {
             if (checkPermissionLocation()) {

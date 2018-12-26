@@ -118,8 +118,8 @@ public class Berhasil extends AppCompatActivity {
             Lokasi.add((String) lokasi.get("GURU"));
         }
         final ArrayList<String> listLokasi = new ArrayList<>();
-        int i = 0 ;
-        while (Lokasi.size()>i){
+        int i = 0;
+        while (Lokasi.size() > i) {
             listLokasi.add(Lokasi.get(i));
             i++;
         }
@@ -131,10 +131,27 @@ public class Berhasil extends AppCompatActivity {
             System.out.println("INI SHOWDATA 1");
             ProfileJamaah uInfo = new ProfileJamaah();
             try {
-                uInfo.setLevel(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getLevel());
+                uInfo.setLevel(ds.child("USER").child("JAMAAH").child("BANDUNG").child(userID).getValue(ProfileJamaah.class).getLevel());
                 if (uInfo.getLevel() == 2) {
                     try {
-                        uInfo.setNama(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNama());
+                        uInfo.setNama(ds.child("USER").child("JAMAAH").child("BANDUNG").child(userID).getValue(ProfileJamaah.class).getNama());
+                        System.out.println("HAHA JAMAAH " + uInfo.getNama());
+                        if (uInfo.getNama() == null) {
+                            Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
+                            startActivity(sIntent);
+                        } else {
+                            Intent mIntent = new Intent(Berhasil.this, Main_Jamaah.class);
+                            startActivity(mIntent);
+                        }
+                    } catch (NullPointerException e) {
+                        Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
+                        startActivity(sIntent);
+                    }
+                }
+                uInfo.setLevel(ds.child("USER").child("JAMAAH").child("BANDUNG").child(userID).getValue(ProfileJamaah.class).getLevel());
+                if (uInfo.getLevel() == 2) {
+                    try {
+                        uInfo.setNama(ds.child("USER").child("JAMAAH").child("BANDUNG").child(userID).getValue(ProfileJamaah.class).getNama());
                         System.out.println("HAHA JAMAAH " + uInfo.getNama());
                         if (uInfo.getNama() == null) {
                             Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
