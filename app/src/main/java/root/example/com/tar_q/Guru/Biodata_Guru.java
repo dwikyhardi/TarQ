@@ -36,7 +36,7 @@ public class Biodata_Guru extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference myRef;
-    private String userID;
+    private String userID,Lokasi;
     private FirebaseStorage storage;
     private StorageReference storageRef;
 
@@ -54,6 +54,7 @@ public class Biodata_Guru extends AppCompatActivity {
         userID = user.getUid();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
+        Lokasi = getIntent().getStringExtra("Lokasi");
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,6 +75,7 @@ public class Biodata_Guru extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent mIntent = new Intent(Biodata_Guru.this, Main_Guru.class);
+                mIntent.putExtra("Lokasi",Lokasi);
                 startActivity(mIntent);
             }
         });
@@ -102,10 +104,10 @@ public class Biodata_Guru extends AppCompatActivity {
     private void showData(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
-            uInfo.setNama(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNama());
-            uInfo.setAlamat(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getAlamat());
-            uInfo.setTanggallahir(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getTanggallahir());
-            uInfo.setNohp(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getNohp());
+            uInfo.setNama(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
+            uInfo.setAlamat(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getAlamat());
+            uInfo.setTanggallahir(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getTanggallahir());
+            uInfo.setNohp(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNohp());
 
             namaProfile.setText("Nama : " + uInfo.getNama());
             alamatProfile.setText("Alamat : " + uInfo.getAlamat());
@@ -118,6 +120,7 @@ public class Biodata_Guru extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(Biodata_Guru.this, Main_Guru.class);
+        intent.putExtra("Lokasi",Lokasi);
         startActivity(intent);
     }
 }

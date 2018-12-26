@@ -94,7 +94,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private TextView editTextTanggalLahir;
     private Button btnTambahGuru;
     private Button btnChooseSIM;
-    private Spinner PilihLembagaGuru;
+    private Spinner PilihLembagaGuru, spin_Lokasi;
 
     //Checkbox
     private CheckBox cb_Pratahsin1, cb_Pratahsin2, cb_Pratahsin3, cb_Tahsin1, cb_Tahsin2, cb_Tahsin3, cb_Tahsin4, cb_Bahasa_arab, cb_Tahfizh;
@@ -135,6 +135,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private static final int LOCATION_REQUEST = 500;
     public static final int ALAMAT = 1;
     private static int REQUEST_CODE = 0;
+    private String Lokasi;
 
     //Date
     private TextView mDisplayDate;
@@ -160,6 +161,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         BtnFotoProfile = (ImageView) findViewById(R.id.BtnFotoProfile);
         btnTambahGuru = (Button) findViewById(R.id.btnTambahGuru);
         PilihLembagaGuru = (Spinner) findViewById(R.id.PilihLembagaGuru);
+        spin_Lokasi = (Spinner) findViewById(R.id.spin_Lokasi);
 
         //Checkbox
         cb_Pratahsin1 = (CheckBox) findViewById(R.id.cb_Pratahsin1);
@@ -254,6 +256,11 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             }
         });
 
+        String[] Lokasi = new String[]{"Pilih Lokasi", "Bandung", "Jakarta"};
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Lokasi);
+        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin_Lokasi.setAdapter(mArrayAdapter);
+
         btnTambahGuru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -277,64 +284,69 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 } else if (filePath3 == null) {
                     showSnackbar(v, "Harap Lengkapi Foto SIM", 3000);
                     return;
+                } else if (spin_Lokasi.getSelectedItem().toString().equals("Pilih Lokasi")) {
+                    showSnackbar(v, "Harap Pilih Lokasi", 3000);
+                    return;
                 } else {
                     uploadImageIdentitas();
                     uploadImageSTNK();
                     uploadImageSIM();
                 }
 
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userID = user.getUid();
+                String praTahsin1 = "" + cb_Pratahsin1.isChecked();
+                String praTahsin2 = "" + cb_Pratahsin2.isChecked();
+                String praTahsin3 = "" + cb_Pratahsin3.isChecked();
+                String tahsin1 = "" + cb_Tahsin1.isChecked();
+                String tahsin2 = "" + cb_Tahsin2.isChecked();
+                String tahsin3 = "" + cb_Tahsin3.isChecked();
+                String tahsin4 = "" + cb_Tahsin4.isChecked();
+                String bahasaArab = "" + cb_Bahasa_arab.isChecked();
+                String tahfizh = "" + cb_Tahfizh.isChecked();
+                String lat = String.valueOf(alamatLatLng.latitude);
+                String lng = String.valueOf(alamatLatLng.longitude);
+
                 if (nama.equals("") && nohp.equals("") && alamat.equals("") && tanggallahir.equals("")) {
                     showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);
                     return;
                 } else {
-                    if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        String userID = user.getUid();
-                        String praTahsin1 = "" + cb_Pratahsin1.isChecked();
-                        String praTahsin2 = "" + cb_Pratahsin2.isChecked();
-                        String praTahsin3 = "" + cb_Pratahsin3.isChecked();
-                        String tahsin1 = "" + cb_Tahsin1.isChecked();
-                        String tahsin2 = "" + cb_Tahsin2.isChecked();
-                        String tahsin3 = "" + cb_Tahsin3.isChecked();
-                        String tahsin4 = "" + cb_Tahsin4.isChecked();
-                        String bahasaArab = "" + cb_Bahasa_arab.isChecked();
-                        String tahfizh = "" + cb_Tahfizh.isChecked();
-                        UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0");
-                        myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
-                        String addLembaga = LembagaString + "," + lembagatxt;
-                        setLembaga mSetLembaga = new setLembaga(addLembaga);
-                        Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
-                        myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, "onComplete() returned: berhasil upload ke database");
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d(TAG, "onComplete() returned: gagal upload ke database");
-                            }
-                        });
-                        Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
-                        startActivity(i);
-                    } else {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        String userID = user.getUid();
-                        String praTahsin1 = "" + cb_Pratahsin1.isChecked();
-                        String praTahsin2 = "" + cb_Pratahsin2.isChecked();
-                        String praTahsin3 = "" + cb_Pratahsin3.isChecked();
-                        String tahsin1 = "" + cb_Tahsin1.isChecked();
-                        String tahsin2 = "" + cb_Tahsin2.isChecked();
-                        String tahsin3 = "" + cb_Tahsin3.isChecked();
-                        String tahsin4 = "" + cb_Tahsin4.isChecked();
-                        String bahasaArab = "" + cb_Bahasa_arab.isChecked();
-                        String tahfizh = "" + cb_Tahfizh.isChecked();
-                        UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0");
-                        myRef.child("TARQ").child("USER").child("GURU").child(userID).setValue(newUser);
-                        Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
-                        startActivity(i);
-                        Log.i(TAG, "onClick: ga masukin ke db");
+                    if (spin_Lokasi.getSelectedItem().toString().equals("Bandung")){
+                        if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
+                            String addLembaga = LembagaString + "," + lembagatxt;
+                            Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
+                            myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga);
+                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                            startActivity(i);
+                        } else {
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
+                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                            startActivity(i);
+                            Log.i(TAG, "onClick: ga masukin ke db");
+                        }
+                    }else {
+                        if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
+                            String addLembaga = LembagaString + "," + lembagatxt;
+                            Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
+                            myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga);
+                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                            startActivity(i);
+                        } else {
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
+                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                            startActivity(i);
+                            Log.i(TAG, "onClick: ga masukin ke db");
+                        }
                     }
                 }
 
@@ -403,7 +415,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         }
 
         int i = 0;
-        while (Lembaga.length>i){
+        while (Lembaga.length > i) {
             LembagaFix.add(Lembaga[i]);
             Log.d(TAG, "showdata() returned: " + Lembaga[i]);
             i++;
