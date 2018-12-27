@@ -133,7 +133,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             public void onClick(View v) {
                 IntentIntegrator integrator = new IntentIntegrator(Presensi_Guru.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Judul");
+                integrator.setPrompt("Scan Barcode");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(false);
                 integrator.setCaptureActivity(ScanBarcode.class);
