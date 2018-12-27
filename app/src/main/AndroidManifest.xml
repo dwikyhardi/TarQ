@@ -52,7 +52,8 @@
         <activity android:name=".Guru.Presensi_Guru" />
         <activity android:name=".Guru.Data_Jamaah" />
         <activity android:name=".Guru.Guru_Progres" />
-        <activity android:name=".ScanBarcode"></activity>
+        <activity android:name=".ScanBarcode" />
+        <activity android:name=".GantiPassword"></activity>
     </application>
 
 </manifest>
