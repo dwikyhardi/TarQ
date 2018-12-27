@@ -41,6 +41,11 @@
         android:hint="Keterangan"
         android:id="@+id/editTextKeteranganTahsin"
         android:inputType="textMultiLine"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kirim"
+        android:id="@+id/KirimFormtahsin"/>
 
 
 </ListView>
