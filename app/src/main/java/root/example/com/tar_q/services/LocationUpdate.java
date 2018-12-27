@@ -81,6 +81,7 @@ public class LocationUpdate extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: called.");
+        Lokasi = intent.getStringExtra("Lokasi");
         getLocation();
         return START_NOT_STICKY;
     }
@@ -107,7 +108,7 @@ public class LocationUpdate extends Service {
         mFusedLocationClient.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
-
+                        Log.d(TAG, "onLocationResult: Lokasi === "+ Lokasi );
                         Log.d(TAG, "onLocationResult: got location result.");
 
                         Location location = locationResult.getLastLocation();
