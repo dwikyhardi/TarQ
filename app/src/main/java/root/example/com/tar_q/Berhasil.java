@@ -141,7 +141,7 @@ public class Berhasil extends AppCompatActivity {
                             startActivity(sIntent);
                         } else {
                             Intent mIntent = new Intent(Berhasil.this, Main_Jamaah.class);
-                            mIntent.putExtra("Lokasi","BANDUNG");
+                            mIntent.putExtra("Lokasi", "BANDUNG");
                             startActivity(mIntent);
                         }
                     } catch (NullPointerException e) {
@@ -179,42 +179,73 @@ public class Berhasil extends AppCompatActivity {
             System.out.println("INI SHOWDATA 2");
             ProfileGuru kuInfo = new ProfileGuru();
             try {
+                try {
+                    kuInfo.setLatitudeRumah(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getLatitudeRumah());
+                    kuInfo.setLongitudeRumah(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getLongitudeRumah());
 
-                kuInfo.setLevel(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getLevel());
-                System.out.println("kuInfo = " + kuInfo.getLevel());
+                    if (kuInfo.getLatitudeRumah().equals("0") && kuInfo.getLongitudeRumah().equals("0")) {
+                        Intent mIntent = new Intent(Berhasil.this, GantiPassword.class);
+                        mIntent.putExtra("Lokasi", "BANDUNG");
+                        startActivity(mIntent);
+                    } else {
+                        kuInfo.setLevel(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getLevel());
+                        System.out.println("kuInfo = " + kuInfo.getLevel());
 
-                if (kuInfo.getLevel() == 3) {
-                    try {
-                        kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getVerifikasi());
-                        if (kuInfo.getVerifikasi().equals("true")) {
-                            System.out.println("Bandung");
-                            Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
-                            mIntent.putExtra("Lokasi", "BANDUNG");
-                            startActivity(mIntent);
-                        } else {
-                            toastMessage("Akun Anda Belum Ter-Verifikasi");
+                        if (kuInfo.getLevel() == 3) {
+                            try {
+                                kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("BANDUNG").child(userID).getValue(ProfileGuru.class).getVerifikasi());
+
+                                if (kuInfo.getVerifikasi().equals("true")) {
+                                    System.out.println("Bandung");
+                                    Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
+                                    mIntent.putExtra("Lokasi", "BANDUNG");
+                                    startActivity(mIntent);
+
+                                } else {
+                                    toastMessage("Akun Anda Belum Ter-Verifikasi");
+                                }
+                            } catch (NullPointerException e) {
+                                Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
+                                startActivity(sIntent);
+                            }
                         }
-                    } catch (NullPointerException e) {
-                        Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
-                        startActivity(sIntent);
                     }
-                }
+                } catch (NullPointerException e) {
 
-                kuInfo.setLevel(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getLevel());
-                if (kuInfo.getLevel() == 3) {
                     try {
-                        kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getVerifikasi());
-                        if (kuInfo.getVerifikasi().equals("true")) {
-                            System.out.println("Jakarta");
-                            Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
+                        kuInfo.setLatitudeRumah(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getLatitudeRumah());
+                        kuInfo.setLongitudeRumah(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getLongitudeRumah());
+
+                        if (kuInfo.getLatitudeRumah().equals("0") && kuInfo.getLongitudeRumah().equals("0")) {
+                            Log.d(TAG, "showData1(LngRumah) returned: " + kuInfo.getLongitudeRumah());
+                            Intent mIntent = new Intent(Berhasil.this, GantiPassword.class);
                             mIntent.putExtra("Lokasi", "JAKARTA");
                             startActivity(mIntent);
                         } else {
-                            toastMessage("Akun Anda Belum Ter-Verifikasi");
+                            kuInfo.setLevel(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getLevel());
+                            if (kuInfo.getLevel() == 3) {
+                                try {
+                                    kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("JAKARTA").child(userID).getValue(ProfileGuru.class).getVerifikasi());
+                                    if (kuInfo.getVerifikasi().equals("true")) {
+                                        System.out.println("Jakarta");
+                                        Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
+                                        mIntent.putExtra("Lokasi", "JAKARTA");
+                                        startActivity(mIntent);
+                                    } else {
+                                        toastMessage("Akun Anda Belum Ter-Verifikasi");
+                                    }
+                                } catch (NullPointerException c) {
+                                    Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
+                                    startActivity(sIntent);
+                                }
+                            }
                         }
-                    } catch (NullPointerException e) {
-                        Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
-                        startActivity(sIntent);
+                    } catch (NullPointerException d) {
+                        kuInfo.setLevel(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getLevel());
+                        if (kuInfo.getLevel() == 3) {
+                            Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
+                            startActivity(sIntent);
+                        }
                     }
                 }
             } catch (NullPointerException e) {
@@ -223,7 +254,6 @@ public class Berhasil extends AppCompatActivity {
         }
         return null;
     }
-
 
     @Override
     public void onStart() {

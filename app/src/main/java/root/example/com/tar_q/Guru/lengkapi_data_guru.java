@@ -87,7 +87,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     public static final int REQUEST_CODE_CAMERA_SIM = 0016;
     public static final int REQUEST_CODE_GALLERY_SIM = 0017;
 
-    private static final String TAG = "Guru";
+    private static final String TAG = "lengkapi_data_guru";
     private EditText editTextNama;
     private EditText editTextNohp;
     private TextView editTextAlamat;
@@ -115,7 +115,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private String[] items = {"Camera", "Gallery"}, Lembaga, Lembaga1;
     private ArrayList<String> LembagaFix;
     private ImageView BtnFotoProfile;
-    private String LembagaString;
+    private String LembagaString, verifikasi;
     /*Compressor mCompressor;*/
 
     //add Firebase Database stuff
@@ -135,7 +135,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
     private static final int LOCATION_REQUEST = 500;
     public static final int ALAMAT = 1;
     private static int REQUEST_CODE = 0;
-    private String Lokasi;
+    private String Lokasi, userID;
 
     //Date
     private TextView mDisplayDate;
@@ -147,6 +147,8 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lengkapi_data_guru);
 
+        Lokasi = getIntent().getStringExtra("Lokasi");
+        Log.d(TAG, "onCreate() returned: " + Lokasi);
         editTextNama = (EditText) findViewById(R.id.EditTextnama);
         editTextAlamat = (TextView) findViewById(R.id.EditTextalamat);
         editTextNohp = (EditText) findViewById(R.id.EditTextnohp);
@@ -162,6 +164,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         btnTambahGuru = (Button) findViewById(R.id.btnTambahGuru);
         PilihLembagaGuru = (Spinner) findViewById(R.id.PilihLembagaGuru);
         spin_Lokasi = (Spinner) findViewById(R.id.spin_Lokasi);
+
 
         //Checkbox
         cb_Pratahsin1 = (CheckBox) findViewById(R.id.cb_Pratahsin1);
@@ -182,6 +185,20 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         myRef1 = mFirebaseDatabase.getReference();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        FirebaseUser user = mAuth.getCurrentUser();
+        userID = user.getUid();
+        try {
+            verifikasi = getIntent().getStringExtra("Verifikasi");
+            Log.d(TAG, "onCreate: Masuk Try Catch");
+            if (verifikasi == null){
+                verifikasi = "false";
+            }else {
+                verifikasi = "true";
+            }
+            Log.d(TAG, "onCreate(verifikasi) returned: " + verifikasi);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         LembagaFix = new ArrayList<>();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -212,6 +229,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 // whenever data at this location is updated.
                 Object value = dataSnapshot.getValue();
                 Log.d(TAG, "Value is: " + value);
+                LengkapiData(dataSnapshot);
             }
 
             @Override
@@ -256,8 +274,8 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        String[] Lokasi = new String[]{"Pilih Lokasi", "Bandung", "Jakarta"};
-        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Lokasi);
+        String[] LokasiArray = new String[]{"Pilih Lokasi", "Bandung", "Jakarta"};
+        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, LokasiArray);
         mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_Lokasi.setAdapter(mArrayAdapter);
 
@@ -292,9 +310,6 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                     uploadImageSTNK();
                     uploadImageSIM();
                 }
-
-                FirebaseUser user = mAuth.getCurrentUser();
-                String userID = user.getUid();
                 String praTahsin1 = "" + cb_Pratahsin1.isChecked();
                 String praTahsin2 = "" + cb_Pratahsin2.isChecked();
                 String praTahsin3 = "" + cb_Pratahsin3.isChecked();
@@ -306,14 +321,14 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                 String tahfizh = "" + cb_Tahfizh.isChecked();
                 String lat = String.valueOf(alamatLatLng.latitude);
                 String lng = String.valueOf(alamatLatLng.longitude);
-
+                Log.d(TAG, "onClick(Verifikasi) returned: " + verifikasi);
                 if (nama.equals("") && nohp.equals("") && alamat.equals("") && tanggallahir.equals("")) {
                     showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);
                     return;
                 } else {
-                    if (spin_Lokasi.getSelectedItem().toString().equals("Bandung")){
+                    if (spin_Lokasi.getSelectedItem().toString().equals("Bandung")) {
                         if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
                             myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
                             String addLembaga = LembagaString + "," + lembagatxt;
                             Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
@@ -322,16 +337,16 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                             Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                             startActivity(i);
                         } else {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
                             myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
                             myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
                             Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                             startActivity(i);
                             Log.i(TAG, "onClick: ga masukin ke db");
                         }
-                    }else {
+                    } else {
                         if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
                             myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
                             String addLembaga = LembagaString + "," + lembagatxt;
                             Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
@@ -340,7 +355,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                             Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
                             startActivity(i);
                         } else {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0",lat,lng);
+                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
                             myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
                             myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
                             Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
@@ -400,9 +415,62 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         BtnFotoProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    if (Lokasi.equals("BANDUNG")) {
+                        spin_Lokasi.setSelection(1);
+                    } else if (Lokasi.equals("JAKARTA")) {
+                        spin_Lokasi.setSelection(2);
+                    } else {
+                        spin_Lokasi.setSelection(0);
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
                 chooseImageIdentitas();
             }
         });
+    }
+
+    private void LengkapiData(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            try {
+                ProfileGuru uInfo = new ProfileGuru();
+                uInfo.setNama(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
+                uInfo.setAlamat(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getAlamat());
+                uInfo.setTanggallahir(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getTanggallahir());
+                uInfo.setNohp(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNohp());
+                uInfo.setLembaga(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getLembaga());
+                uInfo.setTahsin1(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getTahsin1());
+                uInfo.setTahsin2(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getTahsin2());
+                uInfo.setTahsin3(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getTahsin3());
+                uInfo.setTahsin4(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getTahsin4());
+                uInfo.setPratahsin1(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getPratahsin1());
+                uInfo.setPratahsin2(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getPratahsin2());
+                uInfo.setPratahsin3(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getPratahsin3());
+                uInfo.setTahfizh(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getTahfizh());
+                uInfo.setBahasaarab(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getBahasaarab());
+                uInfo.setVerifikasi(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getVerifikasi());
+
+                editTextNama.setText(uInfo.getNama());
+                editTextNohp.setText(uInfo.getNohp());
+                mDisplayDate.setText(uInfo.getTanggallahir());
+
+                //Checkbox
+                cb_Pratahsin1.setChecked(Boolean.valueOf(uInfo.getPratahsin1()));
+                cb_Pratahsin2.setChecked(Boolean.valueOf(uInfo.getPratahsin2()));
+                cb_Pratahsin3.setChecked(Boolean.valueOf(uInfo.getPratahsin3()));
+                cb_Tahsin1.setChecked(Boolean.valueOf(uInfo.getTahsin1()));
+                cb_Tahsin2.setChecked(Boolean.valueOf(uInfo.getTahsin2()));
+                cb_Tahsin3.setChecked(Boolean.valueOf(uInfo.getTahsin3()));
+                cb_Tahsin4.setChecked(Boolean.valueOf(uInfo.getTahsin4()));
+                cb_Bahasa_arab.setChecked(Boolean.valueOf(uInfo.getBahasaarab()));
+                cb_Tahfizh.setChecked(Boolean.valueOf(uInfo.getTahfizh()));
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                return;
+            }
+
+        }
     }
 
     private void showdata(DataSnapshot dataSnapshot) {

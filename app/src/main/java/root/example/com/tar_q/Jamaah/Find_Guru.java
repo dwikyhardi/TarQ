@@ -90,7 +90,7 @@ public class Find_Guru extends AppCompatActivity
     private Spinner PilihPertemuan,lokasiBelajar;
 
 
-    private String NamaGuru, NamaJamaah, AlamatGuru, NoTelpGuru, LembagaGuru;
+    private String NamaGuru, NamaJamaah, AlamatGuru, NoTelpGuru, LembagaGuru,Lokasi;
 
 
     private ImageView ivFotoGuruPopup;
@@ -106,7 +106,7 @@ public class Find_Guru extends AppCompatActivity
         setContentView(R.layout.activity_find_guru);
 
         NamaJamaah = getIntent().getStringExtra("NamaJamaah");
-
+        Lokasi = getIntent().getStringExtra("Lokasi");
         mListViewGuru = (ListView) findViewById(R.id.listViewGuru);
         PilihKelas = (Spinner) findViewById(R.id.PilihKelas);
         TV_ATAS = (TextView) findViewById(R.id.TV_ATAS);
@@ -120,7 +120,7 @@ public class Find_Guru extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("GURU");
+        myRef = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("GURU").child(Lokasi);
         myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
         myRef4 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR");
         myRef2 = mFirebaseDatabase.getReference();
@@ -254,8 +254,8 @@ public class Find_Guru extends AppCompatActivity
     private void showData2(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             ProfileJamaah uInfo = new ProfileJamaah();
-            uInfo.setLatitude(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getLatitude());
-            uInfo.setLongitude(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getLongitude());
+            uInfo.setLatitude(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getLatitude());
+            uInfo.setLongitude(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getLongitude());
 
             String lat = uInfo.getLatitude();
             String lng = uInfo.getLongitude();
@@ -525,6 +525,7 @@ public class Find_Guru extends AppCompatActivity
                         myRef4.child(key).child("lokasilang").setValue(lng);
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
+                        mIntent.putExtra("Lokasi",Lokasi);
                         startActivity(mIntent);
                         break;
                     }
@@ -541,6 +542,7 @@ public class Find_Guru extends AppCompatActivity
                         myRef1.child(key).child("lokasilang").setValue(lng);
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
+                        mIntent.putExtra("Lokasi",Lokasi);
                         startActivity(mIntent);
                         break;
                     }
@@ -557,6 +559,7 @@ public class Find_Guru extends AppCompatActivity
                         myRef1.child(key).child("lokasilang").setValue(lng);
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
+                        mIntent.putExtra("Lokasi",Lokasi);
                         startActivity(mIntent);
                         break;
                     }
@@ -630,6 +633,7 @@ public class Find_Guru extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(Find_Guru.this, Main_Jamaah.class);
+        intent.putExtra("Lokasi",Lokasi);
         startActivity(intent);
     }
 }

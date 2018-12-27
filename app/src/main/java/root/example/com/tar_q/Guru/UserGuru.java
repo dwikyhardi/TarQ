@@ -28,7 +28,7 @@ public class UserGuru {
                     String alamat ,String tanggallahir,String lembaga, String pratahsin1,
                     String pratahsin2,  String pratahsin3, String tahsin1,
                     String tahsin2,  String tahsin3,  String tahsin4, String bahasaarab,
-                    String tahfizh, String latitude, String longitude, String latitudeRumah, String longitudeRumah) {
+                    String tahfizh, String latitude, String longitude, String latitudeRumah, String longitudeRumah,String verifikasi) {
         this.id_user = id_user;
         this.nama = nama;
         this.nohp = nohp;
@@ -50,6 +50,6 @@ public class UserGuru {
         this.tahsin4 = tahsin4;
         this.bahasaarab = bahasaarab;
         this.tahfizh = tahfizh;
-        this.verifikasi = "false";
+        this.verifikasi = verifikasi;
     }
 }

@@ -36,6 +36,7 @@ public class Biodata_Jamaah extends AppCompatActivity {
     private String userID;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    private String Lokasi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class Biodata_Jamaah extends AppCompatActivity {
         setContentView(R.layout.activity_jamaah_biodata);
 
         ImgBtnBack = findViewById(R.id.imageButtonBackBiodataJamaah);
-
+        Lokasi = getIntent().getStringExtra("Lokasi");
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
@@ -99,10 +100,10 @@ public class Biodata_Jamaah extends AppCompatActivity {
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             ProfileJamaah uInfo = new ProfileJamaah();
-            uInfo.setNama(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNama());
-            uInfo.setAlamat(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getAlamat());
-            uInfo.setTanggallahir(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getTanggallahir());
-            uInfo.setNohp(ds.child("USER").child("JAMAAH").child(userID).getValue(ProfileJamaah.class).getNohp());
+            uInfo.setNama(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getNama());
+            uInfo.setAlamat(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getAlamat());
+            uInfo.setTanggallahir(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getTanggallahir());
+            uInfo.setNohp(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getNohp());
 
             namaProfile.setText("Nama : "+uInfo.getNama());
             alamatProfile.setText("Alamat : "+uInfo.getAlamat());
@@ -115,6 +116,7 @@ public class Biodata_Jamaah extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(Biodata_Jamaah.this, Main_Jamaah.class);
+        intent.putExtra("Lokasi",Lokasi);
         startActivity(intent);
     }
 }

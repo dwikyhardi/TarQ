@@ -32,7 +32,7 @@
             <LinearLayout
                 android:id="@+id/LinearPopup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="11dp"
-                    android:text="Jumlah Pertemuan"
+                    android:text="Jumlah Pertemuan "
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold" />
@@ -115,14 +115,15 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
                     android:id="@+id/tempat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="11dp"
-                    android:text="Tempat Belajar"
                     android:paddingRight="40dp"
+                    android:text="Tempat Belajar"
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold" />

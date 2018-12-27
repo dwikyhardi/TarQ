@@ -69,7 +69,7 @@ public class Main_Guru extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1, myRef2,myRef3,myRef4;
+    private DatabaseReference myRef, myRef1, myRef2, myRef3, myRef4;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -82,7 +82,7 @@ public class Main_Guru extends AppCompatActivity
     private Toast backToast;
     private String userID, IdJamaah;
     private String lat, lng;
-    public  String publicNamaGuru;
+    public String publicNamaGuru;
     private String NamaMurid, NomorKelas, JumlahPertemuan;
     private String listNamaEvent;
     private Long listWaktuEvent;
@@ -97,9 +97,9 @@ public class Main_Guru extends AppCompatActivity
     private TextView NamaGuru, EmailGuru, Month, SaldoGuru;
     private Button test, btnTerimaPopup, btnTolakPopup;
     private Dialog NotifikasiGuru;
-    private TextView etNamaPenerimaPopup,Tv_Kantor,Tv_Private;
+    private TextView etNamaPenerimaPopup, Tv_Kantor, Tv_Private;
     private LinearLayout LL;
-    private ListView mListViewRequestKantor,mListViewRequestPrivate, mListViewDataAjar;
+    private ListView mListViewRequestKantor, mListViewRequestPrivate, mListViewDataAjar;
 
 
     public static final int PERMISSIONS_REQUEST_WRITE_CALENDAR = 9005;
@@ -126,7 +126,7 @@ public class Main_Guru extends AppCompatActivity
         mListViewDataAjar = (ListView) findViewById(R.id.listMengajarGuru);
         LL = (LinearLayout) findViewById(R.id.LL);
         Tv_Kantor = (TextView) findViewById(R.id.Tv_Kantor);
-        Tv_Private=(TextView) findViewById(R.id.Tv_Private);
+        Tv_Private = (TextView) findViewById(R.id.Tv_Private);
         Lokasi = getIntent().getStringExtra("Lokasi");
 
         mAuth = FirebaseAuth.getInstance();
@@ -336,26 +336,31 @@ public class Main_Guru extends AppCompatActivity
             Intent mIntent = new Intent(Main_Guru.this, Biodata_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Prosensi) {
+        } else if (id == R.id.nav_Prosensi) {
             Intent mIntent = new Intent(Main_Guru.this, Presensi_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_data_jamaah) {
+        } else if (id == R.id.nav_data_jamaah) {
             Intent mIntent = new Intent(Main_Guru.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Progres_report) {
+        } else if (id == R.id.nav_Progres_report) {
             Intent mIntent = new Intent(Main_Guru.this, Guru_Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_main_guru) {
+        } else if (id == R.id.nav_main_guru) {
             Intent mIntent = new Intent(Main_Guru.this, Main_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Tentang) {
+        } else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
-        }else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             mAuth.signOut();
+            if (isLocationServiceRunning()) {
+                Intent serviceIntent = new Intent(this, LocationUpdate.class);
+                //this.startService(serviceIntent);
+                stopService(serviceIntent);
+            }
             Intent mIntent = new Intent(Main_Guru.this, MainActivity.class);
             startActivity(mIntent);
         }
@@ -422,21 +427,21 @@ public class Main_Guru extends AppCompatActivity
             Map idGuru = (Map) entry.getValue();
             IdGuru.add((String) idGuru.get("idguru"));
         }
-        final ArrayList<String> IdMurid= new ArrayList<>();
+        final ArrayList<String> IdMurid = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
             Map idMurid = (Map) entry.getValue();
             IdMurid.add((String) idMurid.get("idmurid"));
         }
         final ArrayList<String> listNama = new ArrayList<>();
-        final ArrayList<String> listPertemuan= new ArrayList<>();
+        final ArrayList<String> listPertemuan = new ArrayList<>();
         final ArrayList<String> listNomorKelas = new ArrayList<>();
         final ArrayList<String> listId = new ArrayList<>();
-        if(Jadwalhari != null){
+        if (Jadwalhari != null) {
             int i = 0;
-            while(Jadwalhari.size() > i){
-                if(IdGuru.get(i).equals(userID)){
+            while (Jadwalhari.size() > i) {
+                if (IdGuru.get(i).equals(userID)) {
                     Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
-                    if(Jadwalhari.get(i).equals("proses")){
+                    if (Jadwalhari.get(i).equals("proses")) {
                         listNama.add(NamaJamaah.get(i));
                         listPertemuan.add(JmlPertemuan.get(i));
                         listNomorKelas.add(NoKelas.get(i));
@@ -446,18 +451,17 @@ public class Main_Guru extends AppCompatActivity
                         NomorKelas = NoKelas.get(i);
                         IdJamaah = IdMurid.get(i);
                         ShowPopupNotifikasiGuruKantor();
-                        Log.d(TAG,NamaMurid);
-                        Log.d(TAG,JumlahPertemuan);
-                        Log.d(TAG,NomorKelas);
+                        Log.d(TAG, NamaMurid);
+                        Log.d(TAG, JumlahPertemuan);
+                        Log.d(TAG, NomorKelas);
                     }
-                    if(Jadwalhari.get(i).equals("request")){
+                    if (Jadwalhari.get(i).equals("request")) {
                     }
-                    if(Jadwalhari.get(i).equals("false")){
-                    }
-                    else{
+                    if (Jadwalhari.get(i).equals("false")) {
+                    } else {
                         int j = 1;
                         String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
-                        while(a.length > j){
+                        while (a.length > j) {
                             listNamaEvent = NamaJamaah.get(i);
                             listWaktuEvent = Long.parseLong(a[j]);
                             setEvent(listWaktuEvent, listNamaEvent);
@@ -473,7 +477,7 @@ public class Main_Guru extends AppCompatActivity
                 NamaMurid = listNama.get(position);
                 JumlahPertemuan = listPertemuan.get(position);
                 NomorKelas = listNomorKelas.get(position);
-                IdJamaah= listId.get(position);
+                IdJamaah = listId.get(position);
                 ShowPopupNotifikasiGuruKantor();
             }
         });
@@ -509,21 +513,21 @@ public class Main_Guru extends AppCompatActivity
             Map idGuru = (Map) entry.getValue();
             IdGuru.add((String) idGuru.get("idguru"));
         }
-        final ArrayList<String> IdMurid= new ArrayList<>();
+        final ArrayList<String> IdMurid = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
             Map idMurid = (Map) entry.getValue();
             IdMurid.add((String) idMurid.get("idmurid"));
         }
         final ArrayList<String> listNama = new ArrayList<>();
-        final ArrayList<String> listPertemuan= new ArrayList<>();
+        final ArrayList<String> listPertemuan = new ArrayList<>();
         final ArrayList<String> listNomorKelas = new ArrayList<>();
         final ArrayList<String> listId = new ArrayList<>();
-        if(Jadwalhari != null){
+        if (Jadwalhari != null) {
             int i = 0;
-            while(Jadwalhari.size() > i){
-                if(IdGuru.get(i).equals(userID)){
+            while (Jadwalhari.size() > i) {
+                if (IdGuru.get(i).equals(userID)) {
                     Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
-                    if(Jadwalhari.get(i).equals("proses")){
+                    if (Jadwalhari.get(i).equals("proses")) {
                         listNama.add(NamaJamaah.get(i));
                         listPertemuan.add(JmlPertemuan.get(i));
                         listNomorKelas.add(NoKelas.get(i));
@@ -533,19 +537,18 @@ public class Main_Guru extends AppCompatActivity
                         NomorKelas = NoKelas.get(i);
                         IdJamaah = IdMurid.get(i);
                         ShowPopupNotifikasiGuruPrivate();
-                        Log.d(TAG,NamaMurid);
-                        Log.d(TAG,JumlahPertemuan);
-                        Log.d(TAG,NomorKelas);
+                        Log.d(TAG, NamaMurid);
+                        Log.d(TAG, JumlahPertemuan);
+                        Log.d(TAG, NomorKelas);
                     }
-                    if(Jadwalhari.get(i).equals("request")){
+                    if (Jadwalhari.get(i).equals("request")) {
 
                     }
-                    if(Jadwalhari.get(i).equals("false")){
-                    }
-                    else{
+                    if (Jadwalhari.get(i).equals("false")) {
+                    } else {
                         int j = 1;
                         String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
-                        while(a.length > j){
+                        while (a.length > j) {
                             int sab = j * 35000;
                             listNamaEvent = NamaJamaah.get(i);
                             listWaktuEvent = Long.parseLong(a[j]);
@@ -562,7 +565,7 @@ public class Main_Guru extends AppCompatActivity
                 NamaMurid = listNama.get(position);
                 JumlahPertemuan = listPertemuan.get(position);
                 NomorKelas = listNomorKelas.get(position);
-                IdJamaah= listId.get(position);
+                IdJamaah = listId.get(position);
                 ShowPopupNotifikasiGuruPrivate();
             }
         });
@@ -570,7 +573,6 @@ public class Main_Guru extends AppCompatActivity
         ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
         mListViewRequestPrivate.setAdapter(namaGuru);
     }
-
 
 
     public void ShowPopupNotifikasiGuruPrivate() {
@@ -593,7 +595,7 @@ public class Main_Guru extends AppCompatActivity
                 // Handle any errors
             }
         });
-        txtclose =(TextView) NotifikasiGuru.findViewById(R.id.txtclose);
+        txtclose = (TextView) NotifikasiGuru.findViewById(R.id.txtclose);
         txtclose.setText("X");
         etNamaPenerimaPopup.setText(NamaMurid + " Telah Memilih Anda Untuk Mengajar Untuk " + JumlahPertemuan + " Pertemuan");
 
@@ -643,7 +645,7 @@ public class Main_Guru extends AppCompatActivity
                 // Handle any errors
             }
         });
-        txtclose =(TextView) NotifikasiGuru.findViewById(R.id.txtclose);
+        txtclose = (TextView) NotifikasiGuru.findViewById(R.id.txtclose);
         txtclose.setText("X");
         etNamaPenerimaPopup.setText(NamaMurid + " Telah Memilih Anda Untuk Mengajar Untuk " + JumlahPertemuan + " Pertemuan");
 
@@ -674,7 +676,7 @@ public class Main_Guru extends AppCompatActivity
     }
 
 
-    private void setEvent(Long waktu, String murid){
+    private void setEvent(Long waktu, String murid) {
 
         Log.d(TAG, "setEvent() returned: ");
         final com.github.sundeepk.compactcalendarview.domain.Event ev1 = new com.github.sundeepk.compactcalendarview.domain.Event(Color.WHITE, waktu, "~" + murid + "~");
@@ -683,14 +685,14 @@ public class Main_Guru extends AppCompatActivity
             @Override
             public void onDayClick(Date dateClicked) {
                 ArrayList<String> NamaDiajar = new ArrayList<>();
-                try{
+                try {
                     String[] a = String.valueOf(kalenderGuru.getEvents(dateClicked)).split("~");
                     String[] d = String.valueOf(kalenderGuru.getEvents(dateClicked)).split(",");
                     int i = 1;
                     int j = 14;
                     int k = 27;
                     int l = 1;
-                    while(a.length > i){
+                    while (a.length > i) {
                         String b = a[i];
                         String c = d[l];
                         Log.d(TAG, "Tanggal =" + c);
@@ -702,7 +704,7 @@ public class Main_Guru extends AppCompatActivity
                         i = i + 2;
                         l = l + 3;
                     }
-                } catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     toastMessage("Anda Tidak Memiliki Jadwal Mengajar");
                     e.printStackTrace();
                 }
@@ -710,6 +712,7 @@ public class Main_Guru extends AppCompatActivity
                 mListViewDataAjar.setAdapter(namaDiajar);
 
             }
+
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
                 Month.setText(dateFormatMonth.format(firstDayOfNewMonth));

@@ -11,6 +11,8 @@ public class ProfileGuru {
     private int saldo;
     private String latitude;
     private String longitude;
+    private String latitudeRumah;
+    private String longitudeRumah;
     private String verifikasi;
     private String pratahsin1;
     private String pratahsin2;
@@ -18,7 +20,7 @@ public class ProfileGuru {
     private String tahsin1;
     private String tahsin2;
     private String tahsin3;
-    private String tahsin14;
+    private String tahsin4;
     private String tahfizh;
     private String bahasaarab;
 
@@ -150,12 +152,12 @@ public class ProfileGuru {
         this.tahsin3 = tahsin3;
     }
 
-    public String getTahsin14() {
-        return tahsin14;
+    public String getTahsin4() {
+        return tahsin4;
     }
 
-    public void setTahsin14(String tahsin14) {
-        this.tahsin14 = tahsin14;
+    public void setTahsin4(String tahsin14) {
+        this.tahsin4 = tahsin4;
     }
 
     public String getTahfizh() {
@@ -180,5 +182,21 @@ public class ProfileGuru {
 
     public void setSaldo(int saldo) {
         this.saldo = saldo;
+    }
+
+    public String getLatitudeRumah() {
+        return latitudeRumah;
+    }
+
+    public void setLatitudeRumah(String latitudeRumah) {
+        this.latitudeRumah = latitudeRumah;
+    }
+
+    public String getLongitudeRumah() {
+        return longitudeRumah;
+    }
+
+    public void setLongitudeRumah(String longitudeRumah) {
+        this.longitudeRumah = longitudeRumah;
     }
 }

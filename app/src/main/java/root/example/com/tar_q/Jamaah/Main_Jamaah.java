@@ -190,6 +190,7 @@ public class Main_Jamaah extends AppCompatActivity
             public void onClick(View view) {
                 Intent mIntent = new Intent(Main_Jamaah.this,Find_Guru.class);
                 mIntent.putExtra("NamaJamaah", publicNamaJamaah);
+                mIntent.putExtra("Lokasi",Lokasi);
                 startActivity(mIntent);
             }
         });

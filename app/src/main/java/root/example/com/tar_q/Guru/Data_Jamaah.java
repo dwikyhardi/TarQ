@@ -133,7 +133,11 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
             Intent mIntent = new Intent(Data_Jamaah.this, Guru_Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Tentang) {
+        }else if (id == R.id.nav_main_guru) {
+            Intent mIntent = new Intent(Data_Jamaah.this, Main_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Data_Jamaah.this, Authors.class);
             startActivity(mIntent);*/
@@ -150,6 +154,18 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
 
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+            Intent intent = new Intent(Data_Jamaah.this, Main_Guru.class);
+            intent.putExtra("Lokasi", Lokasi);
+            startActivity(intent);
+        }
     }
     
 }
