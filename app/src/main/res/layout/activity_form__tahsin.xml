@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Guru.Form_Tahsin">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Form Tahsin"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:hint="Materi"
+        android:id="@+id/editTextMateriTahsin"
+        android:inputType="textMultiLine"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:hint="Pencapaian"
+        android:id="@+id/editTextPencapaianTahsin"
+        android:inputType="textMultiLine"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:hint="Kendala"
+        android:id="@+id/editTextKendalaTahsin"
+        android:inputType="textMultiLine"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:hint="Solusi"
+        android:id="@+id/editTextSolusiTahsin"
+        android:inputType="textMultiLine"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:hint="Keterangan"
+        android:id="@+id/editTextKeteranganTahsin"
+        android:inputType="textMultiLine"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kirim"
+        android:id="@+id/KirimFormtahsin"/>
+
+
+</ListView>
