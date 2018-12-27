@@ -171,14 +171,6 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
             Intent mIntent = new Intent(PresensiJamaah.this,PresensiJamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Jadwal){
-            Intent mIntent = new Intent(PresensiJamaah.this,JadwalJamaah.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Potensi_pengeluaran){
-            Intent mIntent = new Intent(PresensiJamaah.this,PotensiPengeluaran.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
         }else if (id == R.id.nav_Tentang){
             Intent mIntent = new Intent(PresensiJamaah.this,Tentang.class);
             mIntent.putExtra("Lokasi", Lokasi);

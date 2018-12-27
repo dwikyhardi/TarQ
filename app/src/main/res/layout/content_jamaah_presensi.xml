@@ -8,7 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Jamaah.PresensiJamaah"
     tools:showIn="@layout/app_bar_jamaah_presensi"
-    android:o55rientation="vertical">
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
