@@ -624,7 +624,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             progressDialog.show();
             FirebaseUser user = mAuth.getCurrentUser();
             String userID = user.getUid();
-            StorageReference ref = storageReference.child("Guru/STNK/" + userID);
+            StorageReference ref = storageReference.child("Guru/KTP/" + userID);
             ref.putFile(filePath2)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -659,7 +659,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             progressDialog.show();
             FirebaseUser user = mAuth.getCurrentUser();
             String userID = user.getUid();
-            StorageReference ref = storageReference.child("Guru/SIM/" + userID);
+            StorageReference ref = storageReference.child("Guru/BuktiAnggota/" + userID);
             ref.putFile(filePath3)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
