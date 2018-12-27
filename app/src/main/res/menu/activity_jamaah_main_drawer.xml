@@ -17,14 +17,6 @@
             android:icon="@drawable/ic_assignment"
             android:title="Absen" />
         <item
-            android:id="@+id/nav_Jadwal"
-            android:icon="@drawable/ic_schedule"
-            android:title="Jadwal" />
-        <item
-            android:id="@+id/nav_Potensi_pengeluaran"
-            android:icon="@drawable/ic_trending_up"
-            android:title="Potensi Pengeluaran" />
-        <item
             android:id="@+id/nav_Tentang"
             android:icon="@drawable/ic_info"
             android:title="Tentang" />

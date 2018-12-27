@@ -21,25 +21,9 @@
             android:icon="@drawable/ic_people"
             android:title="Data Jamaah" />
         <item
-            android:id="@+id/nav_jadwal_mengajar"
-            android:icon="@drawable/ic_schedule"
-            android:title="Jadwal Mengajar" />
-        <item
-            android:id="@+id/nav_Materi_pengajaran"
-            android:icon="@drawable/ic_materi"
-            android:title="Materi Pengajaran" />
-        <item
-            android:id="@+id/nav_Potential_pendapatan"
-            android:icon="@drawable/ic_trending_up"
-            android:title="Potensi Pendapatan" />
-        <item
             android:id="@+id/nav_Progres_report"
             android:icon="@drawable/ic_assignment_turned"
             android:title="Progres report/KBM" />
-        <item
-            android:id="@+id/nav_Pendapatan"
-            android:icon="@drawable/ic_payment"
-            android:title="Pendapatan" />
         <item
             android:id="@+id/nav_Tentang"
             android:icon="@drawable/ic_info"

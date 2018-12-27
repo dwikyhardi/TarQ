@@ -129,24 +129,8 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
             Intent mIntent = new Intent(Data_Jamaah.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_jadwal_mengajar) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Jadwal_Guru.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Materi_pengajaran) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Guru_Materi.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Potential_pendapatan) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Guru_Potensi.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
         }else if (id == R.id.nav_Progres_report) {
             Intent mIntent = new Intent(Data_Jamaah.this, Guru_Progres.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Pendapatan) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Tentang.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {

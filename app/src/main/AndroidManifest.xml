@@ -48,16 +48,10 @@
 
         <activity android:name=".Jamaah.Find_Guru" />
         <activity android:name=".Jamaah.PresensiJamaah" />
-        <activity android:name=".Jamaah.JadwalJamaah" />
-        <activity android:name=".Jamaah.PotensiPengeluaran" />
         <activity android:name=".Tentang" />
         <activity android:name=".Guru.Presensi_Guru" />
         <activity android:name=".Guru.Data_Jamaah" />
-        <activity android:name=".Guru.Jadwal_Guru" />
-        <activity android:name=".Guru.Guru_Materi" />
-        <activity android:name=".Guru.Guru_Potensi" />
         <activity android:name=".Guru.Guru_Progres" />
-        <activity android:name=".Guru.Guru_Pendapatan" />
         <activity android:name=".ScanBarcode"></activity>
     </application>
 
