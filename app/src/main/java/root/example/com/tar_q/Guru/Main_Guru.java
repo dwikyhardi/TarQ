@@ -261,8 +261,7 @@ public class Main_Guru extends AppCompatActivity
         if (!isLocationServiceRunning()) {
             Intent serviceIntent = new Intent(this, LocationUpdate.class);
             serviceIntent.putExtra("Lokasi", Lokasi);
-//        this.startService(serviceIntent);
-
+            //this.startService(serviceIntent);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 Main_Guru.this.startForegroundService(serviceIntent);
             } else {
