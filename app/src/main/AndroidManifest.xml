@@ -55,6 +55,8 @@
         <activity android:name=".ScanBarcode" />
         <activity android:name=".Guru.Form_Tahfizh" />
         <activity android:name=".Guru.Form_Tahsin"></activity>
+        <activity android:name=".ScanBarcode" />
+        <activity android:name=".GantiPassword"></activity>
     </application>
 
 </manifest>
