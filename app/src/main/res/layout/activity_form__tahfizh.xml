@@ -8,39 +8,72 @@
     android:orientation="vertical">
 
     <TextView
+        android:paddingTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Form Tahfizh"/>
+        android:text="Form Tahfizh"
+        android:textColor="@color/coklat"
+        android:textSize="30dp"/>
 
     <EditText
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:hint="Setoran"
-        android:id="@+id/editTextSetoranTahfizh"/>
+        android:id="@+id/editTextSetoranTahfizh"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColorLink="@color/coklat"
+        android:textColorHint="@color/coklat"/>
+
     <EditText
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:hint="Murajaah"
-        android:id="@+id/editTextMurajaahTahfizh"/>
+        android:id="@+id/editTextMurajaahTahfizh"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColorHint="@color/coklat"
+        android:textColorLink="@color/coklat"/>
+
     <EditText
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:hint="Ziadah"
-        android:id="@+id/editTextZiahahTahfizh"/>
+        android:id="@+id/editTextZiahahTahfizh"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColorLink="@color/coklat"
+        android:textColorHint="@color/coklat"/>
+
     <EditText
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:hint="Keterangan"
-        android:id="@+id/editTextKeteranganTahfizh"/>
+        android:id="@+id/editTextKeteranganTahfizh"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColorHint="@color/coklat"
+        android:textColorLink="@color/coklat"/>
+
     <Button
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Kirim"
-        android:id="@+id/KirimFormtahfizh"/>
+        android:id="@+id/KirimFormtahfizh"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="100dp"
+        android:backgroundTint="@color/coklat"
+        android:textColor="@color/white"
+        android:textSize="20dp"/>
 
 </LinearLayout>
