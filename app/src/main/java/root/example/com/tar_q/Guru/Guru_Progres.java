@@ -128,24 +128,8 @@ public class Guru_Progres extends AppCompatActivity implements NavigationView.On
             Intent mIntent = new Intent(Guru_Progres.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_jadwal_mengajar) {
-            Intent mIntent = new Intent(Guru_Progres.this, Jadwal_Guru.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Materi_pengajaran) {
-            Intent mIntent = new Intent(Guru_Progres.this, Guru_Materi.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Potential_pendapatan) {
-            Intent mIntent = new Intent(Guru_Progres.this, Guru_Potensi.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
         }else if (id == R.id.nav_Progres_report) {
             Intent mIntent = new Intent(Guru_Progres.this, Guru_Progres.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Pendapatan) {
-            Intent mIntent = new Intent(Guru_Progres.this, Guru_Pendapatan.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_main_guru) {

@@ -273,16 +273,6 @@ public class Main_Jamaah extends AppCompatActivity
             Intent mIntent = new Intent(Main_Jamaah.this,PresensiJamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Jadwal){
-            mAuth.signOut();
-            Intent mIntent = new Intent(Main_Jamaah.this,JadwalJamaah.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        }else if (id == R.id.nav_Potensi_pengeluaran){
-            mAuth.signOut();
-            Intent mIntent = new Intent(Main_Jamaah.this,PotensiPengeluaran.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
         }else if (id == R.id.nav_Tentang){
             mAuth.signOut();
             Intent mIntent = new Intent(Main_Jamaah.this,Tentang.class);
