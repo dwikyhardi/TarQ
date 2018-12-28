@@ -121,8 +121,8 @@ public class Find_Guru extends AppCompatActivity
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("GURU").child(Lokasi);
-        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
-        myRef4 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR");
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE").child(Lokasi);
+        myRef4 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR").child(Lokasi);
         myRef2 = mFirebaseDatabase.getReference();
         myRef3 = mFirebaseDatabase.getReference();
         userID = user.getUid();
@@ -429,7 +429,7 @@ public class Find_Guru extends AppCompatActivity
         btnRequest = (Button) dGuru.findViewById(R.id.btn_Pilih_Guru_popup);
         lokasiBelajar = (Spinner) dGuru.findViewById(R.id.lokasiBelajar);
 
-        String[] lokasi = new String[]{"Kantor","Rumah","Lainnya"};
+        String[] lokasi = new String[]{"Rumah","Kantor","Lainnya"};
         ArrayAdapter<String> mStringArrayAdapter = new ArrayAdapter<String>(Find_Guru.this,R.layout.spinner_style_mantap,lokasi);
         mStringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lokasiBelajar.setAdapter(mStringArrayAdapter);

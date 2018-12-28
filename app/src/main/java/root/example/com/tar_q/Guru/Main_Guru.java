@@ -133,10 +133,10 @@ public class Main_Guru extends AppCompatActivity
         FirebaseUser user = mAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
-        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR");
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR").child(Lokasi);
         myRef2 = mFirebaseDatabase.getReference().child("TARQ").child("USER");
         myRef4 = mFirebaseDatabase.getReference();
-        myRef3 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE");
+        myRef3 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE").child(Lokasi);
         mLastLocation = LocationServices.getFusedLocationProviderClient(this);
         userID = user.getUid();
 
@@ -402,176 +402,184 @@ public class Main_Guru extends AppCompatActivity
 
     private void showNotification(Map<String, Object> dataSnapshot) {
 
-        final ArrayList<String> Jadwalhari = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map jadwalhari = (Map) entry.getValue();
-            Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
-        }
-        final ArrayList<String> NamaJamaah = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map namajamaah = (Map) entry.getValue();
-            NamaJamaah.add((String) namajamaah.get("murid"));
-        }
-        final ArrayList<String> JmlPertemuan = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map jmlPertemuan = (Map) entry.getValue();
-            JmlPertemuan.add((String) jmlPertemuan.get("jmlpertemuan"));
-        }
-        final ArrayList<String> NoKelas = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map noKelas = (Map) entry.getValue();
-            NoKelas.add((String) noKelas.get("nokelas"));
-        }
-        final ArrayList<String> IdGuru = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map idGuru = (Map) entry.getValue();
-            IdGuru.add((String) idGuru.get("idguru"));
-        }
-        final ArrayList<String> IdMurid = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map idMurid = (Map) entry.getValue();
-            IdMurid.add((String) idMurid.get("idmurid"));
-        }
-        final ArrayList<String> listNama = new ArrayList<>();
-        final ArrayList<String> listPertemuan = new ArrayList<>();
-        final ArrayList<String> listNomorKelas = new ArrayList<>();
-        final ArrayList<String> listId = new ArrayList<>();
-        if (Jadwalhari != null) {
-            int i = 0;
-            while (Jadwalhari.size() > i) {
-                if (IdGuru.get(i).equals(userID)) {
-                    Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
-                    if (Jadwalhari.get(i).equals("proses")) {
-                        listNama.add(NamaJamaah.get(i));
-                        listPertemuan.add(JmlPertemuan.get(i));
-                        listNomorKelas.add(NoKelas.get(i));
-                        listId.add(IdMurid.get(i));
-                        NamaMurid = NamaJamaah.get(i);
-                        JumlahPertemuan = JmlPertemuan.get(i);
-                        NomorKelas = NoKelas.get(i);
-                        IdJamaah = IdMurid.get(i);
-                        ShowPopupNotifikasiGuruKantor();
-                        Log.d(TAG, NamaMurid);
-                        Log.d(TAG, JumlahPertemuan);
-                        Log.d(TAG, NomorKelas);
-                    }
-                    if (Jadwalhari.get(i).equals("request")) {
-                    }
-                    if (Jadwalhari.get(i).equals("false")) {
-                    } else {
-                        int j = 1;
-                        String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
-                        while (a.length > j) {
-                            listNamaEvent = NamaJamaah.get(i);
-                            listWaktuEvent = Long.parseLong(a[j]);
-                            setEvent(listWaktuEvent, listNamaEvent);
-                            j++;
+        try {
+            final ArrayList<String> Jadwalhari = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map jadwalhari = (Map) entry.getValue();
+                Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
+            }
+            final ArrayList<String> NamaJamaah = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map namajamaah = (Map) entry.getValue();
+                NamaJamaah.add((String) namajamaah.get("murid"));
+            }
+            final ArrayList<String> JmlPertemuan = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map jmlPertemuan = (Map) entry.getValue();
+                JmlPertemuan.add((String) jmlPertemuan.get("jmlpertemuan"));
+            }
+            final ArrayList<String> NoKelas = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map noKelas = (Map) entry.getValue();
+                NoKelas.add((String) noKelas.get("nokelas"));
+            }
+            final ArrayList<String> IdGuru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idGuru = (Map) entry.getValue();
+                IdGuru.add((String) idGuru.get("idguru"));
+            }
+            final ArrayList<String> IdMurid = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idMurid = (Map) entry.getValue();
+                IdMurid.add((String) idMurid.get("idmurid"));
+            }
+            final ArrayList<String> listNama = new ArrayList<>();
+            final ArrayList<String> listPertemuan = new ArrayList<>();
+            final ArrayList<String> listNomorKelas = new ArrayList<>();
+            final ArrayList<String> listId = new ArrayList<>();
+            if (Jadwalhari != null) {
+                int i = 0;
+                while (Jadwalhari.size() > i) {
+                    if (IdGuru.get(i).equals(userID)) {
+                        Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
+                        if (Jadwalhari.get(i).equals("proses")) {
+                            listNama.add(NamaJamaah.get(i));
+                            listPertemuan.add(JmlPertemuan.get(i));
+                            listNomorKelas.add(NoKelas.get(i));
+                            listId.add(IdMurid.get(i));
+                            NamaMurid = NamaJamaah.get(i);
+                            JumlahPertemuan = JmlPertemuan.get(i);
+                            NomorKelas = NoKelas.get(i);
+                            IdJamaah = IdMurid.get(i);
+                            ShowPopupNotifikasiGuruKantor();
+                            Log.d(TAG, NamaMurid);
+                            Log.d(TAG, JumlahPertemuan);
+                            Log.d(TAG, NomorKelas);
+                        }
+                        if (Jadwalhari.get(i).equals("request")) {
+                        }
+                        if (Jadwalhari.get(i).equals("false")) {
+                        } else {
+                            int j = 1;
+                            String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                            while (a.length > j) {
+                                listNamaEvent = NamaJamaah.get(i);
+                                listWaktuEvent = Long.parseLong(a[j]);
+                                setEvent(listWaktuEvent, listNamaEvent);
+                                j++;
+                            }
                         }
                     }
+                    i++;
                 }
-                i++;
             }
-        }
-        mListViewRequestKantor.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NamaMurid = listNama.get(position);
-                JumlahPertemuan = listPertemuan.get(position);
-                NomorKelas = listNomorKelas.get(position);
-                IdJamaah = listId.get(position);
-                ShowPopupNotifikasiGuruKantor();
-            }
-        });
+            mListViewRequestKantor.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    NamaMurid = listNama.get(position);
+                    JumlahPertemuan = listPertemuan.get(position);
+                    NomorKelas = listNomorKelas.get(position);
+                    IdJamaah = listId.get(position);
+                    ShowPopupNotifikasiGuruKantor();
+                }
+            });
 
-        ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
-        mListViewRequestKantor.setAdapter(namaGuru);
+            ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
+            mListViewRequestKantor.setAdapter(namaGuru);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     private void showNotification1(Map<String, Object> dataSnapshot) {
 
-        final ArrayList<String> Jadwalhari = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map jadwalhari = (Map) entry.getValue();
-            Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
-        }
-        final ArrayList<String> NamaJamaah = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map namajamaah = (Map) entry.getValue();
-            NamaJamaah.add((String) namajamaah.get("murid"));
-        }
-        final ArrayList<String> JmlPertemuan = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map jmlPertemuan = (Map) entry.getValue();
-            JmlPertemuan.add((String) jmlPertemuan.get("jmlpertemuan"));
-        }
-        final ArrayList<String> NoKelas = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map noKelas = (Map) entry.getValue();
-            NoKelas.add((String) noKelas.get("nokelas"));
-        }
-        final ArrayList<String> IdGuru = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map idGuru = (Map) entry.getValue();
-            IdGuru.add((String) idGuru.get("idguru"));
-        }
-        final ArrayList<String> IdMurid = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
-            Map idMurid = (Map) entry.getValue();
-            IdMurid.add((String) idMurid.get("idmurid"));
-        }
-        final ArrayList<String> listNama = new ArrayList<>();
-        final ArrayList<String> listPertemuan = new ArrayList<>();
-        final ArrayList<String> listNomorKelas = new ArrayList<>();
-        final ArrayList<String> listId = new ArrayList<>();
-        if (Jadwalhari != null) {
-            int i = 0;
-            while (Jadwalhari.size() > i) {
-                if (IdGuru.get(i).equals(userID)) {
-                    Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
-                    if (Jadwalhari.get(i).equals("proses")) {
-                        listNama.add(NamaJamaah.get(i));
-                        listPertemuan.add(JmlPertemuan.get(i));
-                        listNomorKelas.add(NoKelas.get(i));
-                        listId.add(IdMurid.get(i));
-                        NamaMurid = NamaJamaah.get(i);
-                        JumlahPertemuan = JmlPertemuan.get(i);
-                        NomorKelas = NoKelas.get(i);
-                        IdJamaah = IdMurid.get(i);
-                        ShowPopupNotifikasiGuruPrivate();
-                        Log.d(TAG, NamaMurid);
-                        Log.d(TAG, JumlahPertemuan);
-                        Log.d(TAG, NomorKelas);
-                    }
-                    if (Jadwalhari.get(i).equals("request")) {
+        try {
+            final ArrayList<String> Jadwalhari = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map jadwalhari = (Map) entry.getValue();
+                Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
+            }
+            final ArrayList<String> NamaJamaah = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map namajamaah = (Map) entry.getValue();
+                NamaJamaah.add((String) namajamaah.get("murid"));
+            }
+            final ArrayList<String> JmlPertemuan = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map jmlPertemuan = (Map) entry.getValue();
+                JmlPertemuan.add((String) jmlPertemuan.get("jmlpertemuan"));
+            }
+            final ArrayList<String> NoKelas = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map noKelas = (Map) entry.getValue();
+                NoKelas.add((String) noKelas.get("nokelas"));
+            }
+            final ArrayList<String> IdGuru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idGuru = (Map) entry.getValue();
+                IdGuru.add((String) idGuru.get("idguru"));
+            }
+            final ArrayList<String> IdMurid = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idMurid = (Map) entry.getValue();
+                IdMurid.add((String) idMurid.get("idmurid"));
+            }
+            final ArrayList<String> listNama = new ArrayList<>();
+            final ArrayList<String> listPertemuan = new ArrayList<>();
+            final ArrayList<String> listNomorKelas = new ArrayList<>();
+            final ArrayList<String> listId = new ArrayList<>();
+            if (Jadwalhari != null) {
+                int i = 0;
+                while (Jadwalhari.size() > i) {
+                    if (IdGuru.get(i).equals(userID)) {
+                        Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
+                        if (Jadwalhari.get(i).equals("proses")) {
+                            listNama.add(NamaJamaah.get(i));
+                            listPertemuan.add(JmlPertemuan.get(i));
+                            listNomorKelas.add(NoKelas.get(i));
+                            listId.add(IdMurid.get(i));
+                            NamaMurid = NamaJamaah.get(i);
+                            JumlahPertemuan = JmlPertemuan.get(i);
+                            NomorKelas = NoKelas.get(i);
+                            IdJamaah = IdMurid.get(i);
+                            ShowPopupNotifikasiGuruPrivate();
+                            Log.d(TAG, NamaMurid);
+                            Log.d(TAG, JumlahPertemuan);
+                            Log.d(TAG, NomorKelas);
+                        }
+                        if (Jadwalhari.get(i).equals("request")) {
 
-                    }
-                    if (Jadwalhari.get(i).equals("false")) {
-                    } else {
-                        int j = 1;
-                        String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
-                        while (a.length > j) {
-                            int sab = j * 35000;
-                            listNamaEvent = NamaJamaah.get(i);
-                            listWaktuEvent = Long.parseLong(a[j]);
-                            setEvent(listWaktuEvent, listNamaEvent);
-                            j++;
+                        }
+                        if (Jadwalhari.get(i).equals("false")) {
+                        } else {
+                            int j = 1;
+                            String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                            while (a.length > j) {
+                                int sab = j * 35000;
+                                listNamaEvent = NamaJamaah.get(i);
+                                listWaktuEvent = Long.parseLong(a[j]);
+                                setEvent(listWaktuEvent, listNamaEvent);
+                                j++;
+                            }
                         }
                     }
+                    i++;
                 }
-                i++;
             }
-        }
-        mListViewRequestPrivate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NamaMurid = listNama.get(position);
-                JumlahPertemuan = listPertemuan.get(position);
-                NomorKelas = listNomorKelas.get(position);
-                IdJamaah = listId.get(position);
-                ShowPopupNotifikasiGuruPrivate();
-            }
-        });
+            mListViewRequestPrivate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    NamaMurid = listNama.get(position);
+                    JumlahPertemuan = listPertemuan.get(position);
+                    NomorKelas = listNomorKelas.get(position);
+                    IdJamaah = listId.get(position);
+                    ShowPopupNotifikasiGuruPrivate();
+                }
+            });
 
-        ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
-        mListViewRequestPrivate.setAdapter(namaGuru);
+            ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
+            mListViewRequestPrivate.setAdapter(namaGuru);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
 
