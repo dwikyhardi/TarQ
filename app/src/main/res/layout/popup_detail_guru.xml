@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minHeight="380dp"
+    android:minWidth="720dp"
     android:layout_gravity="center"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
@@ -127,16 +129,18 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold" />
+
                 <Spinner
+                    android:id="@+id/lokasiBelajar"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_toRightOf="@+id/tempat"
-                    android:id="@+id/lokasiBelajar"/>
+                    android:layout_toRightOf="@+id/tempat" />
+
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="none"
-                    android:layout_below="@+id/lokasiBelajar">
+                    android:layout_below="@+id/lokasiBelajar"
+                    android:scrollbars="none">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -161,10 +165,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:background="@drawable/buttonstyle"
                 android:text="Pilih Guru"
-                android:textColor="@color/white"
-                android:layout_marginBottom="25dp"/>
+                android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
 
