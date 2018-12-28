@@ -19,6 +19,11 @@
         android:id="@+id/ScanBarcodeGuru"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Scan Barcode"/>
+        android:text="Scan Barcode"
+        android:textColor="@color/white"
+        android:background="@drawable/button_sc_guru"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>
