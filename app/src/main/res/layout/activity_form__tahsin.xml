@@ -7,14 +7,22 @@
     android:orientation="vertical"
     tools:context=".Guru.Form_Tahsin">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/coklat">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Form Tahsin"
-        android:textColor="@color/coklat"
+        android:textColor="@color/white"
         android:textSize="30dp"
         android:textAlignment="center"
-        android:paddingTop="30dp"/>
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp"/>
+
+    </RelativeLayout>
 
     <EditText
         android:layout_width="match_parent"
