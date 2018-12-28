@@ -42,5 +42,20 @@
             android:layout_below="@+id/calendarJamaah"
             android:text="Belajar!" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/Tv_LV"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:text="Anda Akan Belajar Dengan : "
+            android:layout_below="@+id/btnBelajar"/>
+        <ListView
+            android:id="@+id/Lv_Belajar"
+            android:layout_below="@+id/Tv_LV"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
     </RelativeLayout>
 </RelativeLayout>
