@@ -17,16 +17,18 @@
         android:textSize="30dp"/>
 
     <EditText
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:hint="Setoran"
         android:id="@+id/editTextSetoranTahfizh"
+        android:layout_marginTop="50dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:textColorLink="@color/coklat"
-        android:textColorHint="@color/coklat"/>
+        android:textColorHint="@color/coklat"
+        android:backgroundTint="@color/coklat"
+        />
 
     <EditText
         android:layout_marginTop="50dp"

@@ -1,51 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Guru.Form_Tahsin">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Form Tahsin"/>
+        android:text="Form Tahsin"
+        android:textColor="@color/coklat"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:paddingTop="30dp"/>
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Materi"
         android:id="@+id/editTextMateriTahsin"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColorLink="@color/coklat"
+        android:textColorHint="@color/coklat"
+        android:backgroundTint="@color/coklat"
+        />
+
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Pencapaian"
         android:id="@+id/editTextPencapaianTahsin"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColorLink="@color/coklat"
+        android:textColorHint="@color/coklat"
+        android:backgroundTint="@color/coklat"
+        />
+
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Kendala"
         android:id="@+id/editTextKendalaTahsin"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColorLink="@color/coklat"
+        android:textColorHint="@color/coklat"
+        android:backgroundTint="@color/coklat"
+        />
+
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Solusi"
         android:id="@+id/editTextSolusiTahsin"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColorLink="@color/coklat"
+        android:textColorHint="@color/coklat"
+        android:backgroundTint="@color/coklat"
+        />
+
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Keterangan"
         android:id="@+id/editTextKeteranganTahsin"
-        android:inputType="textMultiLine"/>
+        android:inputType="textMultiLine"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColorLink="@color/coklat"
+        android:textColorHint="@color/coklat"
+        android:backgroundTint="@color/coklat"
+        />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Kirim"
-        android:id="@+id/KirimFormtahsin"/>
+        android:id="@+id/KirimFormtahsin"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="100dp"
+        android:backgroundTint="@color/coklat"
+        android:textColor="@color/white"
+        android:textSize="20dp"/>
 
-
-</ListView>
+</LinearLayout>
