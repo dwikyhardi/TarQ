@@ -68,7 +68,7 @@ public class Find_Guru extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1, myRef2,myRef3,myRef4;
+    private DatabaseReference myRef, myRef1, myRef2, myRef3, myRef4;
     private String userID;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -87,10 +87,10 @@ public class Find_Guru extends AppCompatActivity
     private Dialog dGuru;
     private Button btnRequest;
     private String[] Lembaga;
-    private Spinner PilihPertemuan,lokasiBelajar;
+    private Spinner PilihPertemuan, lokasiBelajar;
 
 
-    private String NamaGuru, NamaJamaah, AlamatGuru, NoTelpGuru, LembagaGuru,Lokasi;
+    private String NamaGuru, NamaJamaah, AlamatGuru, NoTelpGuru, LembagaGuru, Lokasi;
 
 
     private ImageView ivFotoGuruPopup;
@@ -252,7 +252,7 @@ public class Find_Guru extends AppCompatActivity
     }
 
     private void showData2(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileJamaah uInfo = new ProfileJamaah();
             uInfo.setLatitude(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getLatitude());
             uInfo.setLongitude(ds.child("USER").child("JAMAAH").child(Lokasi).child(userID).getValue(ProfileJamaah.class).getLongitude());
@@ -261,7 +261,7 @@ public class Find_Guru extends AppCompatActivity
             String lng = uInfo.getLongitude();
             alamatLatitude = Double.parseDouble(lat);
             alamatLongitude = Double.parseDouble(lng);
-            Log.d(TAG, "showData2(LatLng) returned: " + alamatLatitude+","+alamatLongitude);
+            Log.d(TAG, "showData2(LatLng) returned: " + alamatLatitude + "," + alamatLongitude);
         }
     }
 
@@ -396,7 +396,7 @@ public class Find_Guru extends AppCompatActivity
                         mMap.getUiSettings().setAllGesturesEnabled(true);
                         mMap.getUiSettings().setCompassEnabled(true);
                         mMap.getUiSettings().setZoomControlsEnabled(true);
-                        LatLng imah = new LatLng(alamatLatitude,alamatLongitude);
+                        LatLng imah = new LatLng(alamatLatitude, alamatLongitude);
                         mMap.addMarker(new MarkerOptions().position(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(imah, 16));
@@ -411,7 +411,7 @@ public class Find_Guru extends AppCompatActivity
                     mMap.getUiSettings().setAllGesturesEnabled(true);
                     mMap.getUiSettings().setCompassEnabled(true);
                     mMap.getUiSettings().setZoomControlsEnabled(true);
-                    LatLng imah = new LatLng(alamatLatitude,alamatLongitude);
+                    LatLng imah = new LatLng(alamatLatitude, alamatLongitude);
                     mMap.addMarker(new MarkerOptions().position(imah));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(imah));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(imah, 16));
@@ -429,8 +429,8 @@ public class Find_Guru extends AppCompatActivity
         btnRequest = (Button) dGuru.findViewById(R.id.btn_Pilih_Guru_popup);
         lokasiBelajar = (Spinner) dGuru.findViewById(R.id.lokasiBelajar);
 
-        String[] lokasi = new String[]{"Rumah","Kantor","Lainnya"};
-        ArrayAdapter<String> mStringArrayAdapter = new ArrayAdapter<String>(Find_Guru.this,R.layout.spinner_style_mantap,lokasi);
+        String[] lokasi = new String[]{"Rumah", "Kantor", "Lainnya"};
+        ArrayAdapter<String> mStringArrayAdapter = new ArrayAdapter<String>(Find_Guru.this, R.layout.spinner_style_mantap, lokasi);
         mStringArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lokasiBelajar.setAdapter(mStringArrayAdapter);
         storageReference.child("Guru/IdentitasGuru/" + IdGuru).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -452,8 +452,8 @@ public class Find_Guru extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String lokasi = lokasiBelajar.getSelectedItem().toString();
-                switch (lokasi){
-                    case "Kantor":{
+                switch (lokasi) {
+                    case "Kantor": {
                         lispoints.clear();
                         mMap.clear();
                         LatLng imah = new LatLng(-6.894144, 107.629769);
@@ -464,20 +464,20 @@ public class Find_Guru extends AppCompatActivity
                         lispoints.add(imah);
                         break;
                     }
-                    case "Rumah":{
+                    case "Rumah": {
                         lispoints.clear();
                         mMap.clear();
-                        LatLng imah = new LatLng(alamatLatitude,alamatLongitude);
+                        LatLng imah = new LatLng(alamatLatitude, alamatLongitude);
                         mMap.addMarker(new MarkerOptions().position(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(imah, 16));
                         lispoints.add(imah);
                         break;
                     }
-                    case "Lainnya":{
+                    case "Lainnya": {
                         lispoints.clear();
                         mMap.clear();
-                        Snackbar snackbar = Snackbar.make(view,"Tekan Maps Selama 5 Detik Untuk Menandai Tempat Belajar",5000);
+                        Snackbar snackbar = Snackbar.make(view, "Tekan Maps Selama 5 Detik Untuk Menandai Tempat Belajar", 5000);
                         snackbar.show();
                         break;
                     }
@@ -511,8 +511,8 @@ public class Find_Guru extends AppCompatActivity
                 String lat = alamatLatitude.toString();
                 String lng = alamatLongitude.toString();
 
-                switch (lokasiBelajar.getSelectedItem().toString()){
-                    case "Kantor":{
+                switch (lokasiBelajar.getSelectedItem().toString()) {
+                    case "Kantor": {
                         myRef4.child(key).child("idguru").setValue(IdGuru);
                         myRef4.child(key).child("guru").setValue(NamaGuru);
                         myRef4.child(key).child("idmurid").setValue(userID);
@@ -525,11 +525,11 @@ public class Find_Guru extends AppCompatActivity
                         myRef4.child(key).child("lokasilang").setValue(lng);
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
-                        mIntent.putExtra("Lokasi",Lokasi);
+                        mIntent.putExtra("Lokasi", Lokasi);
                         startActivity(mIntent);
                         break;
                     }
-                    case "Rumah":{
+                    case "Rumah": {
                         myRef1.child(key).child("idguru").setValue(IdGuru);
                         myRef1.child(key).child("guru").setValue(NamaGuru);
                         myRef1.child(key).child("idmurid").setValue(userID);
@@ -542,11 +542,11 @@ public class Find_Guru extends AppCompatActivity
                         myRef1.child(key).child("lokasilang").setValue(lng);
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
-                        mIntent.putExtra("Lokasi",Lokasi);
+                        mIntent.putExtra("Lokasi", Lokasi);
                         startActivity(mIntent);
                         break;
                     }
-                    case "Lainnya":{
+                    case "Lainnya": {
                         myRef1.child(key).child("idguru").setValue(IdGuru);
                         myRef1.child(key).child("guru").setValue(NamaGuru);
                         myRef1.child(key).child("idmurid").setValue(userID);
@@ -559,7 +559,7 @@ public class Find_Guru extends AppCompatActivity
                         myRef1.child(key).child("lokasilang").setValue(lng);
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
-                        mIntent.putExtra("Lokasi",Lokasi);
+                        mIntent.putExtra("Lokasi", Lokasi);
                         startActivity(mIntent);
                         break;
                     }
@@ -570,6 +570,7 @@ public class Find_Guru extends AppCompatActivity
         dGuru.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dGuru.show();
     }
+
     @Override
     public void onMapLongClick(LatLng latLng) {
         if (lispoints.size() >= 1) {
@@ -633,7 +634,7 @@ public class Find_Guru extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(Find_Guru.this, Main_Jamaah.class);
-        intent.putExtra("Lokasi",Lokasi);
+        intent.putExtra("Lokasi", Lokasi);
         startActivity(intent);
     }
 }

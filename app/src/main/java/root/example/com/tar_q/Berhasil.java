@@ -149,6 +149,7 @@ public class Berhasil extends AppCompatActivity {
                         startActivity(sIntent);
                     }
                 }
+            } catch (NullPointerException e) {
                 uInfo.setLevel(ds.child("USER").child("JAMAAH").child("JAKARTA").child(userID).getValue(ProfileJamaah.class).getLevel());
                 if (uInfo.getLevel() == 2) {
                     try {
@@ -162,13 +163,11 @@ public class Berhasil extends AppCompatActivity {
                             mIntent.putExtra("Lokasi", "JAKARTA");
                             startActivity(mIntent);
                         }
-                    } catch (NullPointerException e) {
+                    } catch (NullPointerException d) {
                         Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
                         startActivity(sIntent);
                     }
                 }
-            } catch (NullPointerException e) {
-                return e;
             }
         }
         return null;

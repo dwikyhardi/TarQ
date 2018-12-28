@@ -1,6 +1,7 @@
 package root.example.com.tar_q.Jamaah;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import root.example.com.tar_q.R;
 
@@ -37,6 +43,7 @@ public class Biodata_Jamaah extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private String Lokasi;
+    private ImageView BarcodeInvite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class Biodata_Jamaah extends AppCompatActivity {
         userID = user.getUid();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
+        BarcodeInvite = (ImageView) findViewById(R.id.BarcodeInvite);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,6 +103,16 @@ public class Biodata_Jamaah extends AppCompatActivity {
                 // Handle any errors
             }
         });
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(userID, BarcodeFormat.QR_CODE, 1000, 1000);//200,200 ukuran barcodenya
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            BarcodeInvite.setImageBitmap(bitmap);
+        } catch (WriterException | NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showData(DataSnapshot dataSnapshot) {
