@@ -7,14 +7,22 @@
     tools:context=".Guru.Form_Tahfizh"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/coklat">
+
     <TextView
         android:paddingTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Form Tahfizh"
-        android:textColor="@color/coklat"
-        android:textSize="30dp"/>
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:paddingBottom="20dp"/>
+
+    </RelativeLayout>
 
     <EditText
         android:layout_width="match_parent"
