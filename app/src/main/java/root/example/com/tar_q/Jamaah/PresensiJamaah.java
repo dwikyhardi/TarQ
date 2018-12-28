@@ -40,6 +40,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import root.example.com.tar_q.Awal;
 import root.example.com.tar_q.Guru.Presensi_Guru;
 import root.example.com.tar_q.Guru.ProfileGuru;
 import root.example.com.tar_q.MainActivity;
@@ -60,6 +61,7 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
     private TextView NamaJamaah, EmailJamaah;
 
     private Button Scan;
+    private Button btn_awal;
     private ImageView BarcodeJamaah;
 
     @Override
@@ -85,6 +87,7 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
         myRef = mFirebaseDatabase.getReference();
 
         Scan = (Button) findViewById(R.id.ScanBarcodeJamaah);
+        btn_awal = (Button) findViewById(R.id.btn_awal);
         BarcodeJamaah = (ImageView) findViewById(R.id.BarcodeJamaah);
 
         //Resource Layout
@@ -131,6 +134,14 @@ public class PresensiJamaah extends AppCompatActivity implements NavigationView.
                 integrator.setCaptureActivity(ScanBarcode.class);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
+            }
+        });
+
+        btn_awal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mIntent = new Intent(PresensiJamaah.this, Awal.class);
+                startActivity(mIntent);
             }
         });
 
