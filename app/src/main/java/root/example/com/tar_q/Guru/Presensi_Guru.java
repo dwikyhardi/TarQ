@@ -39,16 +39,20 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import root.example.com.tar_q.Jamaah.PresensiJamaah;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.ScanBarcode;
 
 import static com.facebook.login.widget.ProfilePictureView.TAG;
 
-public class Presensi_Guru extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Presensi_Guru extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Guru_Materi";
-    private String Lokasi,userID;
+    private String Lokasi, userID;
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private ImageView imageProfileGuru;
@@ -57,8 +61,15 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
     private DatabaseReference myRef;
     private TextView NamaGuru, EmailGuru;
 
+    private String timeStamp;
+
     private Button Scan;
     private ImageView BarcodeGuru;
+
+    private ArrayList<String> idAjar = new ArrayList<>();
+    private ArrayList<String> PelajaranH = new ArrayList<>();
+    private ArrayList<String> Jam = new ArrayList<>();
+    private ArrayList<String> Kelas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +86,22 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
 
+
+        idAjar = getIntent().getStringArrayListExtra("List Ajar");
+        PelajaranH = getIntent().getStringArrayListExtra("Pelajaran");
+        Jam = getIntent().getStringArrayListExtra("Jam");
+        Kelas = getIntent().getStringArrayListExtra("Kelas");
         Lokasi = getIntent().getStringExtra("Lokasi");
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        myRef = mFirebaseDatabase.getReference().child("TARQ").child("FORM").child(Lokasi);
+
+        timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+        timeStamp = timeStamp + "000";
+
 
         //Resource Layout
         BarcodeGuru = (ImageView) findViewById(R.id.BarcodeGuru);
@@ -116,17 +137,6 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         });
         EmailGuru.setText(user.getEmail());
         //tambahan Ieu
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showNama(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         Scan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,27 +172,27 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             Intent mIntent = new Intent(Presensi_Guru.this, Biodata_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Prosensi) {
+        } else if (id == R.id.nav_Prosensi) {
             Intent mIntent = new Intent(Presensi_Guru.this, Presensi_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_data_jamaah) {
+        } else if (id == R.id.nav_data_jamaah) {
             Intent mIntent = new Intent(Presensi_Guru.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Progres_report) {
+        } else if (id == R.id.nav_Progres_report) {
             Intent mIntent = new Intent(Presensi_Guru.this, Guru_Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_main_guru) {
+        } else if (id == R.id.nav_main_guru) {
             Intent mIntent = new Intent(Presensi_Guru.this, Main_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Tentang) {
+        } else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Data_Jamaah.this, Authors.class);
             startActivity(mIntent);*/
-        }else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             mAuth.signOut();
             Intent mIntent = new Intent(Presensi_Guru.this, MainActivity.class);
             startActivity(mIntent);
@@ -192,6 +202,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -199,7 +210,42 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         if (result != null) {
             //disini kode
             String naun = result.getContents();//ambil hasil scan
-            Log.d(TAG, "onActivityResult() returned: " + naun);
+            int i = 0;
+            long jams = 0;
+            long jama = 0;
+            while (idAjar.size() > i) {
+                int j = 1;
+                if (idAjar.get(i).equals(naun)) {
+                    String[] a = String.valueOf(Jam.get(i)).split(",");
+                    do {
+                        jams = (Long.parseLong(a[j]) + 7200000);
+                        if(Long.parseLong(timeStamp) < jams){
+                            long sah = jams - Long.parseLong(timeStamp);
+                            Log.d(TAG, "sah = " + sah);
+                            if (sah <= 7200000){
+                                myRef.child(Kelas.get(i)).child(timeStamp).child("GURU").child(userID).child("ABSEN").setValue("true");
+                                myRef.child(Kelas.get(i)).child(timeStamp).child("MURID").child(naun).child("ABSEN").setValue("true");
+                                myRef.child(Kelas.get(i)).child(timeStamp).child("WAKTU").setValue(timeStamp);
+                                myRef.child(Kelas.get(i)).child("KELAS").setValue(Kelas.get(i));
+                                myRef.child(Kelas.get(i)).child("PELAJARAN").setValue(PelajaranH.get(i));
+                                Log.d(TAG, "Berhasil Bray");
+                                if (PelajaranH.get(i).equals("tahfizh")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahfizh.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("tahsin")){
+
+                                }
+                            }
+                        }else{
+                            Log.d(TAG, "Gagal uyy");
+                        }
+                        j++;
+                        Log.d(TAG, "Db = " + jams);
+                        Log.d(TAG, "Jam = " + timeStamp);
+                    } while (a.length > j);
+                }
+                i++;
+            }
         }
     }
 
