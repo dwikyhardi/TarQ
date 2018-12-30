@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -46,12 +47,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 
 import root.example.com.tar_q.R;
+import root.example.com.tar_q.ScanBarcode;
 import root.example.com.tar_q.services.getLembaga;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -68,7 +72,7 @@ public class Find_Guru extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1, myRef2, myRef3, myRef4;
+    private DatabaseReference myRef, myRef1, myRef2, myRef3, myRef4, myRef5;
     private String userID;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -100,6 +104,14 @@ public class Find_Guru extends AppCompatActivity
     private ListView mListViewGuru;
     private TextView TV_ATAS;
 
+    //Invite
+    String IdTeman;
+    private TextView TvInvite;
+    private ImageView ScanInvite;
+    private ListView LvInvite;
+    private ArrayList<String> IdTemanArrayList, NamaTemanArrayList;
+    ArrayAdapter namaTeman;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,13 +134,20 @@ public class Find_Guru extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("GURU").child(Lokasi);
         myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE").child(Lokasi);
-        myRef4 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR").child(Lokasi);
         myRef2 = mFirebaseDatabase.getReference();
         myRef3 = mFirebaseDatabase.getReference();
+        myRef4 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR").child(Lokasi);
+        myRef5 = mFirebaseDatabase.getReference().child("TARQ").child("USER").child("JAMAAH").child(Lokasi);
         userID = user.getUid();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         lispoints = new ArrayList<>();
+
+        //Invite
+        IdTemanArrayList = new ArrayList<>();
+        NamaTemanArrayList = new ArrayList<>();
+        NamaTemanArrayList.add(NamaJamaah);
+        IdTemanArrayList.add(userID);
 
         myRef3.addValueEventListener(new ValueEventListener() {
             @Override
@@ -374,7 +393,6 @@ public class Find_Guru extends AppCompatActivity
     public void ShowPopupGuru(View v) {
         dGuru.setContentView(R.layout.popup_detail_guru);
         TextView txtclose;
-        GoogleMap googleMap;
 
         MapView mMapView = (MapView) dGuru.findViewById(R.id.map);
         mMapView.onCreate(dGuru.onSaveInstanceState());
@@ -428,6 +446,43 @@ public class Find_Guru extends AppCompatActivity
         etLembagaGuruPopup = (TextView) dGuru.findViewById(R.id.editTextLembagaPopup);
         btnRequest = (Button) dGuru.findViewById(R.id.btn_Pilih_Guru_popup);
         lokasiBelajar = (Spinner) dGuru.findViewById(R.id.lokasiBelajar);
+
+        //Invite
+        TvInvite = (TextView) dGuru.findViewById(R.id.TvInvite);
+        ScanInvite = (ImageView) dGuru.findViewById(R.id.ScanInvite);
+        LvInvite = (ListView) dGuru.findViewById(R.id.LvInvite);
+
+        namaTeman = new ArrayAdapter(this, R.layout.list_view_style, NamaTemanArrayList);
+        LvInvite.setAdapter(namaTeman);
+
+
+        TvInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(Find_Guru.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setPrompt("Scan Barcode");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(false);
+                integrator.setCaptureActivity(ScanBarcode.class);
+                integrator.setBarcodeImageEnabled(false);
+                integrator.initiateScan();
+            }
+        });
+
+        ScanInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(Find_Guru.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setPrompt("Scan Barcode");
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(false);
+                integrator.setCaptureActivity(ScanBarcode.class);
+                integrator.setBarcodeImageEnabled(false);
+                integrator.initiateScan();
+            }
+        });
 
         String[] lokasi = new String[]{"Rumah", "Kantor", "Lainnya"};
         ArrayAdapter<String> mStringArrayAdapter = new ArrayAdapter<String>(Find_Guru.this, R.layout.spinner_style_mantap, lokasi);
@@ -515,8 +570,14 @@ public class Find_Guru extends AppCompatActivity
                     case "Kantor": {
                         myRef4.child(key).child("idguru").setValue(IdGuru);
                         myRef4.child(key).child("guru").setValue(NamaGuru);
-                        myRef4.child(key).child("idmurid").setValue(userID);
-                        myRef4.child(key).child("murid").setValue(NamaJamaah);
+                        myRef1.child(key).child("idmurid").setValue(String.valueOf(IdTemanArrayList)
+                                .replace("[", "")
+                                .replace("]", "")
+                                .trim());
+                        myRef1.child(key).child("murid").setValue(String.valueOf(NamaTemanArrayList)
+                                .replace("[", "")
+                                .replace("]", "")
+                                .trim());
                         myRef4.child(key).child("jadwalhari").setValue("proses");
                         myRef4.child(key).child("jmlpertemuan").setValue(PilihPertemuan.getSelectedItem().toString());
                         myRef4.child(key).child("nokelas").setValue(key);
@@ -532,8 +593,14 @@ public class Find_Guru extends AppCompatActivity
                     case "Rumah": {
                         myRef1.child(key).child("idguru").setValue(IdGuru);
                         myRef1.child(key).child("guru").setValue(NamaGuru);
-                        myRef1.child(key).child("idmurid").setValue(userID);
-                        myRef1.child(key).child("murid").setValue(NamaJamaah);
+                        myRef1.child(key).child("idmurid").setValue(String.valueOf(IdTemanArrayList)
+                                .replace("[", "")
+                                .replace("]", "")
+                                .trim());
+                        myRef1.child(key).child("murid").setValue(String.valueOf(NamaTemanArrayList)
+                                .replace("[", "")
+                                .replace("]", "")
+                                .trim());
                         myRef1.child(key).child("jadwalhari").setValue("proses");
                         myRef1.child(key).child("jmlpertemuan").setValue(PilihPertemuan.getSelectedItem().toString());
                         myRef1.child(key).child("nokelas").setValue(key);
@@ -549,8 +616,14 @@ public class Find_Guru extends AppCompatActivity
                     case "Lainnya": {
                         myRef1.child(key).child("idguru").setValue(IdGuru);
                         myRef1.child(key).child("guru").setValue(NamaGuru);
-                        myRef1.child(key).child("idmurid").setValue(userID);
-                        myRef1.child(key).child("murid").setValue(NamaJamaah);
+                        myRef1.child(key).child("idmurid").setValue(String.valueOf(IdTemanArrayList)
+                                .replace("[", "")
+                                .replace("]", "")
+                                .trim());
+                        myRef1.child(key).child("murid").setValue(String.valueOf(NamaTemanArrayList)
+                                .replace("[", "")
+                                .replace("]", "")
+                                .trim());
                         myRef1.child(key).child("jadwalhari").setValue("proses");
                         myRef1.child(key).child("jmlpertemuan").setValue(PilihPertemuan.getSelectedItem().toString());
                         myRef1.child(key).child("nokelas").setValue(key);
@@ -592,6 +665,10 @@ public class Find_Guru extends AppCompatActivity
     @Override
     public void onDismiss(DialogInterface dialog) {
         mMap.clear();
+        NamaTemanArrayList.clear();
+        NamaTemanArrayList.add(NamaJamaah);
+        IdTemanArrayList.clear();
+        IdTemanArrayList.add(userID);
     }
 
     private boolean checkPermissionLocation() {
@@ -609,6 +686,60 @@ public class Find_Guru extends AppCompatActivity
     private void requestPermissionCamera() {
         ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CODE_CAMERA_FOTO);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            //disini kode
+            IdTeman = result.getContents();
+            myRef5.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Invite((Map<String, Object>) dataSnapshot.getValue());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            Log.d(TAG, "onActivityResult() returned: " + IdTeman);
+        }
+    }
+
+    private void Invite(Map<String, Object> dataSnapshot) {
+        Log.d(TAG, "Invite() called with: dataSnapshot = [" + dataSnapshot + "]");
+        final ArrayList<String> Nama = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map nama = (Map) entry.getValue();
+            Nama.add((String) nama.get("nama"));
+        }
+        final ArrayList<String> IdUser = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idUser = (Map) entry.getValue();
+            IdUser.add((String) idUser.get("id_user"));
+        }
+
+        try {
+            int i = 0;
+            while (Nama.size() > i) {
+                if (Nama.get(i) != null) {
+                    if (IdUser.get(i).equals(IdTeman)) {
+                        IdTemanArrayList.add(IdUser.get(i));
+                        NamaTemanArrayList.add(Nama.get(i));
+                    }
+                }
+                i++;
+            }
+            namaTeman.notifyDataSetChanged();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Invite() returned: " + NamaTemanArrayList);
+    }
+
 
     @Override
     protected void onResume() {

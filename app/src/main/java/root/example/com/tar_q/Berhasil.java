@@ -150,23 +150,27 @@ public class Berhasil extends AppCompatActivity {
                     }
                 }
             } catch (NullPointerException e) {
-                uInfo.setLevel(ds.child("USER").child("JAMAAH").child("JAKARTA").child(userID).getValue(ProfileJamaah.class).getLevel());
-                if (uInfo.getLevel() == 2) {
-                    try {
-                        uInfo.setNama(ds.child("USER").child("JAMAAH").child("JAKARTA").child(userID).getValue(ProfileJamaah.class).getNama());
-                        System.out.println("HAHA JAMAAH " + uInfo.getNama());
-                        if (uInfo.getNama() == null) {
+                try {
+                    uInfo.setLevel(ds.child("USER").child("JAMAAH").child("JAKARTA").child(userID).getValue(ProfileJamaah.class).getLevel());
+                    if (uInfo.getLevel() == 2) {
+                        try {
+                            uInfo.setNama(ds.child("USER").child("JAMAAH").child("JAKARTA").child(userID).getValue(ProfileJamaah.class).getNama());
+                            System.out.println("HAHA JAMAAH " + uInfo.getNama());
+                            if (uInfo.getNama() == null) {
+                                Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
+                                startActivity(sIntent);
+                            } else {
+                                Intent mIntent = new Intent(Berhasil.this, Main_Jamaah.class);
+                                mIntent.putExtra("Lokasi", "JAKARTA");
+                                startActivity(mIntent);
+                            }
+                        } catch (NullPointerException d) {
                             Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
                             startActivity(sIntent);
-                        } else {
-                            Intent mIntent = new Intent(Berhasil.this, Main_Jamaah.class);
-                            mIntent.putExtra("Lokasi", "JAKARTA");
-                            startActivity(mIntent);
                         }
-                    } catch (NullPointerException d) {
-                        Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
-                        startActivity(sIntent);
                     }
+                }catch (NullPointerException m){
+                    m.printStackTrace();
                 }
             }
         }

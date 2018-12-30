@@ -339,7 +339,7 @@ public class Main_Jamaah extends AppCompatActivity
             if (Jadwalhari != null) {
                 int i = 0;
                 while (Jadwalhari.size() > i) {
-                    if (IdMurid.get(i).equals(userID)) {
+                    if (IdMurid.get(i).replace(","," ").contains(userID)) {
                         if (Jadwalhari.get(i).equals("proses")) {
                             listNama.add(NamaGuru.get(i));
                             listPertemuan.add(JmlPertemuan.get(i));
