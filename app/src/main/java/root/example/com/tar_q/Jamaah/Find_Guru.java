@@ -570,11 +570,11 @@ public class Find_Guru extends AppCompatActivity
                     case "Kantor": {
                         myRef4.child(key).child("idguru").setValue(IdGuru);
                         myRef4.child(key).child("guru").setValue(NamaGuru);
-                        myRef1.child(key).child("idmurid").setValue(String.valueOf(IdTemanArrayList)
+                        myRef4.child(key).child("idmurid").setValue(String.valueOf(IdTemanArrayList)
                                 .replace("[", "")
                                 .replace("]", "")
                                 .trim());
-                        myRef1.child(key).child("murid").setValue(String.valueOf(NamaTemanArrayList)
+                        myRef4.child(key).child("murid").setValue(String.valueOf(NamaTemanArrayList)
                                 .replace("[", "")
                                 .replace("]", "")
                                 .trim());
@@ -582,8 +582,8 @@ public class Find_Guru extends AppCompatActivity
                         myRef4.child(key).child("jmlpertemuan").setValue(PilihPertemuan.getSelectedItem().toString());
                         myRef4.child(key).child("nokelas").setValue(key);
                         myRef4.child(key).child("pelajaran").setValue(Kelas_Atas);
-                        myRef4.child(key).child("lokasilat").setValue(lat);
-                        myRef4.child(key).child("lokasilang").setValue(lng);
+                        myRef4.child(key).child("lokasilat").setValue("-6.894144");
+                        myRef4.child(key).child("lokasilang").setValue("107.629769");
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
                         mIntent.putExtra("Lokasi", Lokasi);
