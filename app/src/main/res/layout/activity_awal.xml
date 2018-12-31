@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan mengajarkannya"
-        android:textColor="@color/hitam"
+        android:textColor="@color/coklat"
         android:textSize="17dp"
         android:textStyle="italic"
         android:layout_below="@+id/img_logo"
@@ -38,7 +38,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btnTerimaPopup"
+            android:id="@+id/btnSignInAwal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -53,7 +53,7 @@
             android:padding="5dp"/>
 
         <Button
-            android:id="@+id/btnTolakPopup"
+            android:id="@+id/btnSignUpAwal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
