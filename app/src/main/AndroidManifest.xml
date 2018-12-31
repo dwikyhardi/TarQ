@@ -58,7 +58,8 @@
         <activity android:name=".Guru.Form_Tahsin" />
         <activity android:name=".GantiPassword" />
         <activity android:name=".Guru.Potensial" />
-        <activity android:name=".Guru.Realcome"></activity>
+        <activity android:name=".Guru.Realcome" />
+        <activity android:name=".Form_Bahasa_Arab"></activity>
     </application>
 
 </manifest>
