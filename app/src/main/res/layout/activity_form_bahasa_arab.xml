@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Form_Bahasa_Arab">
+    tools:context=".Guru.Form_Bahasa_Arab">
 
     <RelativeLayout
         android:layout_width="match_parent"
