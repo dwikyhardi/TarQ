@@ -297,10 +297,10 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                     showSnackbar(v, "Harap Lengkapi Foto Profil", 3000);
                     return;
                 } else if (filePath2 == null) {
-                    showSnackbar(v, "Harap Lengkapi Foto STNK", 3000);
+                    showSnackbar(v, "Harap Lengkapi Foto KTP", 3000);
                     return;
                 } else if (filePath3 == null) {
-                    showSnackbar(v, "Harap Lengkapi Foto SIM", 3000);
+                    showSnackbar(v, "Harap Lengkapi Foto Bukti Keanggotaan Lembaga ", 3000);
                     return;
                 } else if (spin_Lokasi.getSelectedItem().toString().equals("Pilih Lokasi")) {
                     showSnackbar(v, "Harap Pilih Lokasi", 3000);
@@ -692,7 +692,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             progressDialog.show();
             FirebaseUser user = mAuth.getCurrentUser();
             String userID = user.getUid();
-            StorageReference ref = storageReference.child("Guru/KTP/" + userID);
+            StorageReference ref = storageReference.child("Guru/KTP_Guru/" + userID);
             ref.putFile(filePath2)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -727,7 +727,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             progressDialog.show();
             FirebaseUser user = mAuth.getCurrentUser();
             String userID = user.getUid();
-            StorageReference ref = storageReference.child("Guru/BuktiAnggota/" + userID);
+            StorageReference ref = storageReference.child("Guru/Bukti_Lembaga/" + userID);
             ref.putFile(filePath3)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
