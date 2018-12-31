@@ -25,10 +25,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.BarcodeFormat;
@@ -42,14 +40,11 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import root.example.com.tar_q.Jamaah.PresensiJamaah;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.ScanBarcode;
 
-import static com.facebook.login.widget.ProfilePictureView.TAG;
-
-public class Presensi_Guru extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Presensi extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Guru_Materi";
     private String Lokasi, userID;
@@ -79,7 +74,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Presensi_Guru.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Presensi.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view_guru);
@@ -141,7 +136,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         Scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentIntegrator integrator = new IntentIntegrator(Presensi_Guru.this);
+                IntentIntegrator integrator = new IntentIntegrator(Presensi.this);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
                 integrator.setPrompt("Scan Barcode");
                 integrator.setCameraId(0);
@@ -169,23 +164,31 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.nav_account) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Biodata_Guru.class);
+            Intent mIntent = new Intent(Presensi.this, Biodata.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Prosensi) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Presensi_Guru.class);
+            Intent mIntent = new Intent(Presensi.this, Presensi.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_data_jamaah) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Data_Jamaah.class);
+            Intent mIntent = new Intent(Presensi.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Progres_report) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Guru_Progres.class);
+            Intent mIntent = new Intent(Presensi.this, Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_main_guru) {
-            Intent mIntent = new Intent(Presensi_Guru.this, Main_Guru.class);
+            Intent mIntent = new Intent(Presensi.this, Main_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Potensial) {
+            Intent mIntent = new Intent(Presensi.this, Potensial.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Realcome) {
+            Intent mIntent = new Intent(Presensi.this, Realcome.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Tentang) {
@@ -194,7 +197,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             startActivity(mIntent);*/
         } else if (id == R.id.nav_logout) {
             mAuth.signOut();
-            Intent mIntent = new Intent(Presensi_Guru.this, MainActivity.class);
+            Intent mIntent = new Intent(Presensi.this, MainActivity.class);
             startActivity(mIntent);
         }
 
@@ -230,7 +233,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
                                 myRef.child(Kelas.get(i)).child("PELAJARAN").setValue(PelajaranH.get(i));
                                 Log.d(TAG, "Berhasil Bray");
                                 if (PelajaranH.get(i).equals("tahfizh")){
-                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahfizh.class);
+                                    Intent mIntent = new Intent(Presensi.this, Form_Tahfizh.class);
                                     startActivity(mIntent);
                                 }else if (PelajaranH.get(i).equals("tahsin")){
 
@@ -260,7 +263,7 @@ public class Presensi_Guru extends AppCompatActivity implements NavigationView.O
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = new Intent(Presensi_Guru.this, Main_Guru.class);
+            Intent intent = new Intent(Presensi.this, Main_Guru.class);
             intent.putExtra("Lokasi", Lokasi);
             startActivity(intent);
         }

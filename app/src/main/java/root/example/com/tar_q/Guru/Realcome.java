@@ -1,7 +1,6 @@
 package root.example.com.tar_q.Guru;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,33 +9,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
-public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Realcome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private static final String TAG = "Guru_Materi";
-    private String Lokasi,userID;
+    private String Lokasi, userID;
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private ImageView imageProfileGuru;
@@ -44,72 +35,32 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private TextView NamaGuru, EmailGuru;
-    
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guru_data_jamaah);
+        setContentView(R.layout.activity_guru_realcome);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Data_Jamaah.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Realcome.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view_guru);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
 
+
         Lokasi = getIntent().getStringExtra("Lokasi");
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        myRef = mFirebaseDatabase.getReference().child("TARQ").child("FORM").child(Lokasi);
 
-        //Resource Layout
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
-        imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
-        NamaGuru = (TextView) header.findViewById(R.id.textViewNamaGuru);
-        EmailGuru = (TextView) header.findViewById(R.id.textViewEmailGuru);
-        final String userID = user.getUid();
-        storageRef.child("Guru/IdentitasGuru/" + userID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                System.out.println(uri);
-                Glide.with(getApplicationContext()).load(uri).into(imageProfileGuru);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-        EmailGuru.setText(user.getEmail());
-        //tambahan Ieu
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showNama(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void showNama(DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            ProfileGuru uInfo = new ProfileGuru();
-            Log.d(TAG, "showNama() returned: " + Lokasi);
-            uInfo.setNama(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
-            NamaGuru.setText(uInfo.getNama());
-            Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
-        }
     }
 
     @Override
@@ -117,40 +68,40 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
 
         if (id == R.id.nav_account) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Biodata.class);
+            Intent mIntent = new Intent(Realcome.this, Biodata.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Prosensi) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Presensi.class);
+        } else if (id == R.id.nav_Prosensi) {
+            Intent mIntent = new Intent(Realcome.this, Presensi.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_data_jamaah) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Data_Jamaah.class);
+        } else if (id == R.id.nav_data_jamaah) {
+            Intent mIntent = new Intent(Realcome.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Progres_report) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Progres.class);
+        } else if (id == R.id.nav_Progres_report) {
+            Intent mIntent = new Intent(Realcome.this, Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_main_guru) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Main_Guru.class);
+        } else if (id == R.id.nav_main_guru) {
+            Intent mIntent = new Intent(Realcome.this, Main_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Potensial) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Potensial.class);
+        } else if (id == R.id.nav_Potensial) {
+            Intent mIntent = new Intent(Realcome.this, Potensial.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Realcome) {
-            Intent mIntent = new Intent(Data_Jamaah.this, Realcome.class);
+            Intent mIntent = new Intent(Realcome.this, Realcome.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Tentang) {
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Data_Jamaah.this, Authors.class);
             startActivity(mIntent);*/
-        }else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             mAuth.signOut();
-            Intent mIntent = new Intent(Data_Jamaah.this, MainActivity.class);
+            Intent mIntent = new Intent(Realcome.this, MainActivity.class);
             startActivity(mIntent);
         }
 
@@ -162,6 +113,7 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -169,10 +121,10 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = new Intent(Data_Jamaah.this, Main_Guru.class);
+            Intent intent = new Intent(Realcome.this, Main_Guru.class);
             intent.putExtra("Lokasi", Lokasi);
             startActivity(intent);
         }
+
     }
-    
 }

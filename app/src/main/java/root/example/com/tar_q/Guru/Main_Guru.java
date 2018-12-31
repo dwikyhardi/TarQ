@@ -340,11 +340,11 @@ public class Main_Guru extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_account) {
-            Intent mIntent = new Intent(Main_Guru.this, Biodata_Guru.class);
+            Intent mIntent = new Intent(Main_Guru.this, Biodata.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Prosensi) {
-            Intent mIntent = new Intent(Main_Guru.this, Presensi_Guru.class);
+            Intent mIntent = new Intent(Main_Guru.this, Presensi.class);
             mIntent.putExtra("Lokasi", Lokasi);
             mIntent.putStringArrayListExtra("List Ajar", idAjar);
             mIntent.putStringArrayListExtra("Pelajaran", PelajaranH);
@@ -356,11 +356,19 @@ public class Main_Guru extends AppCompatActivity
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Progres_report) {
-            Intent mIntent = new Intent(Main_Guru.this, Guru_Progres.class);
+            Intent mIntent = new Intent(Main_Guru.this, Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_main_guru) {
             Intent mIntent = new Intent(Main_Guru.this, Main_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Potensial) {
+            Intent mIntent = new Intent(Main_Guru.this, Potensial.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Realcome) {
+            Intent mIntent = new Intent(Main_Guru.this, Realcome.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         } else if (id == R.id.nav_Tentang) {

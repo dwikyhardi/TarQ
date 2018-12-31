@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".register" />
         <activity android:name=".Guru.lengkapi_data_guru" />
         <activity android:name=".Jamaah.lengkapi_data_jamaah" />
@@ -40,7 +40,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Guru.Biodata_Guru" />
+        <activity android:name=".Guru.Biodata" />
         <activity android:name=".Jamaah.Biodata_Jamaah" />
 
         <service
@@ -50,13 +50,15 @@
         <activity android:name=".Jamaah.Find_Guru" />
         <activity android:name=".Jamaah.PresensiJamaah" />
         <activity android:name=".Tentang" />
-        <activity android:name=".Guru.Presensi_Guru" />
+        <activity android:name=".Guru.Presensi" />
         <activity android:name=".Guru.Data_Jamaah" />
-        <activity android:name=".Guru.Guru_Progres" />
+        <activity android:name=".Guru.Progres" />
         <activity android:name=".ScanBarcode" />
         <activity android:name=".Guru.Form_Tahfizh" />
         <activity android:name=".Guru.Form_Tahsin" />
         <activity android:name=".GantiPassword" />
+        <activity android:name=".Guru.Potensial" />
+        <activity android:name=".Guru.Realcome"></activity>
     </application>
 
 </manifest>

@@ -12,13 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,7 +39,6 @@ import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import root.example.com.tar_q.Awal;
-import root.example.com.tar_q.Guru.Presensi_Guru;
 import root.example.com.tar_q.Guru.ProfileGuru;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
