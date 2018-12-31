@@ -33,7 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
-public class Guru_Progres extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Progres extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = "Guru_Materi";
     private String Lokasi,userID;
@@ -53,7 +53,7 @@ public class Guru_Progres extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Guru_Progres.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Progres.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view_guru);
@@ -117,23 +117,31 @@ public class Guru_Progres extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_account) {
-            Intent mIntent = new Intent(Guru_Progres.this, Biodata_Guru.class);
+            Intent mIntent = new Intent(Progres.this, Biodata.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Prosensi) {
-            Intent mIntent = new Intent(Guru_Progres.this, Presensi_Guru.class);
+            Intent mIntent = new Intent(Progres.this, Presensi.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_data_jamaah) {
-            Intent mIntent = new Intent(Guru_Progres.this, Data_Jamaah.class);
+            Intent mIntent = new Intent(Progres.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Progres_report) {
-            Intent mIntent = new Intent(Guru_Progres.this, Guru_Progres.class);
+            Intent mIntent = new Intent(Progres.this, Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_main_guru) {
-            Intent mIntent = new Intent(Guru_Progres.this, Main_Guru.class);
+        }else if (id == R.id.nav_Potensial) {
+            Intent mIntent = new Intent(Progres.this, Potensial.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Realcome) {
+            Intent mIntent = new Intent(Progres.this, Realcome.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_main_guru) {
+            Intent mIntent = new Intent(Progres.this, Main_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
         }else if (id == R.id.nav_Tentang) {
@@ -142,7 +150,7 @@ public class Guru_Progres extends AppCompatActivity implements NavigationView.On
             startActivity(mIntent);*/
         }else if (id == R.id.nav_logout) {
             mAuth.signOut();
-            Intent mIntent = new Intent(Guru_Progres.this, MainActivity.class);
+            Intent mIntent = new Intent(Progres.this, MainActivity.class);
             startActivity(mIntent);
         }
 
@@ -162,7 +170,7 @@ public class Guru_Progres extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = new Intent(Guru_Progres.this, Main_Guru.class);
+            Intent intent = new Intent(Progres.this, Main_Guru.class);
             intent.putExtra("Lokasi", Lokasi);
             startActivity(intent);
         }

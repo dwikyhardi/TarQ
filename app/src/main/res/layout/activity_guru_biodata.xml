@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient_guru_biodata"
-    tools:context=".Guru.Biodata_Guru">
+    tools:context=".Guru.Biodata">
 
     <RelativeLayout
         android:id="@+id/RlAwal"

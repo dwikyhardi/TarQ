@@ -21,9 +21,17 @@
             android:icon="@drawable/ic_people"
             android:title="Data Jamaah" />
         <item
+            android:id="@+id/nav_Potensial"
+            android:icon="@drawable/ic_trending_up"
+            android:title="Potensial Income" />
+        <item
             android:id="@+id/nav_Progres_report"
             android:icon="@drawable/ic_assignment_turned"
             android:title="Progres report/KBM" />
+        <item
+            android:id="@+id/nav_Realcome"
+            android:icon="@drawable/ic_payment"
+            android:title="Realcome" />
         <item
             android:id="@+id/nav_Tentang"
             android:icon="@drawable/ic_info"

@@ -5,17 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Guru.Progres"
-    android:background="@color/white"
-    tools:showIn="@layout/app_bar_guru_progres">
+    tools:context=".Guru.Potensial"
+    tools:showIn="@layout/app_bar_guru_potensial"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:text="Guru Progres"
-        android:textColor="@color/hitam"
-        android:textSize="30dp" />
+        android:text="Layout Guru Potensial"
+        android:textColor="@color/coklat"
+        android:textSize="30dp"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>
