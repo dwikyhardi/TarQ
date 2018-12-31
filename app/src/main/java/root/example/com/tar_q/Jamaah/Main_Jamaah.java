@@ -81,7 +81,7 @@ public class Main_Jamaah extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1;
+    private DatabaseReference myRef, myRef1,myRef2;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -136,6 +136,7 @@ public class Main_Jamaah extends AppCompatActivity
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
         myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE").child(Lokasi);
+        myRef2 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR").child(Lokasi);
         userID = user.getUid();
         btnBelajar = (Button) findViewById(R.id.btnBelajar);
         NotifikasiMurid = new Dialog(this);
@@ -181,7 +182,19 @@ public class Main_Jamaah extends AppCompatActivity
         myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showNotification((Map<String, Object>) dataSnapshot.getValue());
+                showNotificationPrivate((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showNotificationKantor((Map<String, Object>) dataSnapshot.getValue());
             }
 
             @Override
@@ -300,7 +313,7 @@ public class Main_Jamaah extends AppCompatActivity
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void showNotification(Map<String, Object> dataSnapshot) {
+    private void showNotificationPrivate(Map<String, Object> dataSnapshot) {
         try {
             final ArrayList<String> Jadwalhari = new ArrayList<>();
             for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
@@ -384,6 +397,98 @@ public class Main_Jamaah extends AppCompatActivity
 
             ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
             Lv_Belajar.setAdapter(namaGuru);
+            Log.d(TAG, "showNotificationPrivate() returned: " + listNamaEvent);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showNotificationKantor(Map<String, Object> dataSnapshot) {
+        try {
+            final ArrayList<String> Jadwalhari = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map jadwalhari = (Map) entry.getValue();
+                Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
+            }
+            final ArrayList<String> NamaGuru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map namaGuru = (Map) entry.getValue();
+                NamaGuru.add((String) namaGuru.get("guru"));
+            }
+            final ArrayList<String> JmlPertemuan = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map jmlPertemuan = (Map) entry.getValue();
+                JmlPertemuan.add((String) jmlPertemuan.get("jmlpertemuan"));
+            }
+            final ArrayList<String> NoKelas = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map noKelas = (Map) entry.getValue();
+                NoKelas.add((String) noKelas.get("nokelas"));
+            }
+            final ArrayList<String> IdGuru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idGuru = (Map) entry.getValue();
+                IdGuru.add((String) idGuru.get("idguru"));
+            }
+            final ArrayList<String> IdMurid = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idMurid = (Map) entry.getValue();
+                IdMurid.add((String) idMurid.get("idmurid"));
+            }
+            final ArrayList<String> listNama = new ArrayList<>();
+            final ArrayList<String> listPertemuan = new ArrayList<>();
+            final ArrayList<String> listNomorKelas = new ArrayList<>();
+            final ArrayList<String> listId = new ArrayList<>();
+            if (Jadwalhari != null) {
+                int i = 0;
+                while (Jadwalhari.size() > i) {
+                    if (IdMurid.get(i).replace(","," ").contains(userID)) {
+                        if (Jadwalhari.get(i).equals("proses")) {
+                            listNama.add(NamaGuru.get(i));
+                            listPertemuan.add(JmlPertemuan.get(i));
+                            listNomorKelas.add(NoKelas.get(i));
+                            listId.add(IdGuru.get(i));
+                            namaGuru = NamaGuru.get(i);
+                            idGuru = IdGuru.get(i);
+                            NomorKelas = NoKelas.get(i);
+                        }
+                        if (Jadwalhari.get(i).equals("request")) {
+                        }
+                        if (Jadwalhari.get(i).equals("false")) {
+                            namaGuru = NamaGuru.get(i);
+                            idGuru = IdGuru.get(i);
+                            NomorKelas = NoKelas.get(i);
+                            ShowPopupNotifikasiMurid(namaGuru, idGuru);
+                        } else {
+                            int j = 1;
+                            String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                            while (a.length > j) {
+                                int sab = j * 35000;
+                                listNamaEvent = NamaGuru.get(i);
+                                listWaktuEvent = Long.parseLong(a[j]);
+                                setEvent(listWaktuEvent, listNamaEvent);
+                                j++;
+                            }
+                        }
+                    }
+                    i++;
+                }
+            }
+
+            Lv_Belajar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    namaGuru = NamaGuru.get(position);
+                    idGuru = IdGuru.get(position);
+                    NomorKelas = NoKelas.get(position);
+                    PopUpProses(namaGuru, idGuru);
+                }
+            });
+
+            ArrayAdapter namaGuru = new ArrayAdapter(this, R.layout.list_view_style_request, listNama);
+            Lv_Belajar.setAdapter(namaGuru);
+            Log.d(TAG, "showNotificationKantor() returned: " + listNamaEvent);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
