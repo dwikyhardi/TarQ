@@ -13,7 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,20 +33,37 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
 public class Progres extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final String TAG = "Guru_Materi";
-    private String Lokasi,userID;
+    private String Lokasi, userID;
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private ImageView imageProfileGuru;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, myRef1;
     private TextView NamaGuru, EmailGuru;
+    private String Sekarang;
+
+    private ArrayList<String> listNamaForm = new ArrayList<>();
+    private ArrayList<String> listNamasForm = new ArrayList<>();
+    private ArrayList<String> listIdForm = new ArrayList<>();
+    private ArrayList<String> listPelajaranForm = new ArrayList<>();
+    private ArrayList<String> listNoKelasForm = new ArrayList<>();
+    private ListView mListViewNamaForm;
+
+    private String HNama, HNamas, HId, HPelajaran, HNokelas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +85,13 @@ public class Progres extends AppCompatActivity implements NavigationView.OnNavig
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+
+
+        myRef = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE").child(Lokasi);
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR").child(Lokasi);
 
         //Resource Layout
+        mListViewNamaForm = (ListView) findViewById(R.id.ListLaporan);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
         imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
@@ -88,15 +112,115 @@ public class Progres extends AppCompatActivity implements NavigationView.OnNavig
         });
         EmailGuru.setText(user.getEmail());
         //tambahan Ieu
-        myRef.addValueEventListener(new ValueEventListener() {
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showNama(dataSnapshot);
+                showNotification1((Map<String, Object>) dataSnapshot.getValue());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showNotification((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Sekarang = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+        Sekarang = Sekarang + "000";
+
+        mListViewNamaForm.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HId = listIdForm.get(position);
+                HPelajaran = listPelajaranForm.get(position);
+                HNokelas = listNoKelasForm.get(position);
+                HNama = listNamaForm.get(position);
+                HNamas = listNamasForm.get(position);
+                if (HPelajaran.equals("tahfizh")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahfizh.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("pratahsin1")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("Perlajaran", HPelajaran);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("pratahsin2")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("Perlajaran", HPelajaran);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("pratahsin3")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("tahsin1")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("tahsin2")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("tahsin3")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("tahsin4")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                } else if (HPelajaran.equals("bahasaarab")) {
+                    Intent mIntent = new Intent(Progres.this, Form_Tahsin.class);
+                    mIntent.putExtra("Lokasi", Lokasi);
+                    mIntent.putExtra("Id Murid", HId);
+                    mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Nama Murid", HNama);
+                    mIntent.putExtra("Nama Guru", HNamas);
+                    startActivity(mIntent);
+                }
             }
         });
 
@@ -132,14 +256,6 @@ public class Progres extends AppCompatActivity implements NavigationView.OnNavig
             Intent mIntent = new Intent(Progres.this, Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Potensial) {
-            Intent mIntent = new Intent(Progres.this, Potensial.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_Realcome) {
-            Intent mIntent = new Intent(Progres.this, Realcome.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
         } else if (id == R.id.nav_main_guru) {
             Intent mIntent = new Intent(Progres.this, Main_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
@@ -158,6 +274,161 @@ public class Progres extends AppCompatActivity implements NavigationView.OnNavig
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    private void showNotification(Map<String, Object> dataSnapshot) {
+
+        final ArrayList<String> Jadwalhari = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map jadwalhari = (Map) entry.getValue();
+            Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
+        }
+        final ArrayList<String> NamaJamaah = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map namajamaah = (Map) entry.getValue();
+            NamaJamaah.add((String) namajamaah.get("murid"));
+        }
+        final ArrayList<String> NamaGuru = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map namaguru = (Map) entry.getValue();
+            NamaGuru.add((String) namaguru.get("guru"));
+        }
+        final ArrayList<String> NoKelas = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map noKelas = (Map) entry.getValue();
+            NoKelas.add((String) noKelas.get("nokelas"));
+        }
+        final ArrayList<String> IdGuru = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idGuru = (Map) entry.getValue();
+            IdGuru.add((String) idGuru.get("idguru"));
+        }
+        final ArrayList<String> IdMurid = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idMurid = (Map) entry.getValue();
+            IdMurid.add((String) idMurid.get("idmurid"));
+        }
+        final ArrayList<String> Pelajaran = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map pelajaran = (Map) entry.getValue();
+            Pelajaran.add((String) pelajaran.get("pelajaran"));
+        }
+        if (Jadwalhari != null) {
+            int i = 0;
+            while (Jadwalhari.size() > i) {
+                if (IdGuru.get(i).equals(userID)) {
+                    if (Jadwalhari.get(i).equals("proses")) {
+                    }
+                    else if (Jadwalhari.get(i).equals("request")) {
+                    }
+                    else if (Jadwalhari.get(i).equals("false")) {
+                    } else {
+                        int j = 1;
+                        String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                        while (a.length > j) {
+                            int k = 0;
+                            if (Long.parseLong(a[j]) < Long.parseLong(Sekarang)) {
+                                if (Long.parseLong(Sekarang) - Long.parseLong(a[j]) <= 43200000) {
+                                    String[] name = NamaJamaah.get(i).split(",");
+                                    String[] id = IdMurid.get(i).split(",");
+                                    while (name.length > k) {
+                                        listIdForm.add(id[k]);
+                                        listPelajaranForm.add(Pelajaran.get(i));
+                                        listNoKelasForm.add(NoKelas.get(i));
+                                        listNamasForm.add(NamaGuru.get(i));
+                                        listNamaForm.add(name[k]);
+                                        k++;
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                    }
+                }
+                i++;
+            }
+        }
+    }
+
+    private void showNotification1(Map<String, Object> dataSnapshot) {
+
+        final ArrayList<String> Jadwalhari = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map jadwalhari = (Map) entry.getValue();
+            Jadwalhari.add((String) jadwalhari.get("jadwalhari"));
+        }
+        final ArrayList<String> NamaJamaah = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map namajamaah = (Map) entry.getValue();
+            NamaJamaah.add((String) namajamaah.get("murid"));
+        }
+        final ArrayList<String> NamaGuru = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map namaguru = (Map) entry.getValue();
+            NamaGuru.add((String) namaguru.get("guru"));
+        }
+        final ArrayList<String> NoKelas = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map noKelas = (Map) entry.getValue();
+            NoKelas.add((String) noKelas.get("nokelas"));
+        }
+        final ArrayList<String> IdGuru = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idGuru = (Map) entry.getValue();
+            IdGuru.add((String) idGuru.get("idguru"));
+        }
+        final ArrayList<String> IdMurid = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map idMurid = (Map) entry.getValue();
+            IdMurid.add((String) idMurid.get("idmurid"));
+        }
+        final ArrayList<String> Pelajaran = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map pelajaran = (Map) entry.getValue();
+            Pelajaran.add((String) pelajaran.get("pelajaran"));
+        }
+        if (Jadwalhari != null) {
+            int i = 0;
+            while (Jadwalhari.size() > i) {
+                if (IdGuru.get(i).equals(userID)) {
+                    Log.d(TAG, "Jadwal Hari samadengan = " + Jadwalhari.get(i));
+                    if (Jadwalhari.get(i).equals("proses")) {
+                    }
+                    else if (Jadwalhari.get(i).equals("request")) {
+                    }
+                    else if (Jadwalhari.get(i).equals("false")) {
+                    } else {
+                        int j = 1;
+                        String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                        while (a.length > j) {
+                            int k = 0;
+                            if (Long.parseLong(a[j]) < Long.parseLong(Sekarang)) {
+                                if (Long.parseLong(Sekarang) - Long.parseLong(a[j]) <= 43200000) {
+                                    String[] name = NamaJamaah.get(i).split(",");
+                                    String[] id = IdMurid.get(i).split(",");
+                                    while (name.length > k) {
+                                        Log.d(TAG, "Split Regex = " + name[k]);
+                                        listIdForm.add(id[k]);
+                                        listPelajaranForm.add(Pelajaran.get(i));
+                                        listNoKelasForm.add(NoKelas.get(i));
+                                        listNamasForm.add(NamaGuru.get(i));
+                                        listNamaForm.add(name[k]);
+                                        k++;
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                    }
+                }
+                i++;
+            }
+        }
+
+        ArrayAdapter namaForm = new ArrayAdapter(this, R.layout.list_view_style_request, listNamaForm);
+        mListViewNamaForm.setAdapter(namaForm);
+    }
+
 
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

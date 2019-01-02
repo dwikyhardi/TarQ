@@ -25,8 +25,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.BarcodeFormat;
@@ -40,6 +42,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import root.example.com.tar_q.Jamaah.PresensiJamaah;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.ScanBarcode;
@@ -218,26 +221,52 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
             long jama = 0;
             while (idAjar.size() > i) {
                 int j = 1;
-                if (idAjar.get(i).equals(naun)) {
+                if (idAjar.get(i).contains(naun)) {
                     String[] a = String.valueOf(Jam.get(i)).split(",");
                     do {
                         jams = (Long.parseLong(a[j]) + 7200000);
+                        String jamsa = a[j];
                         if(Long.parseLong(timeStamp) < jams){
                             long sah = jams - Long.parseLong(timeStamp);
                             Log.d(TAG, "sah = " + sah);
                             if (sah <= 7200000){
-                                myRef.child(Kelas.get(i)).child(timeStamp).child("GURU").child(userID).child("ABSEN").setValue("true");
-                                myRef.child(Kelas.get(i)).child(timeStamp).child("MURID").child(naun).child("ABSEN").setValue("true");
-                                myRef.child(Kelas.get(i)).child(timeStamp).child("WAKTU").setValue(timeStamp);
-                                myRef.child(Kelas.get(i)).child("KELAS").setValue(Kelas.get(i));
-                                myRef.child(Kelas.get(i)).child("PELAJARAN").setValue(PelajaranH.get(i));
+                                myRef.child(Kelas.get(i)).child(jamsa).child("GURU").child(userID).child("ABSEN").setValue("true");
+                                myRef.child(Kelas.get(i)).child(jamsa).child("GURU").child(userID).child("id").setValue(userID);
+                                myRef.child(Kelas.get(i)).child(jamsa).child("MURID").child(naun).child("ABSEN").setValue("true");
+                                myRef.child(Kelas.get(i)).child(jamsa).child("MURID").child(naun).child("id").setValue(naun);
+                                myRef.child(Kelas.get(i)).child(jamsa).child("JADWAL").setValue(jamsa);
+                                myRef.child(Kelas.get(i)).child(jamsa).child("WAKTU ABSEN").setValue(timeStamp);
+                                myRef.child(Kelas.get(i)).child(jamsa).child("PERTEMUAN").setValue(j);
+                                myRef.child(Kelas.get(i)).child(jamsa).child("KELAS").setValue(Kelas.get(i));
+                                myRef.child(Kelas.get(i)).child(jamsa).child("PELAJARAN").setValue(PelajaranH.get(i));
                                 Log.d(TAG, "Berhasil Bray");
-                                if (PelajaranH.get(i).equals("tahfizh")){
-                                    Intent mIntent = new Intent(Presensi.this, Form_Tahfizh.class);
+                                /*if (PelajaranH.get(i).equals("tahfizh")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahfizh.class);
                                     startActivity(mIntent);
-                                }else if (PelajaranH.get(i).equals("tahsin")){
+                                }else if (PelajaranH.get(i).equals("pratahsin1")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahsin.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("pratahsin2")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahsin.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("pratahsin3")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahsin.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("tahsin1")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahsin.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("tahsin2")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahsin.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("tahsin3")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahsin.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("tahsin4")){
+                                    Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahsin.class);
+                                    startActivity(mIntent);
+                                }else if (PelajaranH.get(i).equals("bahasaarab")){
 
-                                }
+                                }*/
                             }
                         }else{
                             Log.d(TAG, "Gagal uyy");
