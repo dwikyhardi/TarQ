@@ -153,7 +153,7 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
         myRef = mFirebaseDatabase.getReference();
 
         spin_Lokasi = (Spinner) findViewById(R.id.spin_Lokasi);
-        String[] Lokasi = new String[]{"Pilih Lokasi", "Bandung", "Jakarta"};
+        String[] Lokasi = new String[]{"Pilih Lokasi", "Bandung", "Jakarta", "Padang"};
         ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, Lokasi);
         mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_Lokasi.setAdapter(mArrayAdapter);
@@ -251,9 +251,15 @@ public class lengkapi_data_jamaah extends AppCompatActivity implements OnMapRead
                         myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).removeValue();
                         Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
                         startActivity(i);
-                    } else {
+                    } else if (spin_Lokasi.getSelectedItem().toString().equals("Jakarta")){
                         UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
                         myRef.child("TARQ").child("USER").child("JAMAAH").child("JAKARTA").child(userID).setValue(newUser);
+                        myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).removeValue();
+                        Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
+                        startActivity(i);
+                    }else if (spin_Lokasi.getSelectedItem().toString().equals("Padang")){
+                        UserJamaah newUser = new UserJamaah(userID, nama, noIdentitas, nohp, alamat, tanggallahir, latitude, longitude);
+                        myRef.child("TARQ").child("USER").child("JAMAAH").child("PADANG").child(userID).setValue(newUser);
                         myRef.child("TARQ").child("USER").child("JAMAAH").child(userID).removeValue();
                         Intent i = new Intent(lengkapi_data_jamaah.this, Berhasil.class);
                         startActivity(i);

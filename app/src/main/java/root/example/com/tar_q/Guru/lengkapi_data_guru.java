@@ -190,9 +190,9 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
         try {
             verifikasi = getIntent().getStringExtra("Verifikasi");
             Log.d(TAG, "onCreate: Masuk Try Catch");
-            if (verifikasi == null){
+            if (verifikasi == null) {
                 verifikasi = "false";
-            }else {
+            } else {
                 verifikasi = "true";
             }
             Log.d(TAG, "onCreate(verifikasi) returned: " + verifikasi);
@@ -274,7 +274,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        String[] LokasiArray = new String[]{"Pilih Lokasi", "Bandung", "Jakarta"};
+        String[] LokasiArray = new String[]{"Pilih Lokasi", "Bandung", "Jakarta", "Padang"};
         ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, LokasiArray);
         mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_Lokasi.setAdapter(mArrayAdapter);
@@ -326,45 +326,67 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                     showSnackbar(v, "Harap Lengkapi Semua Kolom", 3000);
                     return;
                 } else {
-                    if (spin_Lokasi.getSelectedItem().toString().equals("Bandung")) {
-                        if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
-                            myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
-                            String addLembaga = LembagaString + "," + lembagatxt;
-                            Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
-                            myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga);
-                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
-                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
-                            startActivity(i);
-                        } else {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
-                            myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
-                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
-                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
-                            startActivity(i);
-                            Log.i(TAG, "onClick: ga masukin ke db");
-                        }
-                    } else {
-                        if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
-                            myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
-                            String addLembaga = LembagaString + "," + lembagatxt;
-                            Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
-                            myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga);
-                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
-                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
-                            startActivity(i);
-                        } else {
-                            UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
-                            myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
-                            myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
-                            Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
-                            startActivity(i);
-                            Log.i(TAG, "onClick: ga masukin ke db");
-                        }
+                    switch (spin_Lokasi.getSelectedItem().toString()) {
+                        case "Bandung":
+                            if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
+                                UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
+                                myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
+                                String addLembaga = LembagaString + "," + lembagatxt;
+                                Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
+                                myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga);
+                                myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                                Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                                startActivity(i);
+                            } else {
+                                UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
+                                myRef.child("TARQ").child("USER").child("GURU").child("BANDUNG").child(userID).setValue(newUser);
+                                myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                                Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                                startActivity(i);
+                                Log.i(TAG, "onClick: ga masukin ke db");
+                            }
+                            break;
+                        case "Jakarta":
+                            if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
+                                UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
+                                myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
+                                String addLembaga = LembagaString + "," + lembagatxt;
+                                Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
+                                myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga);
+                                myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                                Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                                startActivity(i);
+                            } else {
+                                UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
+                                myRef.child("TARQ").child("USER").child("GURU").child("JAKARTA").child(userID).setValue(newUser);
+                                myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                                Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                                startActivity(i);
+                                Log.i(TAG, "onClick: ga masukin ke db");
+                            }
+                            break;
+                        case "Padang":
+                            if (PilihLembagaGuru.getSelectedItem().equals("Lainnya")) {
+                                UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembagatxt, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
+                                myRef.child("TARQ").child("USER").child("GURU").child("PADANG").child(userID).setValue(newUser);
+                                String addLembaga = LembagaString + "," + lembagatxt;
+                                Log.d(TAG, "onClick(addLembaga) returned: " + addLembaga);
+                                myRef.child("TARQ").child("Lembaga").child("lembaga").setValue(addLembaga);
+                                myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                                Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                                startActivity(i);
+                            } else {
+                                UserGuru newUser = new UserGuru(userID, nama, nohp, alamat, tanggallahir, lembaga, praTahsin1, praTahsin2, praTahsin3, tahsin1, tahsin2, tahsin3, tahsin4, bahasaArab, tahfizh, "0.0", "0.0", lat, lng, verifikasi);
+                                myRef.child("TARQ").child("USER").child("GURU").child("PADANG").child(userID).setValue(newUser);
+                                myRef.child("TARQ").child("USER").child("GURU").child(userID).removeValue();
+                                Intent i = new Intent(lengkapi_data_guru.this, Berhasil.class);
+                                startActivity(i);
+                                Log.i(TAG, "onClick: ga masukin ke db");
+                            }
+                            break;
                     }
                 }
-
+                Log.d(TAG, "onClick(SPIN_LOKASI) returned: " + spin_Lokasi.getSelectedItem().toString());
             }
         });
 
@@ -383,6 +405,7 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
+                Log.d(TAG, "onClick(SPIN_LOKASI) returned: " + spin_Lokasi.getSelectedItem().toString());
             }
         });
 
@@ -420,6 +443,8 @@ public class lengkapi_data_guru extends AppCompatActivity implements OnMapReadyC
                         spin_Lokasi.setSelection(1);
                     } else if (Lokasi.equals("JAKARTA")) {
                         spin_Lokasi.setSelection(2);
+                    } else if (Lokasi.equals("PADANG")) {
+                        spin_Lokasi.setSelection(3);
                     } else {
                         spin_Lokasi.setSelection(0);
                     }

@@ -170,7 +170,28 @@ public class Berhasil extends AppCompatActivity {
                         }
                     }
                 }catch (NullPointerException m){
-                    m.printStackTrace();
+                    try{
+                        uInfo.setLevel(ds.child("USER").child("JAMAAH").child("PADANG").child(userID).getValue(ProfileJamaah.class).getLevel());
+                        if (uInfo.getLevel() == 2) {
+                            try {
+                                uInfo.setNama(ds.child("USER").child("JAMAAH").child("PADANG").child(userID).getValue(ProfileJamaah.class).getNama());
+                                System.out.println("HAHA JAMAAH " + uInfo.getNama());
+                                if (uInfo.getNama() == null) {
+                                    Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
+                                    startActivity(sIntent);
+                                } else {
+                                    Intent mIntent = new Intent(Berhasil.this, Main_Jamaah.class);
+                                    mIntent.putExtra("Lokasi", "PADANG");
+                                    startActivity(mIntent);
+                                }
+                            } catch (NullPointerException d) {
+                                Intent sIntent = new Intent(Berhasil.this, lengkapi_data_jamaah.class);
+                                startActivity(sIntent);
+                            }
+                        }
+                    }catch (NullPointerException l){
+                        l.printStackTrace();
+                    }
                 }
             }
         }
@@ -244,10 +265,40 @@ public class Berhasil extends AppCompatActivity {
                             }
                         }
                     } catch (NullPointerException d) {
-                        kuInfo.setLevel(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getLevel());
-                        if (kuInfo.getLevel() == 3) {
-                            Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
-                            startActivity(sIntent);
+                        try {
+                            kuInfo.setLatitudeRumah(ds.child("USER").child("GURU").child("PADANG").child(userID).getValue(ProfileGuru.class).getLatitudeRumah());
+                            kuInfo.setLongitudeRumah(ds.child("USER").child("GURU").child("PADANG").child(userID).getValue(ProfileGuru.class).getLongitudeRumah());
+
+                            if (kuInfo.getLatitudeRumah().equals("0") && kuInfo.getLongitudeRumah().equals("0")) {
+                                Log.d(TAG, "showData1(LngRumah) returned: " + kuInfo.getLongitudeRumah());
+                                Intent mIntent = new Intent(Berhasil.this, GantiPassword.class);
+                                mIntent.putExtra("Lokasi", "PADANG");
+                                startActivity(mIntent);
+                            } else {
+                                kuInfo.setLevel(ds.child("USER").child("GURU").child("PADANG").child(userID).getValue(ProfileGuru.class).getLevel());
+                                if (kuInfo.getLevel() == 3) {
+                                    try {
+                                        kuInfo.setVerifikasi(ds.child("USER").child("GURU").child("PADANG").child(userID).getValue(ProfileGuru.class).getVerifikasi());
+                                        if (kuInfo.getVerifikasi().equals("true")) {
+                                            System.out.println("Jakarta");
+                                            Intent mIntent = new Intent(Berhasil.this, Main_Guru.class);
+                                            mIntent.putExtra("Lokasi", "PADANG");
+                                            startActivity(mIntent);
+                                        } else {
+                                            toastMessage("Akun Anda Belum Ter-Verifikasi");
+                                        }
+                                    } catch (NullPointerException c) {
+                                        Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
+                                        startActivity(sIntent);
+                                    }
+                                }
+                            }
+                        }catch (NullPointerException l){
+                            kuInfo.setLevel(ds.child("USER").child("GURU").child(userID).getValue(ProfileGuru.class).getLevel());
+                            if (kuInfo.getLevel() == 3) {
+                                Intent sIntent = new Intent(Berhasil.this, lengkapi_data_guru.class);
+                                startActivity(sIntent);
+                            }
                         }
                     }
                 }
