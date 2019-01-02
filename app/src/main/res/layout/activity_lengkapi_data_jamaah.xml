@@ -134,7 +134,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_toRightOf="@+id/imgView_namaIcon"
                         android:backgroundTint="@color/white"
-                        android:hint="Nama Pribadi/Perusahaan"
+                        android:hint="Nama Lengkap"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:textSize="15sp" />
