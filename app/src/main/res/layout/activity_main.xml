@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/bg_gradient1"
+    android:background="@color/white"
     >
     <ScrollView
         android:id="@+id/login_form"
@@ -33,9 +33,9 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="200dp"
+                    android:layout_width="300dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/logo2"
+                    android:src="@drawable/logo_lengkap"
                     android:background="@color/transparent"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="40dp"
@@ -62,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Username"
-                        android:textColor="@color/white"
+                        android:textColor="@color/coklat"
                         android:textSize="20dp"
                         android:layout_centerHorizontal="true"/>
 
@@ -79,15 +79,15 @@
                         android:id="@+id/icon_email_login"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        app:srcCompat="@drawable/ic_account_emai_2" />
+                        app:srcCompat="@drawable/ic_account_circle_black_24dp" />
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/email"
                         android:textSize="15dp"
-                        android:textColor="@color/white"
-                        android:backgroundTint="@color/white"
+                        android:textColor="@color/coklat"
+                        android:backgroundTint="@color/coklat"
                         android:layout_alignParentTop="true"
                         android:inputType="textEmailAddress"
                         android:layout_toRightOf="@id/icon_email_login"
@@ -106,7 +106,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Password"
-                            android:textColor="@color/white"
+                            android:textColor="@color/coklat"
                             android:textSize="20dp"
                             android:layout_centerHorizontal="true"/>
 
@@ -123,7 +123,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_password"
+                        app:srcCompat="@drawable/ic_key_black_24dp"
                         android:id="@+id/icon_password_login"/>
 
                     <EditText
@@ -133,7 +133,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginTop="0dp"
                         android:layout_toRightOf="@id/icon_password_login"
-                        android:backgroundTint="@color/white"
+                        android:backgroundTint="@color/coklat"
                         android:inputType="textPassword"
                         android:textColor="@color/white"
                         android:textSize="15dp" />
@@ -152,7 +152,7 @@
                     android:backgroundTint="@color/coklat"
                     android:fontFamily="sans-serif-medium"
                     android:text="LOGIN"
-                    android:textColor="@color/hijau"/>
+                    android:textColor="@color/white"/>
 
                 <Button
                     android:id="@+id/btnGoogle"
