@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -84,6 +85,7 @@ public class Find_Guru extends AppCompatActivity
     public Double alamatLatitude, alamatLongitude;
     public LatLng indonesia;
     private static final int LOCATION_REQUEST = 500;
+    Location currentUser = new Location("");
 
 
     private Spinner PilihKelas, PilihLembaga;
@@ -111,6 +113,7 @@ public class Find_Guru extends AppCompatActivity
     private ListView LvInvite;
     private ArrayList<String> IdTemanArrayList, NamaTemanArrayList;
     ArrayAdapter namaTeman;
+    private LatLng imah;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,7 +283,7 @@ public class Find_Guru extends AppCompatActivity
             String lng = uInfo.getLongitude();
             alamatLatitude = Double.parseDouble(lat);
             alamatLongitude = Double.parseDouble(lng);
-            Log.d(TAG, "showData2(LatLng) returned: " + alamatLatitude + "," + alamatLongitude);
+            Log.d(TAG, "showData2() returned: lat " + alamatLatitude + " lng " + alamatLongitude);
         }
     }
 
@@ -298,6 +301,12 @@ public class Find_Guru extends AppCompatActivity
     }
 
     private void showData(Map<String, Object> dataSnapshot) {
+        try {
+            currentUser.setLatitude(alamatLatitude);
+            currentUser.setLongitude(alamatLongitude);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         final ArrayList<String> Nama = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
@@ -360,17 +369,29 @@ public class Find_Guru extends AppCompatActivity
                     if (Verifikasi.get(i).equals("true")) {
                         if (Kelas.get(i).equals("true")) {
                             if (mLembaga.get(i).equals(LembagaString)) {
-                                listId.add(Id_Guru.get(i));
-                                listNama.add(Nama.get(i));
-                                listNoTelp.add(NoHp.get(i));
-                                listLembaga.add(mLembaga.get(i));
-                                listAlamat.add(Alamat.get(i));
+
+                                Location guru = new Location("");
+                                guru.setLatitude(Double.parseDouble(Latitude.get(i)));
+                                guru.setLongitude(Double.parseDouble(Longitude.get(i)));
+
+                                if (((currentUser.distanceTo(guru)) / 1000) <= 5) {
+                                    listId.add(Id_Guru.get(i));
+                                    listNama.add(Nama.get(i));
+                                    listNoTelp.add(NoHp.get(i));
+                                    listLembaga.add(mLembaga.get(i));
+                                    listAlamat.add(Alamat.get(i));
+                                }
                             }
                         }
                     }
                 }
                 i++;
             }
+            listId.add("request");
+            listNama.add("request");
+            listNoTelp.add("request");
+            listLembaga.add("request");
+            listAlamat.add("request");
             Log.d(TAG, "onItemClick() returnee " + listNama);
         } catch (NullPointerException e) {
         }
@@ -503,6 +524,11 @@ public class Find_Guru extends AppCompatActivity
         txtclose = (TextView) dGuru.findViewById(R.id.txtclose);
         txtclose.setText("X");
 
+        if (NamaGuru.equals("request")){
+            lokasiBelajar.setSelection(1);
+            lokasiBelajar.setEnabled(false);
+        }
+
         lokasiBelajar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -511,7 +537,12 @@ public class Find_Guru extends AppCompatActivity
                     case "Kantor": {
                         lispoints.clear();
                         mMap.clear();
-                        LatLng imah = new LatLng(-6.894144, 107.629769);
+
+                        if(Lokasi.equals("BANDUNG")){
+                            imah = new LatLng(-6.894144, 107.629769);
+                        }else if (Lokasi.equals("PADANG")){
+                            imah = new LatLng(-0.239182, 100.610456);
+                        }
                         mMap.addMarker(new MarkerOptions().position(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(imah, 16));
@@ -522,7 +553,7 @@ public class Find_Guru extends AppCompatActivity
                     case "Rumah": {
                         lispoints.clear();
                         mMap.clear();
-                        LatLng imah = new LatLng(alamatLatitude, alamatLongitude);
+                        imah = new LatLng(alamatLatitude, alamatLongitude);
                         mMap.addMarker(new MarkerOptions().position(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(imah));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(imah, 16));
@@ -578,12 +609,21 @@ public class Find_Guru extends AppCompatActivity
                                 .replace("[", "")
                                 .replace("]", "")
                                 .trim());
-                        myRef4.child(key).child("jadwalhari").setValue("proses");
+                        if (NamaGuru.equals("request")){
+                            myRef4.child(key).child("jadwalhari").setValue("request");
+                        }else {
+                            myRef4.child(key).child("jadwalhari").setValue("proses");
+                        }
                         myRef4.child(key).child("jmlpertemuan").setValue(PilihPertemuan.getSelectedItem().toString());
                         myRef4.child(key).child("nokelas").setValue(key);
                         myRef4.child(key).child("pelajaran").setValue(Kelas_Atas);
-                        myRef4.child(key).child("lokasilat").setValue("-6.894144");
-                        myRef4.child(key).child("lokasilang").setValue("107.629769");
+                        if(Lokasi.equals("BANDUNG")){
+                            myRef4.child(key).child("lokasilat").setValue("-6.894144");
+                            myRef4.child(key).child("lokasilang").setValue("107.629769");
+                        }else if (Lokasi.equals("PADANG")){
+                            myRef4.child(key).child("lokasilat").setValue("-0.239182");
+                            myRef4.child(key).child("lokasilang").setValue("100.610456");
+                        }
                         dGuru.dismiss();
                         Intent mIntent = new Intent(Find_Guru.this, Main_Jamaah.class);
                         mIntent.putExtra("Lokasi", Lokasi);
@@ -710,7 +750,7 @@ public class Find_Guru extends AppCompatActivity
     }
 
     private void Invite(Map<String, Object> dataSnapshot) {
-        Log.d(TAG, "Invite() called with: dataSnapshot = [" + dataSnapshot + "]");
+        Log.d(TAG, "Invite() called with: dat aSnapshot = [" + dataSnapshot + "]");
         final ArrayList<String> Nama = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
             Map nama = (Map) entry.getValue();

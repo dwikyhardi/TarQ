@@ -81,7 +81,7 @@ public class Main_Jamaah extends AppCompatActivity
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef, myRef1,myRef2;
+    private DatabaseReference myRef, myRef1, myRef2;
     //Storage
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -219,6 +219,7 @@ public class Main_Jamaah extends AppCompatActivity
         kalenderJamaah = (CompactCalendarView) findViewById(R.id.calendarJamaah);
         Month = (TextView) findViewById(R.id.textViewMonth);
         dateFormatMonth = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
+
     }
 
     private void showData(DataSnapshot dataSnapshot) {
@@ -352,33 +353,37 @@ public class Main_Jamaah extends AppCompatActivity
             if (Jadwalhari != null) {
                 int i = 0;
                 while (Jadwalhari.size() > i) {
-                    if (IdMurid.get(i).replace(","," ").contains(userID)) {
-                        if (Jadwalhari.get(i).equals("proses")) {
-                            listNama.add(NamaGuru.get(i));
-                            listPertemuan.add(JmlPertemuan.get(i));
-                            listNomorKelas.add(NoKelas.get(i));
-                            listId.add(IdGuru.get(i));
-                            namaGuru = NamaGuru.get(i);
-                            idGuru = IdGuru.get(i);
-                            NomorKelas = NoKelas.get(i);
-                        }
-                        if (Jadwalhari.get(i).equals("request")) {
-                        }
-                        if (Jadwalhari.get(i).equals("false")) {
-                            namaGuru = NamaGuru.get(i);
-                            idGuru = IdGuru.get(i);
-                            NomorKelas = NoKelas.get(i);
-                            ShowPopupNotifikasiMurid(namaGuru, idGuru);
-                        } else {
-                            int j = 1;
-                            String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
-                            while (a.length > j) {
-                                int sab = j * 35000;
-                                listNamaEvent = NamaGuru.get(i);
-                                listWaktuEvent = Long.parseLong(a[j]);
-                                setEvent(listWaktuEvent, listNamaEvent);
-                                j++;
-                            }
+                    if (IdMurid.toString().contains(userID)) {
+                        Log.d(TAG, "showNotificationPrivate() returned: " + IdMurid);
+                        switch (Jadwalhari.get(i)) {
+                            case "proses":
+                                listNama.add(NamaGuru.get(i));
+                                listPertemuan.add(JmlPertemuan.get(i));
+                                listNomorKelas.add(NoKelas.get(i));
+                                listId.add(IdGuru.get(i));
+                                namaGuru = NamaGuru.get(i);
+                                idGuru = IdGuru.get(i);
+                                NomorKelas = NoKelas.get(i);
+                                break;
+                            case "request":
+                                break;
+                            case "false":
+                                namaGuru = NamaGuru.get(i);
+                                idGuru = IdGuru.get(i);
+                                NomorKelas = NoKelas.get(i);
+                                ShowPopupNotifikasiMurid(namaGuru, idGuru);
+                                break;
+                            default:
+                                int j = 1;
+                                String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                                while (a.length > j) {
+                                    int sab = j * 35000;
+                                    listNamaEvent = NamaGuru.get(i);
+                                    listWaktuEvent = Long.parseLong(a[j]);
+                                    setEvent(listWaktuEvent, listNamaEvent);
+                                    j++;
+                                }
+                                break;
                         }
                     }
                     i++;
@@ -391,6 +396,7 @@ public class Main_Jamaah extends AppCompatActivity
                     namaGuru = NamaGuru.get(position);
                     idGuru = IdGuru.get(position);
                     NomorKelas = NoKelas.get(position);
+                    Log.d(TAG, "onItemClick(NomorKelas) returned: " + NomorKelas);
                     PopUpProses(namaGuru, idGuru);
                 }
             });
@@ -443,7 +449,7 @@ public class Main_Jamaah extends AppCompatActivity
             if (Jadwalhari != null) {
                 int i = 0;
                 while (Jadwalhari.size() > i) {
-                    if (IdMurid.get(i).replace(","," ").contains(userID)) {
+                    if (IdMurid.get(i).replace(",", " ").contains(userID)) {
                         if (Jadwalhari.get(i).equals("proses")) {
                             listNama.add(NamaGuru.get(i));
                             listPertemuan.add(JmlPertemuan.get(i));
@@ -453,9 +459,9 @@ public class Main_Jamaah extends AppCompatActivity
                             idGuru = IdGuru.get(i);
                             NomorKelas = NoKelas.get(i);
                         }
-                        if (Jadwalhari.get(i).equals("request")) {
+                        else if (Jadwalhari.get(i).equals("request")) {
                         }
-                        if (Jadwalhari.get(i).equals("false")) {
+                        else if (Jadwalhari.get(i).equals("false")) {
                             namaGuru = NamaGuru.get(i);
                             idGuru = IdGuru.get(i);
                             NomorKelas = NoKelas.get(i);
@@ -482,6 +488,7 @@ public class Main_Jamaah extends AppCompatActivity
                     namaGuru = NamaGuru.get(position);
                     idGuru = IdGuru.get(position);
                     NomorKelas = NoKelas.get(position);
+                    Log.d(TAG, "onItemClick(NomorKelas) returned: " + NomorKelas);
                     PopUpProses(namaGuru, idGuru);
                 }
             });
@@ -542,7 +549,11 @@ public class Main_Jamaah extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK button
                         myRef1.child(NomorKelas).setValue(null);
+                        myRef2.child(NomorKelas).setValue(null);
                         NotifikasiMuridProses.dismiss();
+                        Intent mIntent = new Intent(Main_Jamaah.this, Main_Jamaah.class);
+                        mIntent.putExtra("Lokasi", Lokasi);
+                        startActivity(mIntent);
                     }
                 });
                 builder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
