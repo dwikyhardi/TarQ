@@ -6,19 +6,19 @@ public class InputTahsinDanBahasaArab {
             nama_guru,
             nama_jamaah,
             tanggal_belajar,
-            pertemuan_ke,
             materi,
             pencapaian,
             kendala,
             solusi,
             keterangan;
+    public int pertemuan_ke;
 
     public InputTahsinDanBahasaArab(String id_guru,
                                     String id_jamaah,
                                     String nama_guru,
                                     String nama_jamaah,
                                     String tanggal_belajar,
-                                    String pertemuan_ke,
+                                    int pertemuan_ke,
                                     String materi,
                                     String pencapaian,
                                     String kendala,

@@ -6,11 +6,11 @@ public class InputTahfizh {
             nama_guru,
             nama_jamaah,
             tanggal_belajar,
-            pertemuan_ke,
             setoran,
             murajaah,
             hafalanbaru,
             keterangan;
+    public int pertemuan_ke;
 
     public InputTahfizh(
             String id_guru,
@@ -18,7 +18,7 @@ public class InputTahfizh {
             String nama_guru,
             String nama_jamaah,
             String tanggal_belajar,
-            String pertemuan_ke,
+            int pertemuan_ke,
             String setoran,
             String murajaah,
             String hafalanbaru,
