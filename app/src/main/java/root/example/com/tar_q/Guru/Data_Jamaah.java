@@ -13,7 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,21 +32,28 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 
-public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "Guru_Materi";
-    private String Lokasi,userID;
+    private String Lokasi, userID;
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private ImageView imageProfileGuru;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, myRef1, myRef2;
     private TextView NamaGuru, EmailGuru;
-    
+
+    private ListView ListJamaah;
+
+    private ArrayList<String> Nama = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +75,12 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
         userID = user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        myRef1 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child(Lokasi).child("KANTOR");
+        myRef2 = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child(Lokasi).child("PRIVATE");
 
         //Resource Layout
+
+        ListJamaah = (ListView) findViewById(R.id.ListJamaah);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
         imageProfileGuru = (ImageView) header.findViewById(R.id.imageProfileGuru);
@@ -100,6 +113,30 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
+        myRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showMuridPrivate((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        myRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showMuridKantor((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void showNama(DataSnapshot dataSnapshot) {
@@ -120,23 +157,23 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
             Intent mIntent = new Intent(Data_Jamaah.this, Biodata.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Prosensi) {
+        } else if (id == R.id.nav_Prosensi) {
             Intent mIntent = new Intent(Data_Jamaah.this, Presensi.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_data_jamaah) {
+        } else if (id == R.id.nav_data_jamaah) {
             Intent mIntent = new Intent(Data_Jamaah.this, Data_Jamaah.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Progres_report) {
+        } else if (id == R.id.nav_Progres_report) {
             Intent mIntent = new Intent(Data_Jamaah.this, Progres.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_main_guru) {
+        } else if (id == R.id.nav_main_guru) {
             Intent mIntent = new Intent(Data_Jamaah.this, Main_Guru.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
-        }else if (id == R.id.nav_Potensial) {
+        } else if (id == R.id.nav_Potensial) {
             Intent mIntent = new Intent(Data_Jamaah.this, Potensial.class);
             mIntent.putExtra("Lokasi", Lokasi);
             startActivity(mIntent);
@@ -148,7 +185,7 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
             toastMessage("tentang");
             /*Intent mIntent = new Intent(Data_Jamaah.this, Authors.class);
             startActivity(mIntent);*/
-        }else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             mAuth.signOut();
             Intent mIntent = new Intent(Data_Jamaah.this, MainActivity.class);
             startActivity(mIntent);
@@ -159,9 +196,64 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
+    private void showMuridPrivate(Map<String, Object> dataSnapshot) {
+        try {
+            final ArrayList<String> Id_Murid = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map murid = (Map) entry.getValue();
+                Id_Murid.add((String) murid.get("murid"));
+            }
+            final ArrayList<String> Id_Guru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map guru = (Map) entry.getValue();
+                Id_Guru.add((String) guru.get("idguru"));
+            }
+            Log.d(TAG, "showMuridPrivate() returned: " + Id_Murid);
+            int i = 0;
+            while (Id_Guru.size() > i) {
+                if (Id_Guru.get(i).equals(userID)) {
+                    Nama.add(Id_Murid.get(i));
+                }
+                i++;
+            }
+            ArrayAdapter namaJamaah = new ArrayAdapter(this, R.layout.list_view_style_request, Nama);
+            ListJamaah.setAdapter(namaJamaah);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void showMuridKantor(Map<String, Object> dataSnapshot) {
+        try {
+            final ArrayList<String> Id_Murid = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map murid = (Map) entry.getValue();
+                Id_Murid.add((String) murid.get("murid"));
+            }
+            final ArrayList<String> Id_Guru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map guru = (Map) entry.getValue();
+                Id_Guru.add((String) guru.get("idguru"));
+            }
+            Log.d(TAG, "showMuridKantor() returned: " + Id_Murid);
+            int i = 0;
+            while (Id_Guru.size() > i) {
+                if (Id_Guru.get(i).equals(userID)) {
+                    Nama.add(Id_Murid.get(i));
+                }
+                i++;
+            }
+            ArrayAdapter namaJamaah = new ArrayAdapter(this, R.layout.list_view_style_request, Nama);
+            ListJamaah.setAdapter(namaJamaah);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -174,5 +266,5 @@ public class Data_Jamaah extends AppCompatActivity implements NavigationView.OnN
             startActivity(intent);
         }
     }
-    
+
 }
