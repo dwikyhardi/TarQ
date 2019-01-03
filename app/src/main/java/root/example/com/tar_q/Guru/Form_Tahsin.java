@@ -101,6 +101,10 @@ public class Form_Tahsin extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Intent mIntent = new Intent(Form_Tahsin.this, Main_Guru.class);
                         mIntent.putExtra("Lokasi", Lokasi);
+                        mIntent.putExtra("Id Murid", Id_Murid);
+                        mIntent.putExtra("NoKelas", Id_Kelas);
+                        mIntent.putExtra("Nama Murid", Murid);
+                        mIntent.putExtra("Nama Guru", Guru);
                         startActivity(mIntent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

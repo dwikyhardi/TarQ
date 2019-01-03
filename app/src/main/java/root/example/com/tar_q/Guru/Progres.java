@@ -151,6 +151,7 @@ public class Progres extends AppCompatActivity implements NavigationView.OnNavig
                     mIntent.putExtra("Lokasi", Lokasi);
                     mIntent.putExtra("Id Murid", HId);
                     mIntent.putExtra("NoKelas", HNokelas);
+                    mIntent.putExtra("Perlajaran", HPelajaran);
                     mIntent.putExtra("Nama Murid", HNama);
                     mIntent.putExtra("Nama Guru", HNamas);
                     startActivity(mIntent);

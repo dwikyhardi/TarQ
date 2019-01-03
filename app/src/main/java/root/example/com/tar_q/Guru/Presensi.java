@@ -2,6 +2,7 @@ package root.example.com.tar_q.Guru;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +42,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import root.example.com.tar_q.Jamaah.PresensiJamaah;
@@ -56,8 +59,12 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
     private ImageView imageProfileGuru;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, refLatlng, refLatLngPrivate, refLatLngKantor;
     private TextView NamaGuru, EmailGuru;
+    private Double LatGuru, LngGuru;
+    private Double LatTempatAjarPrivate, LngTempatAjarPrivate, LatTempatAjarKantor, LngTempatAjarKantor;
+    private Location tempatAjar = new Location("");
+    private Location guru = new Location("");
 
     private String timeStamp;
 
@@ -96,6 +103,9 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
         userID = user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("TARQ").child("FORM").child(Lokasi);
+        refLatlng = mFirebaseDatabase.getReference();
+        refLatLngKantor = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("KANTOR").child(Lokasi);
+        refLatLngPrivate = mFirebaseDatabase.getReference().child("TARQ").child("KELAS").child("PRIVATE").child(Lokasi);
 
         timeStamp = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
         timeStamp = timeStamp + "000";
@@ -114,6 +124,40 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
             e.printStackTrace();
         }
 
+        //Ambil LatLng
+        refLatlng.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ambilLatLngGuru(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        refLatLngPrivate.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ambilLatLngTempatAjarPrivate((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        refLatLngKantor.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ambilLatLngTempatAjarKantor((Map<String, Object>) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://lkptarq93.appspot.com");
@@ -152,12 +196,121 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
 
     }
 
-    private void showNama(DataSnapshot dataSnapshot) {
+    private void ambilLatLngTempatAjarKantor(Map<String, Object> dataSnapshot) {
+        try {
+            Log.d(TAG, "ambilLatLngTempatAjarKantor() returned: " + Jam);
+            final ArrayList<String> IdGuru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idGuru = (Map) entry.getValue();
+                IdGuru.add((String) idGuru.get("idguru"));
+            }
+
+            final ArrayList<String> Lat = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map lat = (Map) entry.getValue();
+                Lat.add((String) lat.get("lokasilat"));
+            }
+
+            final ArrayList<String> Lng = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map lng = (Map) entry.getValue();
+                Lng.add((String) lng.get("lokasilang"));
+            }
+            int i = 0;
+            long jams = 0;
+            while (Kelas.size() > i) {
+                int j = 1;
+                if (IdGuru.get(i).equals(userID)) {
+                    String[] a = String.valueOf(Jam.get(i)).split(",");
+                    do {
+                        jams = (Long.parseLong(a[j]) + 7200000);
+                        String jamsa = a[j];
+                        if (Long.parseLong(timeStamp) < jams) {
+                            long sah = jams - Long.parseLong(timeStamp);
+                            if (sah <= 7200000) {
+                                LatTempatAjarKantor = Double.parseDouble(Lat.get(i));
+                                LngTempatAjarKantor = Double.parseDouble(Lng.get(i));
+                                tempatAjar.setLatitude(LatTempatAjarKantor);
+                                tempatAjar.setLongitude(LngTempatAjarKantor);
+                                Log.d(TAG, "ambilLatLngTempatAjarKantor() returned: Lat " + LatTempatAjarKantor + " Lng " + LngTempatAjarKantor);
+                            }
+                        } else {
+                            Log.d(TAG, "Gagal uyy");
+                        }
+                        j++;
+                    } while (a.length > j);
+                }
+                i++;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void ambilLatLngTempatAjarPrivate(Map<String, Object> dataSnapshot) {
+        try {
+            Log.d(TAG, "ambilLatLngTempatAjarPrivate() returned: " + Jam);
+            final ArrayList<String> IdGuru = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map idGuru = (Map) entry.getValue();
+                IdGuru.add((String) idGuru.get("idguru"));
+            }
+            final ArrayList<String> Lat = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map lat = (Map) entry.getValue();
+                Lat.add((String) lat.get("lokasilat"));
+            }
+
+            final ArrayList<String> Lng = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+                Map lng = (Map) entry.getValue();
+                Lng.add((String) lng.get("lokasilang"));
+            }
+            int i = 0;
+            long jams = 0;
+            while (Kelas.size() > i) {
+                int j = 1;
+                if (IdGuru.get(i).equals(userID)) {
+                    String[] a = String.valueOf(Jam.get(i)).split(",");
+                    do {
+                        jams = (Long.parseLong(a[j]) + 7200000);
+                        String jamsa = a[j];
+                        if (Long.parseLong(timeStamp) < jams) {
+                            long sah = jams - Long.parseLong(timeStamp);
+                            if (sah <= 7200000) {
+                                LatTempatAjarPrivate = Double.parseDouble(Lat.get(i));
+                                LngTempatAjarPrivate = Double.parseDouble(Lng.get(i));
+                                tempatAjar.setLongitude(LngTempatAjarPrivate);
+                                tempatAjar.setLatitude(LatTempatAjarPrivate);
+                                Log.d(TAG, "ambilLatLngTempatAjarPrivate() returned: Lat " + LatTempatAjarPrivate + " Lng " + LngTempatAjarPrivate);
+                            }
+                        } else {
+                            Log.d(TAG, "Gagal uyy");
+                        }
+                        j++;
+                    } while (a.length > j);
+                }
+                i++;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void ambilLatLngGuru(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
             ProfileGuru uInfo = new ProfileGuru();
             Log.d(TAG, "showNama() returned: " + Lokasi);
             uInfo.setNama(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getNama());
+            uInfo.setLatitude(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getLatitude());
+            uInfo.setLongitude(ds.child("USER").child("GURU").child(Lokasi).child(userID).getValue(ProfileGuru.class).getLongitude());
             NamaGuru.setText(uInfo.getNama());
+            LatGuru = Double.parseDouble(uInfo.getLatitude());
+            LngGuru = Double.parseDouble(uInfo.getLongitude());
+            guru.setLatitude(LatGuru);
+            guru.setLongitude(LngGuru);
             Log.d(TAG, "onDataChange() returned: " + uInfo.getNama());
         }
     }
@@ -173,6 +326,10 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
         } else if (id == R.id.nav_Prosensi) {
             Intent mIntent = new Intent(Presensi.this, Presensi.class);
             mIntent.putExtra("Lokasi", Lokasi);
+            mIntent.putStringArrayListExtra("List Ajar", idAjar);
+            mIntent.putStringArrayListExtra("Pelajaran", PelajaranH);
+            mIntent.putStringArrayListExtra("Jam", Jam);
+            mIntent.putStringArrayListExtra("Kelas", Kelas);
             startActivity(mIntent);
         } else if (id == R.id.nav_data_jamaah) {
             Intent mIntent = new Intent(Presensi.this, Data_Jamaah.class);
@@ -226,20 +383,21 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
                     do {
                         jams = (Long.parseLong(a[j]) + 7200000);
                         String jamsa = a[j];
-                        if(Long.parseLong(timeStamp) < jams){
-                            long sah = jams - Long.parseLong(timeStamp);
-                            Log.d(TAG, "sah = " + sah);
-                            if (sah <= 7200000){
-                                myRef.child(Kelas.get(i)).child(jamsa).child("GURU").child(userID).child("ABSEN").setValue("true");
-                                myRef.child(Kelas.get(i)).child(jamsa).child("GURU").child(userID).child("id").setValue(userID);
-                                myRef.child(Kelas.get(i)).child(jamsa).child("MURID").child(naun).child("ABSEN").setValue("true");
-                                myRef.child(Kelas.get(i)).child(jamsa).child("MURID").child(naun).child("id").setValue(naun);
-                                myRef.child(Kelas.get(i)).child(jamsa).child("JADWAL").setValue(jamsa);
-                                myRef.child(Kelas.get(i)).child(jamsa).child("WAKTU ABSEN").setValue(timeStamp);
-                                myRef.child(Kelas.get(i)).child(jamsa).child("PERTEMUAN").setValue(j);
-                                myRef.child(Kelas.get(i)).child(jamsa).child("KELAS").setValue(Kelas.get(i));
-                                myRef.child(Kelas.get(i)).child(jamsa).child("PELAJARAN").setValue(PelajaranH.get(i));
-                                Log.d(TAG, "Berhasil Bray");
+                        if (((guru.distanceTo(tempatAjar) / 1000)) <= 0.5) {
+                            if (Long.parseLong(timeStamp) < jams) {
+                                long sah = jams - Long.parseLong(timeStamp);
+                                Log.d(TAG, "sah = " + sah);
+                                if (sah <= 7200000) {
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("GURU").child(userID).child("ABSEN").setValue("true");
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("GURU").child(userID).child("id").setValue(userID);
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("MURID").child(naun).child("ABSEN").setValue("true");
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("MURID").child(naun).child("id").setValue(naun);
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("JADWAL").setValue(jamsa);
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("WAKTU ABSEN").setValue(timeStamp);
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("PERTEMUAN").setValue(j);
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("KELAS").setValue(Kelas.get(i));
+                                    myRef.child(Kelas.get(i)).child(jamsa).child("PELAJARAN").setValue(PelajaranH.get(i));
+                                    Log.d(TAG, "Berhasil Bray");
                                 /*if (PelajaranH.get(i).equals("tahfizh")){
                                     Intent mIntent = new Intent(Presensi_Guru.this, Form_Tahfizh.class);
                                     startActivity(mIntent);
@@ -267,14 +425,17 @@ public class Presensi extends AppCompatActivity implements NavigationView.OnNavi
                                 }else if (PelajaranH.get(i).equals("bahasaarab")){
 
                                 }*/
+                                }
                             }
-                        }else{
+                        } else {
                             Log.d(TAG, "Gagal uyy");
                         }
                         j++;
                         Log.d(TAG, "Db = " + jams);
                         Log.d(TAG, "Jam = " + timeStamp);
                     } while (a.length > j);
+                } else {
+                    toastMessage("GAGAL");
                 }
                 i++;
             }

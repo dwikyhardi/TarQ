@@ -135,7 +135,7 @@
                         android:layout_toRightOf="@id/icon_password_login"
                         android:backgroundTint="@color/coklat"
                         android:inputType="textPassword"
-                        android:textColor="@color/white"
+                        android:textColor="@color/coklat"
                         android:textSize="15dp" />
 
                 </RelativeLayout>

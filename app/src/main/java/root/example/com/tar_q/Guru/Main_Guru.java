@@ -2,12 +2,16 @@ package root.example.com.tar_q.Guru;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,6 +38,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,6 +66,9 @@ import java.util.Map;
 import root.example.com.tar_q.MainActivity;
 import root.example.com.tar_q.R;
 import root.example.com.tar_q.services.LocationUpdate;
+
+import static root.example.com.tar_q.MainActivity.ERROR_DIALOG_REQUEST;
+import static root.example.com.tar_q.MainActivity.PERMISSIONS_REQUEST_ENABLE_GPS;
 
 public class Main_Guru extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -99,7 +108,6 @@ public class Main_Guru extends AppCompatActivity
     private TextView etNamaPenerimaPopup, Tv_Kantor, Tv_Private;
     private LinearLayout LL;
     private ListView mListViewRequestKantor, mListViewRequestPrivate, mListViewDataAjar;
-
 
 
     private ArrayList<String> idAjar = new ArrayList<>();
@@ -214,6 +222,60 @@ public class Main_Guru extends AppCompatActivity
 
     }
 
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Aplikasi Ini Membutuhkan GPS Untuk Bekerja Dengan Baik, Apakah Anda Ingin Menyalakannya ?")
+                .setCancelable(false)
+                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        Intent enableGpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(enableGpsIntent, PERMISSIONS_REQUEST_ENABLE_GPS);
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public boolean isMapsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkMapServices() {
+        if (isServicesOK()) {
+            if (isMapsEnabled()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isServicesOK() {
+        Log.d(TAG, "isServicesOK: checking google services version");
+
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Main_Guru.this);
+
+        if (available == ConnectionResult.SUCCESS) {
+            //everything is fine and the user can make map requests
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+            //an error occured but we can resolve it
+            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(Main_Guru.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        } else {
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+
     //tambahan Ieu
     private void showNama(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -262,6 +324,7 @@ public class Main_Guru extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         updateLokasi();
+        checkMapServices();
     }
 
     private void startLocationService() {
@@ -333,62 +396,6 @@ public class Main_Guru extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.nav_account) {
-            Intent mIntent = new Intent(Main_Guru.this, Biodata.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_Prosensi) {
-            Intent mIntent = new Intent(Main_Guru.this, Presensi.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            mIntent.putStringArrayListExtra("List Ajar", idAjar);
-            mIntent.putStringArrayListExtra("Pelajaran", PelajaranH);
-            mIntent.putStringArrayListExtra("Jam", Jam);
-            mIntent.putStringArrayListExtra("Kelas", Kelas);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_data_jamaah) {
-            Intent mIntent = new Intent(Main_Guru.this, Data_Jamaah.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_Progres_report) {
-            Intent mIntent = new Intent(Main_Guru.this, Progres.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_main_guru) {
-            Intent mIntent = new Intent(Main_Guru.this, Main_Guru.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_Potensial) {
-            Intent mIntent = new Intent(Main_Guru.this, Potensial.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_Realcome) {
-            Intent mIntent = new Intent(Main_Guru.this, Realcome.class);
-            mIntent.putExtra("Lokasi", Lokasi);
-            startActivity(mIntent);
-        } else if (id == R.id.nav_Tentang) {
-            toastMessage("tentang");
-        } else if (id == R.id.nav_logout) {
-            mAuth.signOut();
-            if (isLocationServiceRunning()) {
-                Intent serviceIntent = new Intent(this, LocationUpdate.class);
-                //this.startService(serviceIntent);
-                stopService(serviceIntent);
-            }
-            Intent mIntent = new Intent(Main_Guru.this, MainActivity.class);
-            startActivity(mIntent);
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     public void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -441,15 +448,22 @@ public class Main_Guru extends AppCompatActivity
             Map noKelas = (Map) entry.getValue();
             NoKelas.add((String) noKelas.get("nokelas"));
         }
+
         final ArrayList<String> IdGuru = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
             Map idGuru = (Map) entry.getValue();
             IdGuru.add((String) idGuru.get("idguru"));
         }
+
         final ArrayList<String> IdMurid = new ArrayList<>();
         for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
             Map idMurid = (Map) entry.getValue();
             IdMurid.add((String) idMurid.get("idmurid"));
+        }
+        final ArrayList<String> Pelajaran = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : dataSnapshot.entrySet()) {
+            Map pelajaran = (Map) entry.getValue();
+            Pelajaran.add((String) pelajaran.get("pelajaran"));
         }
         final ArrayList<String> listNama = new ArrayList<>();
         final ArrayList<String> listPertemuan = new ArrayList<>();
@@ -472,13 +486,15 @@ public class Main_Guru extends AppCompatActivity
                         NomorKelas = NoKelas.get(i);
                         IdJamaah = IdMurid.get(i);
                         ShowPopupNotifikasiGuruKantor();
-                    }
-                    else if (Jadwalhari.get(i).equals("request")) {
-                    }
-                    else if (Jadwalhari.get(i).equals("false")) {
+                    } else if (Jadwalhari.get(i).equals("request")) {
+                    } else if (Jadwalhari.get(i).equals("false")) {
                     } else {
                         int j = 1;
                         String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
+                        idAjar.add(IdMurid.get(i));
+                        PelajaranH.add(Pelajaran.get(i));
+                        Jam.add(Jadwalhari.get(i));
+                        Kelas.add(NoKelas.get(i));
                         while (a.length > j) {
                             listNamaEvent = NamaJamaah.get(i);
                             listWaktuEvent = Long.parseLong(a[j]);
@@ -564,10 +580,8 @@ public class Main_Guru extends AppCompatActivity
                         Log.d(TAG, NamaMurid);
                         Log.d(TAG, JumlahPertemuan);
                         Log.d(TAG, NomorKelas);
-                    }
-                    else if (Jadwalhari.get(i).equals("request")) {
-                    }
-                    else if (Jadwalhari.get(i).equals("false")) {
+                    } else if (Jadwalhari.get(i).equals("request")) {
+                    } else if (Jadwalhari.get(i).equals("false")) {
                     } else {
                         int j = 1;
                         String[] a = String.valueOf(Jadwalhari.get(i)).split(",");
@@ -744,5 +758,62 @@ public class Main_Guru extends AppCompatActivity
                 Month.setText(dateFormatMonth.format(firstDayOfNewMonth));
             }
         });
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_account) {
+            Intent mIntent = new Intent(Main_Guru.this, Biodata.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Prosensi) {
+            Intent mIntent = new Intent(Main_Guru.this, Presensi.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            mIntent.putStringArrayListExtra("List Ajar", idAjar);
+            mIntent.putStringArrayListExtra("Pelajaran", PelajaranH);
+            mIntent.putStringArrayListExtra("Jam", Jam);
+            mIntent.putStringArrayListExtra("Kelas", Kelas);
+            Log.d(TAG, "onNavigationItemSelected() returned: |" + Jam+"|"+idAjar);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_data_jamaah) {
+            Intent mIntent = new Intent(Main_Guru.this, Data_Jamaah.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Progres_report) {
+            Intent mIntent = new Intent(Main_Guru.this, Progres.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_main_guru) {
+            Intent mIntent = new Intent(Main_Guru.this, Main_Guru.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Potensial) {
+            Intent mIntent = new Intent(Main_Guru.this, Potensial.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Realcome) {
+            Intent mIntent = new Intent(Main_Guru.this, Realcome.class);
+            mIntent.putExtra("Lokasi", Lokasi);
+            startActivity(mIntent);
+        } else if (id == R.id.nav_Tentang) {
+            toastMessage("tentang");
+        } else if (id == R.id.nav_logout) {
+            mAuth.signOut();
+            if (isLocationServiceRunning()) {
+                Intent serviceIntent = new Intent(this, LocationUpdate.class);
+                //this.startService(serviceIntent);
+                stopService(serviceIntent);
+            }
+            Intent mIntent = new Intent(Main_Guru.this, MainActivity.class);
+            startActivity(mIntent);
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
