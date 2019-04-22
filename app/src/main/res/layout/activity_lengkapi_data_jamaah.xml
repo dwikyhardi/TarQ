@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageView1"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginRight="30dp">
 
                     <!-- Icon Nama -->
@@ -132,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/imgView_namaIcon"
                         android:layout_alignParentTop="true"
+                        android:padding="5dp"
                         android:layout_toRightOf="@+id/imgView_namaIcon"
                         android:backgroundTint="@color/white"
                         android:hint="Nama Lengkap"
